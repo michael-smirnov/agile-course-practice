@@ -14,30 +14,12 @@ import static org.junit.Assert.assertEquals;
 public class TriangleParametrizedTest {
 
     private Triangle triangle;
-    public static class CorrectAnswers {
-        private final double perimeter;
-        private final double length;
-
-        CorrectAnswers(final double perimeter, final double length) {
-            this.perimeter = perimeter;
-            this.length = length;
-        }
-
-        public double getPerimeter() {
-            return perimeter;
-        }
-
-        public double getLength() {
-            return length;
-        }
-    }
     private CorrectAnswers correctAnswers;
     public TriangleParametrizedTest(final Triangle triangle,
                                     final CorrectAnswers correctAnswers) {
         this.triangle = triangle;
         this.correctAnswers = correctAnswers;
     }
-
     private static final double DELTA = 0.001;
 
     @Parameters

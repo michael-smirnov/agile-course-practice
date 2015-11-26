@@ -18,10 +18,12 @@ public class Triangle {
                     final List<Double> coordinatesOfPoint3,
                     final int inputDimension) throws Exception {
         if (!hasEqualDimensions(coordinatesOfPoint1, coordinatesOfPoint1,
-                coordinatesOfPoint3, inputDimension)
-                || !isPossibleToBuildNondegenerateTriangle(coordinatesOfPoint1,
+                coordinatesOfPoint3, inputDimension)) {
+            throw new Exception("Points have different dimensions!");
+        }
+        if (!isPossibleToBuildNondegenerateTriangle(coordinatesOfPoint1,
                 coordinatesOfPoint2, coordinatesOfPoint3)) {
-            throw new IllegalArgumentException();
+            throw new Exception("Triangle is degenerate!");
         }
         this.coordinatesOfPoint1 = coordinatesOfPoint1;
         this.coordinatesOfPoint2 = coordinatesOfPoint2;
@@ -41,9 +43,9 @@ public class Triangle {
     }
 
     private boolean hasEqualDimensions(final List<Double> coordinatesOfPoint1,
-                                      final List<Double> coordinatesOfPoint2,
-                                      final List<Double> coordinatesOfPoint3,
-                                      final int dimension) {
+                                       final List<Double> coordinatesOfPoint2,
+                                       final List<Double> coordinatesOfPoint3,
+                                       final int dimension) {
         return coordinatesOfPoint1.size() == dimension
                 && coordinatesOfPoint2.size() == dimension
                 && coordinatesOfPoint3.size() == dimension;
@@ -81,7 +83,7 @@ public class Triangle {
     }
 
     public double getPerimeter() throws Exception {
-        List<Double> lengths = this.getLengthsOfEdges();
+        List<Double> lengths = getLengthsOfEdges();
         if (lengths.get(0) + lengths.get(1) > Double.MAX_VALUE - lengths.get(2)) {
             throw new Exception("Overflow when counting perimeter!");
         }
@@ -89,7 +91,7 @@ public class Triangle {
     }
 
     public double getSquare() throws Exception {
-        List<Double> lengths = this.getLengthsOfEdges();
+        List<Double> lengths = getLengthsOfEdges();
         double halfPerimeter = this.getPerimeter() / 2;
         if (halfPerimeter * (halfPerimeter - lengths.get(0))
                 * (halfPerimeter - lengths.get(1))
@@ -101,7 +103,7 @@ public class Triangle {
     }
 
     public List<Double> getMedians() throws Exception {
-        List<Double> lengths = this.getLengthsOfEdges();
+        List<Double> lengths = getLengthsOfEdges();
         double median1 = THE_HALF * sqrt(2 * pow(lengths.get(1), 2)
                 + 2 * pow(lengths.get(2), 2) - pow(lengths.get(0), 2));
         double median2 = THE_HALF * sqrt(2 * pow(lengths.get(0), 2)
@@ -112,15 +114,15 @@ public class Triangle {
     }
 
     public List<Double> getAltitudes() throws Exception {
-        List<Double> lengths = this.getLengthsOfEdges();
-        double altitude1 = 2 * this.getPerimeter() / lengths.get(0);
-        double altitude2 = 2 * this.getPerimeter() / lengths.get(1);
-        double altitude3 = 2 * this.getPerimeter() / lengths.get(2);
+        List<Double> lengths = getLengthsOfEdges();
+        double altitude1 = 2 * getPerimeter() / lengths.get(0);
+        double altitude2 = 2 * getPerimeter() / lengths.get(1);
+        double altitude3 = 2 * getPerimeter() / lengths.get(2);
         return Arrays.asList(altitude1, altitude2, altitude3);
     }
 
     public List<Double> getBisectrices() throws Exception {
-        List<Double> lengths = this.getLengthsOfEdges();
+        List<Double> lengths = getLengthsOfEdges();
         double bisectrix1 = sqrt(lengths.get(1) * lengths.get(2) * this.getPerimeter()
                 * (lengths.get(1) + lengths.get(2) - lengths.get(0)))
                 / (lengths.get(1) + lengths.get(2));
@@ -134,7 +136,7 @@ public class Triangle {
     }
 
     public List<Double> getAngles() throws Exception {
-        List<Double> lengths = this.getLengthsOfEdges();
+        List<Double> lengths = getLengthsOfEdges();
         double angle1 = acos((pow(lengths.get(1), 2) + pow(lengths.get(2), 2)
                 - pow(lengths.get(0), 2))
                 / (2 * lengths.get(1) * lengths.get(2)));
