@@ -3,11 +3,13 @@ package ru.unn.agile.StatisticValueCalculator.viewmodel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,10 +21,12 @@ public class StatisticCalculatorViewModelTests {
     @Before
     public void setUp() {
         viewModel = new StatisticCalculatorViewModel();
+        viewModel.setLogger(new FakeLoggerOfStatisticCalculator());
     }
 
     @Test
     public void checkSetDefaultValuesWhenJustStarted() {
+        assertTrue(viewModel.getLog().isEmpty());
         assertEquals(viewModel.nameOfCalculatedStatisticProperty().get(), "");
         assertEquals(viewModel.valueOfCalculatedStatisticProperty().get(), "");
         assertEquals(viewModel.inputRowErrorProperty().get(), InputNote.VALID_INPUT);
@@ -288,6 +292,17 @@ public class StatisticCalculatorViewModelTests {
         viewModel.inputStatisticParameterProperty().set("");
 
         assertFalse(viewModel.calculationIsDisabledProperty().get());
+    }
+
+    @Test
+    public void logContainsAddRowValueAfterInTyped() {
+        viewModel.inputRowProperty().set("abc");
+        viewModel.inputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        List<String> log = viewModel.getLog();
+        int indexOfLastElement = log.size() - 1;
+
+        assertEquals(log.get(indexOfLastElement), "[Changed input row value]: abc");
     }
 
     private void setUpDataTable() {
