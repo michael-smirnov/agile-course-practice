@@ -205,6 +205,8 @@ public class TriangleViewModel {
     }
 
     public void compute() throws Exception {
+        double[] arrayOfMedians;
+        double[] arrayOfAngles;
         if (checkInput()) {
             Triangle triangle = setTriangle();
                 if (valueToCalculate.equals(ValuesToCalculate.PERIMETER)) {
@@ -222,12 +224,12 @@ public class TriangleViewModel {
                             triangle.getCoordinatesOfPoint3()));
                 } else if (valueToCalculate.equals(ValuesToCalculate.MEDIANS)) {
                     List<Double> medians = triangle.getMedians();
-                    double[] arrayOfMedians =
+                    arrayOfMedians =
                             medians.stream().mapToDouble(Double::doubleValue).toArray();
                     result = Arrays.toString(arrayOfMedians);
                 } else if (valueToCalculate.equals(ValuesToCalculate.ANGLES)) {
                     List<Double> angles = triangle.getAngles();
-                    double[] arrayOfAngles =
+                    arrayOfAngles =
                             angles.stream().mapToDouble(Double::doubleValue).toArray();
                     result = Arrays.toString(arrayOfAngles);
                 } else {
