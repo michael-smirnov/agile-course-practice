@@ -1,4 +1,4 @@
-package ru.unn.agile.Triangle.view;
+package ru.unn.agile.Triangle;
 
 import org.junit.Ignore;
 import org.junit.Test;
