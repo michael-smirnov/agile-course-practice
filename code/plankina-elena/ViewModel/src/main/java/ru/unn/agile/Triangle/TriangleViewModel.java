@@ -2,6 +2,7 @@ package ru.unn.agile.Triangle;
 
 import ru.unn.agile.Triangle.model.Triangle;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +21,6 @@ public class TriangleViewModel {
     private String point3Y;
     private String point3Z;
     private String valueToCalculate;
-    private String calculateButton;
     private String result;
     private static final int DIMENSION = 3;
 
@@ -36,7 +36,7 @@ public class TriangleViewModel {
         point3X = "";
         point3Y = "";
         point3Z = "";
-        valueToCalculate = ValuesToCalculate.PERIMETER;
+        valueToCalculate = ValuesToCalculate.MEDIANS;
         result = "0.0";
     }
 
@@ -205,8 +205,8 @@ public class TriangleViewModel {
     }
 
     public void compute() throws Exception {
-        double[] arrayOfMedians;
-        double[] arrayOfAngles;
+        List<String> arrayOfMedians = new ArrayList<>();
+        List<String> arrayOfAngles = new ArrayList<>();
         if (checkInput()) {
             Triangle triangle = setTriangle();
                 if (valueToCalculate.equals(ValuesToCalculate.PERIMETER)) {
@@ -224,12 +224,16 @@ public class TriangleViewModel {
                             triangle.getCoordinatesOfPoint3()));
                 } else if (valueToCalculate.equals(ValuesToCalculate.MEDIANS)) {
                     List<Double> medians = triangle.getMedians();
-                    arrayOfMedians = medians.stream().mapToDouble(Double::doubleValue).toArray();
-                    result = Arrays.toString(arrayOfMedians);
+                    for (Double m : medians) {
+                        arrayOfMedians.add(m.toString());
+                    }
+                    result = arrayOfMedians.toString();
                 } else if (valueToCalculate.equals(ValuesToCalculate.ANGLES)) {
                     List<Double> angles = triangle.getAngles();
-                    arrayOfAngles = angles.stream().mapToDouble(Double::doubleValue).toArray();
-                    result = Arrays.toString(arrayOfAngles);
+                    for (Double a : angles) {
+                        arrayOfAngles.add(a.toString());
+                    }
+                    result = arrayOfAngles.toString();
                 } else {
                     throw new Exception("Incorrect value!");
                 }

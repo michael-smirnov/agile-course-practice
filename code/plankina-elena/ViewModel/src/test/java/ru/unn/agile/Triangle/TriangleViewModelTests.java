@@ -24,7 +24,7 @@ public class TriangleViewModelTests {
         viewModel.setCoordinate3X("-0.5");
         viewModel.setCoordinate3Y("1.5");
         viewModel.setCoordinate3Z("1.5");
-        viewModel.setValueToCalculate(ValuesToCalculate.PERIMETER);
+        viewModel.setValueToCalculate(ValuesToCalculate.MEDIANS);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class TriangleViewModelTests {
         assertEquals(viewModel.getCoordinate3X(), "");
         assertEquals(viewModel.getCoordinate3Y(), "");
         assertEquals(viewModel.getCoordinate3Z(), "");
-        assertEquals(viewModel.getValueToCalculate(), ValuesToCalculate.PERIMETER);
+        assertEquals(viewModel.getValueToCalculate(), ValuesToCalculate.MEDIANS);
         assertEquals(viewModel.getResult(), "0.0");
     }
 
