@@ -224,13 +224,11 @@ public class TriangleViewModel {
                             triangle.getCoordinatesOfPoint3()));
                 } else if (valueToCalculate.equals(ValuesToCalculate.MEDIANS)) {
                     List<Double> medians = triangle.getMedians();
-                    arrayOfMedians =
-                            medians.stream().mapToDouble(Double::doubleValue).toArray();
+                    arrayOfMedians = medians.stream().mapToDouble(Double::doubleValue).toArray();
                     result = Arrays.toString(arrayOfMedians);
                 } else if (valueToCalculate.equals(ValuesToCalculate.ANGLES)) {
                     List<Double> angles = triangle.getAngles();
-                    arrayOfAngles =
-                            angles.stream().mapToDouble(Double::doubleValue).toArray();
+                    arrayOfAngles = angles.stream().mapToDouble(Double::doubleValue).toArray();
                     result = Arrays.toString(arrayOfAngles);
                 } else {
                     throw new Exception("Incorrect value!");
