@@ -295,14 +295,45 @@ public class StatisticCalculatorViewModelTests {
     }
 
     @Test
-    public void logContainsAddRowValueAfterInTyped() {
+    public void logContainsAddRowValueAfterItTyped() {
         viewModel.inputRowProperty().set("abc");
-        viewModel.inputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
-        List<String> log = viewModel.getLog();
-        int indexOfLastElement = log.size() - 1;
+        assertEquals(viewModel.getLog().get(0), "[Changed input row value]: abc");
+    }
 
-        assertEquals(log.get(indexOfLastElement), "[Changed input row value]: abc");
+    @Test
+    public void logNotContainsAddRowValueWhenAddRowTextFieldJustLeaveFocus() {
+        viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void logContainsOnlyOneMessageWhenParameterValueChangedOnesAndFocusedTwice() {
+        viewModel.inputStatisticParameterProperty().set("3.22");
+        viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        viewModel.onInputFieldFocusChanged(Boolean.FALSE, Boolean.TRUE);
+        viewModel.inputStatisticParameterProperty().set("3.22");
+        viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
+        assertTrue(viewModel.getLog().size() == 1);
+    }
+
+    @Test
+    public void lastMessageInLogIsAddRowToStatisticDataAfterItReallyCalled() {
+        viewModel.inputRowProperty().set("11");
+
+        viewModel.addRowToStatisticData();
+
+        assertEquals(viewModel.getLog().get(0), "[New value to statistic data is added]");
+    }
+
+    @Test
+    public void logIsUpdatedByStatisticSelectionMessageWhenVarianceHasSelected() {
+        viewModel.selectedStatisticProperty().set(StatisticValue.VARIANCE);
+
+        assertEquals(viewModel.getLog().get(0), "[Selected statistic]: VARIANCE");
     }
 
     private void setUpDataTable() {

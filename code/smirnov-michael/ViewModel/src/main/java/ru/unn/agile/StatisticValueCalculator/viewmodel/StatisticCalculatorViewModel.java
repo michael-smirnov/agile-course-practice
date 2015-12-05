@@ -42,6 +42,7 @@ public class StatisticCalculatorViewModel {
     private final AddStatisticParameterChangeListener parameterChangeListener
             = new AddStatisticParameterChangeListener();
     private final AddValueChangeListener valueChangeListener = new AddValueChangeListener();
+    private final SelectedStatisticListener statisticListener = new SelectedStatisticListener();
 
     private final BooleanProperty addInputRowIsDisabled = new SimpleBooleanProperty(false);
     private final BooleanProperty calculationIsDisabled = new SimpleBooleanProperty(false);
@@ -57,7 +58,7 @@ public class StatisticCalculatorViewModel {
 
         inputRow.addListener(valueChangeListener);
         inputStatisticParameter.addListener(parameterChangeListener);
-        selectedStatistic.addListener(new SelectedStatisticListener());
+        selectedStatistic.addListener(statisticListener);
 
         ArrayList<String> data = new ArrayList<>(Arrays.asList("1.0", "2.1", "3.2",
                 "2.1", "1.0", "-5.4", "2.4", "0.0"));
@@ -179,6 +180,8 @@ public class StatisticCalculatorViewModel {
     public void addRowToStatisticData() {
         Integer numberOfAddValue = statisticData.size() + 1;
         statisticData.add(new Pair<>(numberOfAddValue.toString(), inputRow.getValue()));
+
+        logger.addMessage("[New value to statistic data is added]");
         calculationIsDisabled.set(false);
     }
     public void makeRowInDataNotSelected() {
@@ -244,16 +247,20 @@ public class StatisticCalculatorViewModel {
         nameOfCalculatedStatistic.set(selectedStatistic.get().toString());
         valueOfCalculatedStatistic.set(statisticValue.toString());
     }
-    public void inputFieldFocusChanged(Boolean oldFocusStatus, Boolean newFocusStatus) {
-        if (!oldFocusStatus && newFocusStatus || logger == null) {
+    public void onInputFieldFocusChanged(Boolean previousFocusStatus, Boolean currentFocusStatus) {
+        if(!previousFocusStatus && currentFocusStatus) {
             return;
         }
         if(valueChangeListener.isChanged()) {
             logger.addMessage("[Changed input row value]: " + inputRow.get());
             valueChangeListener.resetChangedState();
         }
+        if(parameterChangeListener.isChanged()) {
+            logger.addMessage("[Changed input parameter value]: " +
+                    parameterNameOfSelectedStatistic.get());
+            parameterChangeListener.resetChangedState();
+        }
     }
-
 
     private void reformIndexesInStatisticData() {
         for (Integer i = 1; i <= statisticData.size(); i++) {
@@ -263,14 +270,27 @@ public class StatisticCalculatorViewModel {
         }
     }
 
-    private class AddValueChangeListener implements ChangeListener<String> {
-        private String currentAddValue;
-        private String previousAddValue;
+    private class ValueChangedListener {
+        private String currentAddValue = "";
+        private String previousAddValue = "";
+
+        public void changeValue(String newValue) {
+            previousAddValue = currentAddValue;
+            currentAddValue = newValue;
+        }
+        public Boolean isChanged() {
+            return !currentAddValue.equals(previousAddValue);
+        }
+        public void resetChangedState() {
+            previousAddValue = currentAddValue;
+        }
+    }
+
+    private class AddValueChangeListener extends ValueChangedListener implements ChangeListener<String> {
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
-            previousAddValue = currentAddValue;
-            currentAddValue = newValue;
+            super.changeValue(newValue);
 
             inputRowError.set(InputNote.VALID_INPUT);
             addInputRowIsDisabled.set(false);
@@ -287,28 +307,29 @@ public class StatisticCalculatorViewModel {
                 addInputRowIsDisabled.set(true);
             }
         }
-
-        Boolean isChanged() {
-            return !currentAddValue.equals(previousAddValue);
-        }
-        void resetChangedState() {
-            previousAddValue = currentAddValue;
-        }
     }
 
-    private class SelectedStatisticListener implements ChangeListener<StatisticValue> {
+    private class SelectedStatisticListener extends ValueChangedListener
+            implements ChangeListener<StatisticValue> {
         @Override
         public void changed(final ObservableValue<? extends StatisticValue> observable,
                             final StatisticValue oldValue, final StatisticValue newValue) {
-            parameterChangeListener.changed(inputStatisticParameter, "",
-                    inputStatisticParameter.get());
+            super.changeValue(newValue.name());
+            if(super.isChanged()) {
+                logger.addMessage("[Selected statistic]: " + newValue.name());
+                super.resetChangedState();
+            }
         }
     }
 
-    private class AddStatisticParameterChangeListener implements ChangeListener<String> {
+    private class AddStatisticParameterChangeListener extends ValueChangedListener
+            implements ChangeListener<String> {
+
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
+            super.changeValue(newValue);
+
             inputStatisticParameterError.set(InputNote.VALID_INPUT);
             calculationIsDisabled.set(statisticData.isEmpty());
 

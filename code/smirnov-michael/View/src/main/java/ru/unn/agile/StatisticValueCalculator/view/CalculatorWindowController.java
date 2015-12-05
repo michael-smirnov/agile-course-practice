@@ -54,20 +54,22 @@ public class CalculatorWindowController {
 
     @FXML
     private void initialize() {
-        //final class TextFieldFocusChangeListener implements FocusListener
+        final ChangeListener<Boolean> inputFieldFocusChangeListener = new ChangeListener<Boolean>(){
+
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable,
+                                Boolean oldValue, Boolean newValue) {
+                viewModel.onInputFieldFocusChanged(oldValue, newValue);
+            }
+        };
 
         textRowValue.textProperty()
                 .bindBidirectional(viewModel.inputRowProperty());
-        textRowValue.focusedProperty().addListener(new ChangeListener<Boolean>(){
-            @Override
-            public void changed(final ObservableValue<? extends Boolean> observable,
-                                final Boolean oldValue, final Boolean newValue) {
-                viewModel.inputFieldFocusChanged(oldValue, newValue);
-            }
-        });
+        textRowValue.focusedProperty().addListener(inputFieldFocusChangeListener);
 
         textStatisticParameterValue.textProperty()
                 .bindBidirectional(viewModel.inputStatisticParameterProperty());
+        textStatisticParameterValue.focusedProperty().addListener(inputFieldFocusChangeListener);
 
         addRowButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
