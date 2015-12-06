@@ -2,6 +2,9 @@ package ru.unn.agile.Triangle;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.unn.agile.TriangleViewModel.Status;
+import ru.unn.agile.TriangleViewModel.TriangleViewModel;
+import ru.unn.agile.TriangleViewModel.ValuesToCalculate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -24,22 +27,61 @@ public class TriangleViewModelTests {
         viewModel.setCoordinate3X("-0.5");
         viewModel.setCoordinate3Y("1.5");
         viewModel.setCoordinate3Z("1.5");
-        viewModel.setValueToCalculate(ValuesToCalculate.MEDIANS);
+        viewModel.setValueToCalculate(ValuesToCalculate.MEDIANS.toString());
+    }
+    @Test
+    public void byDefaultCoordinate1XisEmptyString() {
+        assertEquals(viewModel.getCoordinate1X(), "");
     }
 
     @Test
-    public void byDefaultCanSetFieldsValues() {
-        assertEquals(viewModel.getCoordinate1X(), "");
+    public void byDefaultCoordinate1YisEmptyString() {
         assertEquals(viewModel.getCoordinate1Y(), "");
+    }
+
+    @Test
+    public void byDefaultCoordinate1ZisEmptyString() {
         assertEquals(viewModel.getCoordinate1Z(), "");
+    }
+
+    @Test
+    public void byDefaultCoordinate2XisEmptyString() {
         assertEquals(viewModel.getCoordinate2X(), "");
+    }
+
+    @Test
+    public void byDefaultCoordinate2YisEmptyString() {
         assertEquals(viewModel.getCoordinate2Y(), "");
+    }
+
+    @Test
+    public void byDefaultCoordinate2ZisEmptyString() {
         assertEquals(viewModel.getCoordinate2Z(), "");
+    }
+
+    @Test
+    public void byDefaultCoordinate3XisEmptyString() {
         assertEquals(viewModel.getCoordinate3X(), "");
+    }
+
+    @Test
+    public void byDefaultCoordinate3YisEmptyString() {
         assertEquals(viewModel.getCoordinate3Y(), "");
+    }
+
+    @Test
+    public void byDefaultCoordinate3ZisEmptyString() {
         assertEquals(viewModel.getCoordinate3Z(), "");
-        assertEquals(viewModel.getValueToCalculate(), ValuesToCalculate.MEDIANS);
+    }
+
+    @Test
+    public void byDefaultResultIsZero() {
         assertEquals(viewModel.getResult(), "0.0");
+    }
+
+    @Test
+    public void byDefaultValueToCalculateIsMEDIANS() {
+        assertEquals(viewModel.getValueToCalculate(), ValuesToCalculate.MEDIANS.toString());
     }
 
     @Test
@@ -62,21 +104,15 @@ public class TriangleViewModelTests {
     @Test
     public void computeExampleIsFinishedWithRightStatus() throws Exception {
         setExampleValues();
-        viewModel.checkInput();
         viewModel.compute();
         assertEquals(Status.SUCCESS, viewModel.getStatus());
     }
 
     @Test
-    public void whenEnterCoordinatesCalculateButtonIsEnabled() {
-        viewModel.setCoordinate1X("5");
+    public void whenAllFieldsAreCompletedCorrectlyButtonIsEnabled() {
+        setExampleValues();
+        viewModel.checkInput();
         assertTrue(viewModel.isCalculateButtonEnabled());
-    }
-
-    @Test
-    public void whenNotAllFieldsAreCompletedStatusIsWaiting() {
-        viewModel.setCoordinate1X("4");
-        assertEquals(Status.WAITING, viewModel.getStatus());
     }
 
     @Test
@@ -84,10 +120,5 @@ public class TriangleViewModelTests {
         viewModel.setCoordinate1X("Ooo");
         viewModel.checkInput();
         assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
-    }
-
-    @Test
-    public void whenFieldsAreEmptyStatusIsWaiting() {
-        assertEquals(Status.WAITING, viewModel.getStatus());
     }
 }

@@ -51,7 +51,7 @@ public class TriangleCorrectnessTests {
 
     @Test
     public void canFindCorrectMedian() throws Exception {
-        double trueMedian = 7.575757;
+        double trueMedian = 8.0;
         List<Double> resultMedians = triangle.getMedians();
         double resultMedian = resultMedians.get(0);
         assertEquals(trueMedian, resultMedian, DELTA);
@@ -59,7 +59,7 @@ public class TriangleCorrectnessTests {
 
     @Test
     public void canFindCorrectAltitude() throws Exception {
-        double trueAltitude = 7.253279;
+        double trueAltitude = 7.0;
         List<Double> resultAltitudes = triangle.getAltitudes();
         double resultAltitude = resultAltitudes.get(0);
         assertEquals(trueAltitude, resultAltitude, DELTA);
@@ -67,7 +67,7 @@ public class TriangleCorrectnessTests {
 
     @Test
     public void canFindCorrectBisectrix() throws Exception {
-        double trueBisectrix = 4.282380;
+        double trueBisectrix = 4.0;
         List<Double> resultBisectrices = triangle.getBisectrices();
         double resultBisectrix = resultBisectrices.get(2);
         assertEquals(trueBisectrix, resultBisectrix, DELTA);
@@ -75,7 +75,7 @@ public class TriangleCorrectnessTests {
 
     @Test
     public void canFindCorrectAngle() throws Exception {
-        double trueAngle = 1.667918;
+        double trueAngle = 2.0;
         List<Double> resultAngles = triangle.getAngles();
         double resultAngle = resultAngles.get(2);
         assertEquals(trueAngle, resultAngle, DELTA);

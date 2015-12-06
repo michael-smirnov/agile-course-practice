@@ -1,11 +1,16 @@
 package ru.unn.agile.Triangle;
 
+import ru.unn.agile.TriangleViewModel.TriangleViewModel;
+import ru.unn.agile.TriangleViewModel.ValuesToCalculate;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-public final class Triangle {
-    private JPanel mainPanel;
+public final class TriangleView {
+    private JPanel main;
     private JTextField point1X;
     private JTextField point1Y;
     private JTextField point1Z;
@@ -15,47 +20,69 @@ public final class Triangle {
     private JTextField point3X;
     private JTextField point3Y;
     private JTextField point3Z;
-    private JComboBox valueToCalculate;
-    private JButton calculateButton;
+    private JComboBox<ValuesToCalculate> valueToCalculate;
+    private JButton calculate;
     private JTextField result;
     private JTextField status;
 
     private final TriangleViewModel viewModel = new TriangleViewModel();
 
-    private Triangle() {
-
-        calculateButton.addActionListener(new ActionListener() {
+    private TriangleView() {
+        backBind();
+        loadListOfValues();
+        calculate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent actionEvent) {
-                bind();
+                backBind();
                 try {
                     viewModel.compute();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                backBind();
+                bind();
             }
         });
 
         valueToCalculate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                bind();
                 backBind();
+                bind();
             }
         });
+        KeyAdapter keyListener = new KeyAdapter() {
+            public void keyReleased(final KeyEvent e) {
+                backBind();
+                viewModel.checkInput();
+                bind();
+            }
+        };
+        point1X.addKeyListener(keyListener);
+        point1Y.addKeyListener(keyListener);
+        point1Z.addKeyListener(keyListener);
+        point2X.addKeyListener(keyListener);
+        point2Y.addKeyListener(keyListener);
+        point2Z.addKeyListener(keyListener);
+        point3X.addKeyListener(keyListener);
+        point3Y.addKeyListener(keyListener);
+        point3Z.addKeyListener(keyListener);
+        bind();
+    }
+
+    private void loadListOfValues() {
+        ValuesToCalculate[] values = ValuesToCalculate.values();
+        valueToCalculate.setModel(new JComboBox<>(values).getModel());
     }
 
     public static void main(final String[] args) {
-        JFrame frame = new JFrame("Triangle");
-        frame.setContentPane(new Triangle().mainPanel);
+        JFrame frame = new JFrame("TriangleView");
+        frame.setContentPane(new TriangleView().main);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
-    private void bind() {
-        viewModel.setStatus(status.getText());
+    private void backBind() {
         viewModel.setCoordinate1X(point1X.getText());
         viewModel.setCoordinate1Y(point1Y.getText());
         viewModel.setCoordinate1Z(point1Z.getText());
@@ -65,10 +92,9 @@ public final class Triangle {
         viewModel.setCoordinate3X(point3X.getText());
         viewModel.setCoordinate3Y(point3Y.getText());
         viewModel.setCoordinate3Z(point3Z.getText());
-        viewModel.setResult(result.getText());
     }
 
-    private void backBind() {
+    private void bind() {
         status.setText(viewModel.getStatus());
         point1X.setText(viewModel.getCoordinate1X());
         point1Y.setText(viewModel.getCoordinate1Y());
@@ -79,6 +105,8 @@ public final class Triangle {
         point3X.setText(viewModel.getCoordinate3X());
         point3Y.setText(viewModel.getCoordinate3Y());
         point3Z.setText(viewModel.getCoordinate3Z());
+        calculate.setEnabled(viewModel.isCalculateButtonEnabled());
+        valueToCalculate.setSelectedItem(ValuesToCalculate.MEDIANS);
         result.setText(viewModel.getResult());
     }
 }

@@ -17,13 +17,13 @@ public class Triangle {
                     final List<Double> coordinatesOfPoint2,
                     final List<Double> coordinatesOfPoint3,
                     final int inputDimension) throws Exception {
-        if (!hasEqualDimensions(coordinatesOfPoint1, coordinatesOfPoint1,
+        if (!hasEqualDimensions(coordinatesOfPoint1, coordinatesOfPoint2,
                 coordinatesOfPoint3, inputDimension)) {
-            throw new Exception("Points have different dimensions!");
+            throw new Exception(TriangleExceptions.DIFFERENT_DIMENSIONS.toString());
         }
         if (!isPossibleToBuildNondegenerateTriangle(coordinatesOfPoint1,
                 coordinatesOfPoint2, coordinatesOfPoint3)) {
-            throw new Exception("Triangle is degenerate!");
+            throw new Exception(TriangleExceptions.DEGENERATE_TRIANGLE.toString());
         }
         this.coordinatesOfPoint1 = coordinatesOfPoint1;
         this.coordinatesOfPoint2 = coordinatesOfPoint2;
@@ -42,18 +42,18 @@ public class Triangle {
         return coordinatesOfPoint3;
     }
 
-    private boolean hasEqualDimensions(final List<Double> coordinatesOfPoint1,
-                                       final List<Double> coordinatesOfPoint2,
-                                       final List<Double> coordinatesOfPoint3,
-                                       final int dimension) {
+    public static boolean hasEqualDimensions(final List<Double> coordinatesOfPoint1,
+                                             final List<Double> coordinatesOfPoint2,
+                                             final List<Double> coordinatesOfPoint3,
+                                             final int dimension) {
         return coordinatesOfPoint1.size() == dimension
                 && coordinatesOfPoint2.size() == dimension
                 && coordinatesOfPoint3.size() == dimension;
     }
 
-    public boolean isPossibleToBuildNondegenerateTriangle(final List<Double> coordinatesOfPoint1,
-                                                          final List<Double> coordinatesOfPoint2,
-                                                          final List<Double> coordinatesOfPoint3)
+    public static boolean isPossibleToBuildNondegenerateTriangle(
+            final List<Double> coordinatesOfPoint1, final List<Double> coordinatesOfPoint2,
+            final List<Double> coordinatesOfPoint3)
             throws Exception {
         double lengthOfEdge1 = getLength(coordinatesOfPoint1, coordinatesOfPoint2);
         double lengthOfEdge2 = getLength(coordinatesOfPoint2, coordinatesOfPoint3);
@@ -63,12 +63,12 @@ public class Triangle {
                 && lengthOfEdge3 < lengthOfEdge1 + lengthOfEdge2;
     }
 
-    public double getLength(final List<Double> coordinatesOfPoint1,
-                            final List<Double> coordinatesOfPoint2) throws Exception {
+    public static double getLength(final List<Double> coordinatesOfPoint1,
+                                   final List<Double> coordinatesOfPoint2) throws Exception {
         double sum = 0.0;
         for (int i = 0; i < coordinatesOfPoint1.size(); i++) {
             if (sum > Double.MAX_VALUE) {
-                throw new Exception("Overflow when counting length!");
+                throw new Exception(TriangleExceptions.LENGTH_OVERFLOW.toString());
             }
             sum += pow(coordinatesOfPoint1.get(i) - coordinatesOfPoint2.get(i), 2);
         }
@@ -85,67 +85,86 @@ public class Triangle {
     public double getPerimeter() throws Exception {
         List<Double> lengths = getLengthsOfEdges();
         if (lengths.get(0) + lengths.get(1) > Double.MAX_VALUE - lengths.get(2)) {
-            throw new Exception("Overflow when counting perimeter!");
+            throw new Exception(TriangleExceptions.PERIMETER_OVERFLOW.toString());
         }
             return lengths.get(0) + lengths.get(1) + lengths.get(2);
     }
 
     public double getSquare() throws Exception {
         List<Double> lengths = getLengthsOfEdges();
-        double halfPerimeter = this.getPerimeter() / 2;
-        if (halfPerimeter * (halfPerimeter - lengths.get(0))
-                * (halfPerimeter - lengths.get(1))
-                * (halfPerimeter - lengths.get(2)) > Double.MAX_VALUE) {
-            throw new Exception("Overflow when counting square!");
+        double halfPerimeter = getPerimeter() * THE_HALF;
+        double interimResult = getInterimSquareValues(halfPerimeter, lengths.get(0),
+                lengths.get(1), lengths.get(2));
+        if (interimResult > Double.MAX_VALUE) {
+            throw new Exception(TriangleExceptions.SQUARE_OVERFLOW.toString());
         }
-        return sqrt(halfPerimeter * (halfPerimeter - lengths.get(0))
-                * (halfPerimeter - lengths.get(1)) * (halfPerimeter - lengths.get(2)));
+        return sqrt(interimResult);
+    }
+
+    private double getInterimSquareValues(final double halfPerimeter, final double length1,
+                                          final double length2, final double length3) {
+        return halfPerimeter * (halfPerimeter - length1)
+                * (halfPerimeter - length2) * (halfPerimeter - length3);
     }
 
     public List<Double> getMedians() throws Exception {
         List<Double> lengths = getLengthsOfEdges();
-        double median1 = THE_HALF * sqrt(2 * pow(lengths.get(1), 2)
-                + 2 * pow(lengths.get(2), 2) - pow(lengths.get(0), 2));
-        double median2 = THE_HALF * sqrt(2 * pow(lengths.get(0), 2)
-                + 2 * pow(lengths.get(2), 2) - pow(lengths.get(1), 2));
-        double median3 = THE_HALF * sqrt(2 * pow(lengths.get(0), 2)
-                + 2 * pow(lengths.get(1), 2) - pow(lengths.get(2), 2));
+        double median1 = getInterimMediansValues(lengths.get(0),
+                lengths.get(1), lengths.get(2));
+        double median2 = getInterimMediansValues(lengths.get(1),
+                lengths.get(0), lengths.get(2));
+        double median3 = getInterimMediansValues(lengths.get(2),
+                lengths.get(0), lengths.get(1));
         return Arrays.asList(median1, median2, median3);
+    }
+
+    private double getInterimMediansValues(final double contraryEdge,
+                                           final double length1, final double length2) {
+        return Math.round(THE_HALF * sqrt(2 * pow(length1, 2)
+                + 2 * pow(length2, 2) - pow(contraryEdge, 2)));
     }
 
     public List<Double> getAltitudes() throws Exception {
         List<Double> lengths = getLengthsOfEdges();
-        double altitude1 = 2 * getPerimeter() / lengths.get(0);
-        double altitude2 = 2 * getPerimeter() / lengths.get(1);
-        double altitude3 = 2 * getPerimeter() / lengths.get(2);
+        double altitude1 = getInterimAltitudesValues(lengths.get(0));
+        double altitude2 = getInterimAltitudesValues(lengths.get(1));
+        double altitude3 = getInterimAltitudesValues(lengths.get(2));
         return Arrays.asList(altitude1, altitude2, altitude3);
+    }
+
+    private double getInterimAltitudesValues(final double length) throws Exception {
+        return Math.round(2 * getPerimeter() / length);
     }
 
     public List<Double> getBisectrices() throws Exception {
         List<Double> lengths = getLengthsOfEdges();
-        double bisectrix1 = sqrt(lengths.get(1) * lengths.get(2) * this.getPerimeter()
-                * (lengths.get(1) + lengths.get(2) - lengths.get(0)))
-                / (lengths.get(1) + lengths.get(2));
-        double bisectrix2 = sqrt(lengths.get(0) * lengths.get(2) * this.getPerimeter()
-                * (lengths.get(0) + lengths.get(2) - lengths.get(1)))
-                / (lengths.get(0) + lengths.get(2));
-        double bisectrix3 = sqrt(lengths.get(0) * lengths.get(1) * this.getPerimeter()
-                * (lengths.get(0) + lengths.get(1) - lengths.get(2)))
-                / (lengths.get(0) + lengths.get(1));
+        double bisectrix1 = getInterimBisectricesValues(lengths.get(0),
+                lengths.get(1), lengths.get(2));
+        double bisectrix2 = getInterimBisectricesValues(lengths.get(1),
+                lengths.get(0), lengths.get(2));
+        double bisectrix3 = getInterimBisectricesValues(lengths.get(2),
+                lengths.get(0), lengths.get(1));
         return Arrays.asList(bisectrix1, bisectrix2, bisectrix3);
+    }
+
+    private double getInterimBisectricesValues(final double contraryEdge, final double length1,
+                                               final double length2) throws Exception {
+        return Math.round(sqrt(length1 * length2 * getPerimeter()
+                * (length1 + length2 - contraryEdge))
+                / (length1 + length2));
     }
 
     public List<Double> getAngles() throws Exception {
         List<Double> lengths = getLengthsOfEdges();
-        double angle1 = acos((pow(lengths.get(1), 2) + pow(lengths.get(2), 2)
-                - pow(lengths.get(0), 2))
-                / (2 * lengths.get(1) * lengths.get(2)));
-        double angle2 = acos((pow(lengths.get(0), 2) + pow(lengths.get(2), 2)
-                - pow(lengths.get(1), 2))
-                / (2 * lengths.get(0) * lengths.get(2)));
-        double angle3 = acos((pow(lengths.get(0), 2) + pow(lengths.get(1), 2)
-                - pow(lengths.get(2), 2))
-                / (2 * lengths.get(0) * lengths.get(1)));
+        double angle1 = getInterimAnglesValues(lengths.get(0), lengths.get(1), lengths.get(2));
+        double angle2 = getInterimAnglesValues(lengths.get(1), lengths.get(0), lengths.get(2));
+        double angle3 = getInterimAnglesValues(lengths.get(2), lengths.get(0), lengths.get(1));
         return Arrays.asList(angle1, angle2, angle3);
+    }
+
+    private double getInterimAnglesValues(final double contraryEdge, final double length1,
+                                               final double length2) throws Exception {
+        return Math.round(acos((pow(length1, 2) + pow(length2, 2) - pow(contraryEdge, 2))
+                / (2 * length1 * length2)));
     }
 }
