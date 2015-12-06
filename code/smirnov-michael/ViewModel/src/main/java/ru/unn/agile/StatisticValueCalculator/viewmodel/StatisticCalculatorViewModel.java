@@ -181,7 +181,7 @@ public class StatisticCalculatorViewModel {
         Integer numberOfAddValue = statisticData.size() + 1;
         statisticData.add(new Pair<>(numberOfAddValue.toString(), inputRow.getValue()));
 
-        logger.addMessage("[New value to statistic data is added]");
+        logger.addMessage("[New value to statistic data is added]: " + inputRow.get());
         calculationIsDisabled.set(false);
     }
     public void makeRowInDataNotSelected() {
@@ -192,12 +192,19 @@ public class StatisticCalculatorViewModel {
         if (rowNumber >= 0 && rowNumber < statisticData.size()) {
             selectedRowInStatisticData = rowNumber;
             deleteDataRowIsDisabled.set(false);
+
+            logger.addMessage(String.format("[Selected row in data table]: number %1$d, value %2$s",
+                    rowNumber, statisticData.get(rowNumber - 1).getValue()));
         } else {
             makeRowInDataNotSelected();
         }
     }
     public void deleteSelectedRowInStatisticData() {
         if (!deleteDataRowIsDisabled.get()) {
+            logger.addMessage(String.format("[Deleted row in data table]: number %1$d, value %2$s",
+                    selectedRowInStatisticData,
+                    statisticData.get(selectedRowInStatisticData - 1).getValue()));
+
             statisticData.remove(selectedRowInStatisticData);
             calculationIsDisabled.set(statisticData.isEmpty());
             reformIndexesInStatisticData();
@@ -206,6 +213,8 @@ public class StatisticCalculatorViewModel {
     public void clearStatisticData() {
         statisticData.clear();
         calculationIsDisabled.set(true);
+
+        logger.addMessage("[Data table is cleared]");
     }
     public void calculateSelectedStatistic() {
         ArrayList<Double> data = new ArrayList<>();
@@ -246,6 +255,9 @@ public class StatisticCalculatorViewModel {
         Double statisticValue = calculator.calculate(data);
         nameOfCalculatedStatistic.set(selectedStatistic.get().toString());
         valueOfCalculatedStatistic.set(statisticValue.toString());
+
+        logger.addMessage(String.format("[Statistic value is calculated]: %1$s, result = %2$s",
+                nameOfCalculatedStatistic.get(), valueOfCalculatedStatistic.get()));
     }
     public void onInputFieldFocusChanged(Boolean previousFocusStatus, Boolean currentFocusStatus) {
         if(!previousFocusStatus && currentFocusStatus) {

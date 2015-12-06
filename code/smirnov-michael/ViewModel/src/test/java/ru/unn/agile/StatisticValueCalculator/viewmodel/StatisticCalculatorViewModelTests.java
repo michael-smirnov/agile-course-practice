@@ -326,7 +326,7 @@ public class StatisticCalculatorViewModelTests {
 
         viewModel.addRowToStatisticData();
 
-        assertEquals(viewModel.getLog().get(0), "[New value to statistic data is added]");
+        assertEquals(viewModel.getLog().get(0), "[New value to statistic data is added]: 11");
     }
 
     @Test
@@ -334,6 +334,46 @@ public class StatisticCalculatorViewModelTests {
         viewModel.selectedStatisticProperty().set(StatisticValue.VARIANCE);
 
         assertEquals(viewModel.getLog().get(0), "[Selected statistic]: VARIANCE");
+    }
+
+    @Test
+    public void logContainsThatSecondRowInDataTableSelectedAfterItHasBeenSelected() {
+        viewModel.selectRowInStatisticData(2);
+
+        assertEquals(viewModel.getLog().get(0),
+                "[Selected row in data table]: number 2, value 2.1");
+    }
+
+    @Test
+    public void statisticValueIsNotLoggedWhenNotChanged() {
+        viewModel.selectedStatisticProperty().set(StatisticValue.PROBABILITY);
+        viewModel.selectedStatisticProperty().set(StatisticValue.PROBABILITY);
+
+        assertEquals(viewModel.getLog().size(), 1);
+    }
+
+    @Test
+    public void deletingRowInTableIsLogged() {
+        viewModel.selectRowInStatisticData(3);
+        viewModel.deleteSelectedRowInStatisticData();
+
+        assertEquals(viewModel.getLog().get(1),
+                "[Deleted row in data table]: number 3, value 3.2");
+    }
+
+    @Test
+    public void clearingStatisticDataIsLogged() {
+        viewModel.clearStatisticData();
+
+        assertEquals(viewModel.getLog().get(0), "[Data table is cleared]");
+    }
+
+    @Test
+    public void calculatingEnumerationValueIsLogged() {
+        viewModel.calculateSelectedStatistic();
+
+        assertEquals(viewModel.getLog().get(0), "[Statistic value is calculated]: Enumeration, " +
+                "result = 0.8");
     }
 
     private void setUpDataTable() {
