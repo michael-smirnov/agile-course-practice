@@ -92,6 +92,7 @@ public final class TriangleView {
         viewModel.setCoordinate3X(point3X.getText());
         viewModel.setCoordinate3Y(point3Y.getText());
         viewModel.setCoordinate3Z(point3Z.getText());
+        viewModel.setValueToCalculate((ValuesToCalculate) valueToCalculate.getSelectedItem());
     }
 
     private void bind() {
@@ -106,7 +107,7 @@ public final class TriangleView {
         point3Y.setText(viewModel.getCoordinate3Y());
         point3Z.setText(viewModel.getCoordinate3Z());
         calculate.setEnabled(viewModel.isCalculateButtonEnabled());
-        valueToCalculate.setSelectedItem(ValuesToCalculate.MEDIANS);
+        valueToCalculate.setSelectedItem(viewModel.getValueToCalculate());
         result.setText(viewModel.getResult());
     }
 }

@@ -19,7 +19,7 @@ public class TriangleViewModel {
     private String point3X;
     private String point3Y;
     private String point3Z;
-    private String valueToCalculate;
+    private ValuesToCalculate valueToCalculate;
     private String result;
     private static final int DIMENSION = 3;
 
@@ -35,7 +35,7 @@ public class TriangleViewModel {
         point3X = "";
         point3Y = "";
         point3Z = "";
-        valueToCalculate = ValuesToCalculate.MEDIANS.toString();
+        valueToCalculate = ValuesToCalculate.MEDIANS;
         result = "0.0";
     }
 
@@ -79,16 +79,8 @@ public class TriangleViewModel {
         this.point3Z = point3Z;
     }
 
-    public void setValueToCalculate(final String valueToCalculate) {
+    public void setValueToCalculate(final ValuesToCalculate valueToCalculate) {
         this.valueToCalculate = valueToCalculate;
-    }
-
-    public void setStatus(final String status) {
-        this.status = status;
-    }
-
-    public void setResult(final String result) {
-        this.result = result;
     }
 
     public String getStatus() {
@@ -131,7 +123,7 @@ public class TriangleViewModel {
         return point3Z;
     }
 
-    public String getValueToCalculate() {
+    public ValuesToCalculate getValueToCalculate() {
         return valueToCalculate;
     }
 
@@ -169,6 +161,8 @@ public class TriangleViewModel {
 
     private boolean isCoordinateOK(final String coordinate) {
         if (coordinate.isEmpty()) {
+            status = Status.WAITING;
+            isCalculateButtonEnabled = false;
             return false;
         } else {
             try {
@@ -182,7 +176,7 @@ public class TriangleViewModel {
     }
 
     private boolean valueToCalculateIsChosen() {
-        if (valueToCalculate.isEmpty()) {
+        if (valueToCalculate.toString().isEmpty()) {
             return false;
         }
         return true;
@@ -197,8 +191,7 @@ public class TriangleViewModel {
         if (checkInput()) {
             Triangle triangle = setTriangle();
             cleanOutput();
-            ValuesToCalculate option = ValuesToCalculate.getOption(valueToCalculate);
-            switch (option) {
+            switch (valueToCalculate) {
                 case PERIMETER:
                     try {
                         resultDouble = triangle.getPerimeter();

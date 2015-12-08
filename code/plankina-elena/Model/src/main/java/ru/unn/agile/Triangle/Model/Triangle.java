@@ -76,9 +76,9 @@ public class Triangle {
     }
 
     public List<Double> getLengthsOfEdges() throws Exception {
-        double length1 = this.getLength(this.coordinatesOfPoint1, this.coordinatesOfPoint2);
-        double length2 = this.getLength(this.coordinatesOfPoint2, this.coordinatesOfPoint3);
-        double length3 = this.getLength(this.coordinatesOfPoint3, this.coordinatesOfPoint1);
+        double length1 = getLength(coordinatesOfPoint1, coordinatesOfPoint2);
+        double length2 = getLength(coordinatesOfPoint2, coordinatesOfPoint3);
+        double length3 = getLength(coordinatesOfPoint3, coordinatesOfPoint1);
         return Arrays.asList(length1, length2, length3);
     }
 

@@ -27,7 +27,7 @@ public class TriangleViewModelTests {
         viewModel.setCoordinate3X("-0.5");
         viewModel.setCoordinate3Y("1.5");
         viewModel.setCoordinate3Z("1.5");
-        viewModel.setValueToCalculate(ValuesToCalculate.MEDIANS.toString());
+        viewModel.setValueToCalculate(ValuesToCalculate.MEDIANS);
     }
     @Test
     public void byDefaultCoordinate1XisEmptyString() {
@@ -81,7 +81,7 @@ public class TriangleViewModelTests {
 
     @Test
     public void byDefaultValueToCalculateIsMEDIANS() {
-        assertEquals(viewModel.getValueToCalculate(), ValuesToCalculate.MEDIANS.toString());
+        assertEquals(viewModel.getValueToCalculate(), ValuesToCalculate.MEDIANS);
     }
 
     @Test
