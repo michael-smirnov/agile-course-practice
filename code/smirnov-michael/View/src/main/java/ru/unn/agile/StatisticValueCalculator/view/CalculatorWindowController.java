@@ -12,9 +12,6 @@ import javafx.util.Pair;
 import ru.unn.agile.StatisticValueCalculator.viewmodel.StatisticValue;
 import ru.unn.agile.StatisticValueCalculator.viewmodel.StatisticCalculatorViewModel;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-
 public class CalculatorWindowController {
     @FXML
     private TableColumn<Pair<String, String>, String> columnNumber;
@@ -54,11 +51,11 @@ public class CalculatorWindowController {
 
     @FXML
     private void initialize() {
-        final ChangeListener<Boolean> inputFieldFocusChangeListener = new ChangeListener<Boolean>(){
-
+        final ChangeListener<Boolean> inputFieldFocusChangeListener =
+                new ChangeListener<Boolean>() {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable,
-                                Boolean oldValue, Boolean newValue) {
+            public void changed(final ObservableValue<? extends Boolean> observable,
+                                final Boolean oldValue, final Boolean newValue) {
                 viewModel.onInputFieldFocusChanged(oldValue, newValue);
             }
         };

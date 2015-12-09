@@ -3,13 +3,11 @@ package ru.unn.agile.StatisticValueCalculator.viewmodel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -372,8 +370,8 @@ public class StatisticCalculatorViewModelTests {
     public void calculatingEnumerationValueIsLogged() {
         viewModel.calculateSelectedStatistic();
 
-        assertEquals(viewModel.getLog().get(0), "[Statistic value is calculated]: Enumeration, " +
-                "result = 0.8");
+        assertEquals(viewModel.getLog().get(0), "[Statistic value is calculated]: Enumeration, "
+                + "result = 0.8");
     }
 
     private void setUpDataTable() {

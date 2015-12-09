@@ -173,7 +173,7 @@ public class StatisticCalculatorViewModel {
             calculationIsDisabled.set(true);
         }
     }
-    public void setLogger(ILoggerOfStatisticCalculator logger) {
+    public void setLogger(final ILoggerOfStatisticCalculator logger) {
         this.logger = logger;
     }
 
@@ -259,17 +259,18 @@ public class StatisticCalculatorViewModel {
         logger.addMessage(String.format("[Statistic value is calculated]: %1$s, result = %2$s",
                 nameOfCalculatedStatistic.get(), valueOfCalculatedStatistic.get()));
     }
-    public void onInputFieldFocusChanged(Boolean previousFocusStatus, Boolean currentFocusStatus) {
-        if(!previousFocusStatus && currentFocusStatus) {
+    public void onInputFieldFocusChanged(final Boolean previousFocusStatus,
+                                         final Boolean currentFocusStatus) {
+        if (!previousFocusStatus && currentFocusStatus) {
             return;
         }
-        if(valueChangeListener.isChanged()) {
+        if (valueChangeListener.isChanged()) {
             logger.addMessage("[Changed input row value]: " + inputRow.get());
             valueChangeListener.resetChangedState();
         }
-        if(parameterChangeListener.isChanged()) {
-            logger.addMessage("[Changed input parameter value]: " +
-                    parameterNameOfSelectedStatistic.get());
+        if (parameterChangeListener.isChanged()) {
+            logger.addMessage("[Changed input parameter value]: "
+                    + parameterNameOfSelectedStatistic.get());
             parameterChangeListener.resetChangedState();
         }
     }
@@ -286,7 +287,7 @@ public class StatisticCalculatorViewModel {
         private String currentAddValue = "";
         private String previousAddValue = "";
 
-        public void changeValue(String newValue) {
+        public void changeValue(final String newValue) {
             previousAddValue = currentAddValue;
             currentAddValue = newValue;
         }
@@ -298,7 +299,8 @@ public class StatisticCalculatorViewModel {
         }
     }
 
-    private class AddValueChangeListener extends ValueChangedListener implements ChangeListener<String> {
+    private class AddValueChangeListener extends ValueChangedListener
+            implements ChangeListener<String> {
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
@@ -327,7 +329,7 @@ public class StatisticCalculatorViewModel {
         public void changed(final ObservableValue<? extends StatisticValue> observable,
                             final StatisticValue oldValue, final StatisticValue newValue) {
             super.changeValue(newValue.name());
-            if(super.isChanged()) {
+            if (super.isChanged()) {
                 logger.addMessage("[Selected statistic]: " + newValue.name());
                 super.resetChangedState();
             }
