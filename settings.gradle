@@ -117,6 +117,8 @@ include "code/kazanbaev-dmitry/View"
 project(":code/kazanbaev-dmitry/View").name = "kazanbaev-dmitry-View"
 include "code/kazanbaev-dmitry/ViewModel"
 project(":code/kazanbaev-dmitry/ViewModel").name = "kazanbaev-dmitry-ViewModel"
+include "code/kazanbaev-dmitry/Infrastructure"
+project(":code/kazanbaev-dmitry/Infrastructure").name = "kazanbaev-dmitry-Infrastructure"
 
 // Khanova Tatyana
 // Kochanova Kseniya
