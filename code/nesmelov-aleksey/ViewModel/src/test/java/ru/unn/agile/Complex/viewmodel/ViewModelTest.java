@@ -1,14 +1,16 @@
 package test.java.ru.unn.agile.Complex.viewmodel;
 
+import ru.unn.agile.Complex.model.Complex;
 import ru.unn.agile.Complex.viewmodel.FakeLogger;
+import ru.unn.agile.Complex.viewmodel.LogMessage;
 import ru.unn.agile.Complex.viewmodel.Operation;
 import ru.unn.agile.Complex.viewmodel.ViewModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 public class ViewModelTest {
     private ViewModel viewModel;
@@ -244,6 +246,168 @@ public class ViewModelTest {
         viewModel.calculate();
 
         assertEquals("Divider can't be zero!", viewModel.getErrorsProperty().get());
+    }
+
+    @Test(expected = Exception.class)
+    public void exceptionIfLoggerInViewModelConstructorIsNull() {
+        new ViewModel(null);
+    }
+
+    @Test
+    public void loggerIsEmptyWhenCreateViewModel() {
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void loggerIsNotEmptyAfterCalculate() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void loggerHasCorrectLogMessageAfterCalculate() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessage.PRESS_CALCULATE + ".*"));
+    }
+
+    @Test
+    public void loggerHasCorrectArgumentsAfterCalculate() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(
+                  ".*" + viewModel.getFirstRealProperty().get()
+                + ".*" + viewModel.getFirstImaginaryProperty().get()
+                + ".*" + viewModel.getSecondRealProperty().get()
+                + ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
+    }
+
+    @Test
+    public void loggerHasResultAfterCalculate() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + "Result was: " + ".*"));
+    }
+
+    @Test
+    public void loggerHasOperationTypeAfterCalculate() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + viewModel.getOperationProperty().get() + ".*"));
+    }
+
+    @Test
+    public void loggerHasCorrectResultMessageAfterZeroDivider() {
+        setComplexNumberAndZero();
+        viewModel.getOperationProperty().set(Operation.DIVIDE);
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + "There was not result because of zero divider" + ".*"));
+    }
+
+    @Test
+    public void loggerHasCorrectMessageAfterCalculationNumbers() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        String message = "Calculate pressed. ";
+        message +="Arguments was: Re1 = " + viewModel.getFirstRealProperty().get()
+                + " Im1 = " + viewModel.getFirstImaginaryProperty().get()
+                + " Re2 = " + viewModel.getSecondRealProperty().get()
+                + " Im2 = " + viewModel.getSecondImaginaryProperty().get() + ". "
+                + "Operation was: " + viewModel.getOperationProperty().get().toString() + ". "
+                + "Result was: " + viewModel.getResultProperty().get() + ".";
+        assertEquals(message, viewModel.getLog().get(0));
+    }
+
+    @Test
+    public void canPutSeveralMessagesInLog() {
+        for (int i = 0; i < 10; i ++) {
+            viewModel.calculate();
+        }
+
+        assertEquals(10, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logShowThatOperationIsChanged() {
+        viewModel.onOperationChanged(Operation.ADD, Operation.DIVIDE);
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + Operation.DIVIDE + ".*"));
+    }
+
+    @Test
+    public void logCanNotShowThatOperationIsChangedWhenItIsNotChanged() {
+        viewModel.onOperationChanged(Operation.ADD, Operation.ADD);
+
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void doLogWhenChangedInputValue() {
+        viewModel.getFirstRealProperty().set("20");
+        viewModel.onInputFocusChanged();
+
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void doNotLogTwiceWhenInputIsSame() {
+        viewModel.getFirstRealProperty().set("999");
+        viewModel.onInputFocusChanged();
+        viewModel.getFirstRealProperty().set("999");
+        viewModel.onInputFocusChanged();
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logContainLogMessageWhenFocusChanged() {
+        viewModel.getFirstRealProperty().set("155");
+        viewModel.onInputFocusChanged();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessage.UPDATE_INPUT + ".*"));
+    }
+
+    @Test
+    public void logContainNumbersWhenFocusChanged() {
+        viewModel.getFirstRealProperty().set("155");
+        viewModel.onInputFocusChanged();
+
+        assertTrue(viewModel.getLog().get(0).matches(
+                       ".*" + viewModel.getFirstRealProperty().get()
+                        + ".*" + viewModel.getFirstImaginaryProperty().get()
+                        + ".*" + viewModel.getSecondRealProperty().get()
+                        + ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
+    }
+
+    @Test
+    public void logContainErrorsMessageWhenFormatIsInvalid() {
+        viewModel.getFirstRealProperty().set("abc");
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessage.GET_ERROR
+                + viewModel.getErrorsProperty().get().toString()+ ".*"));
+    }
+
+    @Test
+    public void doNotLogErrorTwiceWhenWhenFormatIsInvalid() {
+        viewModel.getFirstRealProperty().set("abc");
+        viewModel.getFirstRealProperty().set("cba");
+
+        assertEquals(1, viewModel.getLog().size());
     }
 
     private void setPositiveData() {
