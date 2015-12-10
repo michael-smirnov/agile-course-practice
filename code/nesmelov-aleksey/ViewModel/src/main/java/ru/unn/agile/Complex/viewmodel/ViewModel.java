@@ -46,8 +46,25 @@ public class ViewModel {
             add(secondImaginary);
         }
     };
+    private ILogger logger = null;
+
+    public ViewModel(ILogger logger) {
+        setDefaultParameters();
+        setLogger(logger);
+    }
 
     public ViewModel() {
+        setDefaultParameters();
+    }
+
+    public void setLogger(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger can't be null");
+        }
+        this.logger = logger;
+    }
+
+    private void setDefaultParameters() {
         for (StringProperty field : fields) {
             field.set("0.0");
         }
