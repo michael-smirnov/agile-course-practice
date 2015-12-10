@@ -8,15 +8,15 @@ public enum StatisticValue {
     CENTRAL_MOMENT("Central moment", StatisticParameter.ORDER);
 
     private final String name;
-    private final StatisticParameter parameterName;
+    private final StatisticParameter parameter;
 
     StatisticValue(final String name) {
         this(name, null);
     }
 
-    StatisticValue(final String name, final StatisticParameter parameterName) {
+    StatisticValue(final String name, final StatisticParameter parameter) {
         this.name = name;
-        this.parameterName = parameterName;
+        this.parameter = parameter;
     }
 
     @Override
@@ -24,7 +24,7 @@ public enum StatisticValue {
         return this.name;
     }
 
-    public StatisticParameter getParameterName() {
-        return parameterName;
+    public StatisticParameter getParameter() {
+        return parameter;
     }
 }

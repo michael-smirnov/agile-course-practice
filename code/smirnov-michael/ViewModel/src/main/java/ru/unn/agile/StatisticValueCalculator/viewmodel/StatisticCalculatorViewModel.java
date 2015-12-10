@@ -42,14 +42,15 @@ public class StatisticCalculatorViewModel {
     private final AddStatisticParameterChangeListener parameterChangeListener
             = new AddStatisticParameterChangeListener();
     private final AddValueChangeListener valueChangeListener = new AddValueChangeListener();
-    private final SelectedStatisticListener statisticListener = new SelectedStatisticListener();
 
     private final BooleanProperty addInputRowIsDisabled = new SimpleBooleanProperty(false);
     private final BooleanProperty calculationIsDisabled = new SimpleBooleanProperty(false);
     private final BooleanProperty deleteDataRowIsDisabled = new SimpleBooleanProperty(true);
+    private final StringProperty logText = new SimpleStringProperty();
 
     private int selectedRowInStatisticData = -1;
     private ILoggerOfStatisticCalculator logger;
+    private Boolean dataTableIsReforming = false;
 
     public StatisticCalculatorViewModel() {
         selectedStatistic =
@@ -58,7 +59,7 @@ public class StatisticCalculatorViewModel {
 
         inputRow.addListener(valueChangeListener);
         inputStatisticParameter.addListener(parameterChangeListener);
-        selectedStatistic.addListener(statisticListener);
+        selectedStatistic.addListener(new SelectedStatisticListener());
 
         ArrayList<String> data = new ArrayList<>(Arrays.asList("1.0", "2.1", "3.2",
                 "2.1", "1.0", "-5.4", "2.4", "0.0"));
@@ -111,7 +112,14 @@ public class StatisticCalculatorViewModel {
         return deleteDataRowIsDisabled.get();
     }
     public List<String> getLog() {
+        if (logger == null) {
+            return new ArrayList<>();
+        }
+
         return logger.getLog();
+    }
+    public String getLogText() {
+        return logText.get();
     }
 
     public StringProperty nameOfCalculatedStatisticProperty() {
@@ -150,10 +158,13 @@ public class StatisticCalculatorViewModel {
     public BooleanProperty deleteDataRowIsDisabledProperty() {
         return deleteDataRowIsDisabled;
     }
+    public StringProperty logTextProperty() {
+        return logText;
+    }
 
     public void setSelectedStatistic(final StatisticValue selectedStatisticInfo) {
         selectedStatistic.set(selectedStatisticInfo);
-        StatisticParameter parameterName = selectedStatisticInfo.getParameterName();
+        StatisticParameter parameterName = selectedStatisticInfo.getParameter();
         parameterNameOfSelectedStatistic.set(parameterName);
 
         if (parameterName == null) {
@@ -180,32 +191,43 @@ public class StatisticCalculatorViewModel {
     public void addRowToStatisticData() {
         Integer numberOfAddValue = statisticData.size() + 1;
         statisticData.add(new Pair<>(numberOfAddValue.toString(), inputRow.getValue()));
-
-        logger.addMessage("[New value to statistic data is added]: " + inputRow.get());
         calculationIsDisabled.set(false);
+
+        if (logger != null) {
+            logger.addMessage(LogMessages.newValueToDataTableIsAdded(inputRow.get()));
+            updateLogProperty();
+        }
     }
     public void makeRowInDataNotSelected() {
         selectedRowInStatisticData = -1;
         deleteDataRowIsDisabled.set(true);
     }
     public void selectRowInStatisticData(final Integer rowNumber) {
-        if (rowNumber >= 0 && rowNumber < statisticData.size()) {
+        if (rowNumber > 0 && rowNumber <= statisticData.size()) {
             selectedRowInStatisticData = rowNumber;
             deleteDataRowIsDisabled.set(false);
 
-            logger.addMessage(String.format("[Selected row in data table]: number %1$d, value %2$s",
-                    rowNumber, statisticData.get(rowNumber - 1).getValue()));
+            if (logger != null && !dataTableIsReforming) {
+                logger.addMessage(
+                        LogMessages.rowInDataTableSelected(rowNumber,
+                                statisticData.get(rowNumber - 1).getValue()));
+                updateLogProperty();
+            }
         } else {
             makeRowInDataNotSelected();
         }
     }
     public void deleteSelectedRowInStatisticData() {
         if (!deleteDataRowIsDisabled.get()) {
-            logger.addMessage(String.format("[Deleted row in data table]: number %1$d, value %2$s",
-                    selectedRowInStatisticData,
-                    statisticData.get(selectedRowInStatisticData - 1).getValue()));
+            if (logger != null) {
+                logger.addMessage(
+                        LogMessages.rowInDataTableDeleted(
+                        selectedRowInStatisticData,
+                        statisticData.get(selectedRowInStatisticData - 1).getValue()));
+                updateLogProperty();
+            }
 
-            statisticData.remove(selectedRowInStatisticData);
+            statisticData.remove(selectedRowInStatisticData - 1);
             calculationIsDisabled.set(statisticData.isEmpty());
             reformIndexesInStatisticData();
         }
@@ -214,7 +236,10 @@ public class StatisticCalculatorViewModel {
         statisticData.clear();
         calculationIsDisabled.set(true);
 
-        logger.addMessage("[Data table is cleared]");
+        if (logger != null) {
+            logger.addMessage(LogMessages.dataTableIsCleared());
+            updateLogProperty();
+        }
     }
     public void calculateSelectedStatistic() {
         ArrayList<Double> data = new ArrayList<>();
@@ -256,8 +281,13 @@ public class StatisticCalculatorViewModel {
         nameOfCalculatedStatistic.set(selectedStatistic.get().toString());
         valueOfCalculatedStatistic.set(statisticValue.toString());
 
-        logger.addMessage(String.format("[Statistic value is calculated]: %1$s, result = %2$s",
-                nameOfCalculatedStatistic.get(), valueOfCalculatedStatistic.get()));
+        if (logger != null) {
+            logger.addMessage(LogMessages.statisticValueCalculated(
+                    selectedStatistic.get(),
+                    valueOfCalculatedStatistic.get(),
+                    inputStatisticParameter.get()));
+            updateLogProperty();
+        }
     }
     public void onInputFieldFocusChanged(final Boolean previousFocusStatus,
                                          final Boolean currentFocusStatus) {
@@ -265,22 +295,43 @@ public class StatisticCalculatorViewModel {
             return;
         }
         if (valueChangeListener.isChanged()) {
-            logger.addMessage("[Changed input row value]: " + inputRow.get());
+            if (logger != null) {
+                logger.addMessage(LogMessages.inputRowValueIsSet(inputRow.get()));
+                updateLogProperty();
+            }
             valueChangeListener.resetChangedState();
         }
         if (parameterChangeListener.isChanged()) {
-            logger.addMessage("[Changed input parameter value]: "
-                    + parameterNameOfSelectedStatistic.get());
+            if (logger != null) {
+                logger.addMessage(LogMessages.inputParameterValueIsSet(
+                        parameterNameOfSelectedStatistic.get(), inputStatisticParameter.get()));
+                updateLogProperty();
+            }
             parameterChangeListener.resetChangedState();
         }
     }
 
+    private void updateLogProperty() {
+        List<String> logMessages = logger.getLog();
+        String logText = "";
+
+        for (String message : logMessages) {
+            logText += message + "\n";
+        }
+
+        this.logText.set(logText);
+    }
+
     private void reformIndexesInStatisticData() {
+        dataTableIsReforming = true;
+
         for (Integer i = 1; i <= statisticData.size(); i++) {
             Pair<String, String> oldRow = statisticData.get(i - 1);
             Pair<String, String> newRow = new Pair<>(i.toString(), oldRow.getValue());
             statisticData.set(i - 1, newRow);
         }
+
+        dataTableIsReforming = false;
     }
 
     private class ValueChangedListener {
@@ -330,7 +381,10 @@ public class StatisticCalculatorViewModel {
                             final StatisticValue oldValue, final StatisticValue newValue) {
             super.changeValue(newValue.name());
             if (super.isChanged()) {
-                logger.addMessage("[Selected statistic]: " + newValue.name());
+                if (logger != null) {
+                    logger.addMessage(LogMessages.statisticValueSelected(newValue));
+                    updateLogProperty();
+                }
                 super.resetChangedState();
             }
         }
@@ -347,7 +401,7 @@ public class StatisticCalculatorViewModel {
             inputStatisticParameterError.set(InputNote.VALID_INPUT);
             calculationIsDisabled.set(statisticData.isEmpty());
 
-            if (selectedStatistic.getValue().getParameterName() == null) {
+            if (selectedStatistic.getValue().getParameter() == null) {
                 return;
             }
 
@@ -358,7 +412,7 @@ public class StatisticCalculatorViewModel {
 
             StatisticParameter currentParameterName =
                     getSelectedStatistic()
-                            .getParameterName();
+                            .getParameter();
             if (currentParameterName == StatisticParameter.ORDER) {
                 try {
                     Integer order = Integer.parseInt(newValue);

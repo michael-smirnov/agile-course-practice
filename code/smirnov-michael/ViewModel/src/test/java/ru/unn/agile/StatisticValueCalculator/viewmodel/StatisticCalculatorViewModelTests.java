@@ -19,7 +19,6 @@ public class StatisticCalculatorViewModelTests {
     @Before
     public void setUp() {
         viewModel = new StatisticCalculatorViewModel();
-        viewModel.setLogger(new FakeLoggerOfStatisticCalculator());
     }
 
     @Test
@@ -179,7 +178,7 @@ public class StatisticCalculatorViewModelTests {
     public void secondRowInDataTableDeletedAfterSelectAndDeleteSecondRow() {
         setUpDataTable();
 
-        viewModel.selectRowInStatisticData(1);
+        viewModel.selectRowInStatisticData(2);
         viewModel.deleteSelectedRowInStatisticData();
 
         boolean hasDataTableOnlyOneElement = viewModel.getStatisticData().size() == 1;
@@ -290,88 +289,6 @@ public class StatisticCalculatorViewModelTests {
         viewModel.inputStatisticParameterProperty().set("");
 
         assertFalse(viewModel.calculationIsDisabledProperty().get());
-    }
-
-    @Test
-    public void logContainsAddRowValueAfterItTyped() {
-        viewModel.inputRowProperty().set("abc");
-        viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
-
-        assertEquals(viewModel.getLog().get(0), "[Changed input row value]: abc");
-    }
-
-    @Test
-    public void logNotContainsAddRowValueWhenAddRowTextFieldJustLeaveFocus() {
-        viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
-        assertTrue(viewModel.getLog().isEmpty());
-    }
-
-    @Test
-    public void logContainsOnlyOneMessageWhenParameterValueChangedOnesAndFocusedTwice() {
-        viewModel.inputStatisticParameterProperty().set("3.22");
-        viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
-
-        viewModel.onInputFieldFocusChanged(Boolean.FALSE, Boolean.TRUE);
-        viewModel.inputStatisticParameterProperty().set("3.22");
-        viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
-
-        assertTrue(viewModel.getLog().size() == 1);
-    }
-
-    @Test
-    public void lastMessageInLogIsAddRowToStatisticDataAfterItReallyCalled() {
-        viewModel.inputRowProperty().set("11");
-
-        viewModel.addRowToStatisticData();
-
-        assertEquals(viewModel.getLog().get(0), "[New value to statistic data is added]: 11");
-    }
-
-    @Test
-    public void logIsUpdatedByStatisticSelectionMessageWhenVarianceHasSelected() {
-        viewModel.selectedStatisticProperty().set(StatisticValue.VARIANCE);
-
-        assertEquals(viewModel.getLog().get(0), "[Selected statistic]: VARIANCE");
-    }
-
-    @Test
-    public void logContainsThatSecondRowInDataTableSelectedAfterItHasBeenSelected() {
-        viewModel.selectRowInStatisticData(2);
-
-        assertEquals(viewModel.getLog().get(0),
-                "[Selected row in data table]: number 2, value 2.1");
-    }
-
-    @Test
-    public void statisticValueIsNotLoggedWhenNotChanged() {
-        viewModel.selectedStatisticProperty().set(StatisticValue.PROBABILITY);
-        viewModel.selectedStatisticProperty().set(StatisticValue.PROBABILITY);
-
-        assertEquals(viewModel.getLog().size(), 1);
-    }
-
-    @Test
-    public void deletingRowInTableIsLogged() {
-        viewModel.selectRowInStatisticData(3);
-        viewModel.deleteSelectedRowInStatisticData();
-
-        assertEquals(viewModel.getLog().get(1),
-                "[Deleted row in data table]: number 3, value 3.2");
-    }
-
-    @Test
-    public void clearingStatisticDataIsLogged() {
-        viewModel.clearStatisticData();
-
-        assertEquals(viewModel.getLog().get(0), "[Data table is cleared]");
-    }
-
-    @Test
-    public void calculatingEnumerationValueIsLogged() {
-        viewModel.calculateSelectedStatistic();
-
-        assertEquals(viewModel.getLog().get(0), "[Statistic value is calculated]: Enumeration, "
-                + "result = 0.8");
     }
 
     private void setUpDataTable() {

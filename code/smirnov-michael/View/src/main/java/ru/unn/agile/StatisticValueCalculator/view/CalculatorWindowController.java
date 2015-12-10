@@ -9,10 +9,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 import javafx.util.Pair;
+import ru.unn.agile.StatisticValueCalculator.infrastructure.TxtLoggerOfStatisticCalculator;
 import ru.unn.agile.StatisticValueCalculator.viewmodel.StatisticValue;
 import ru.unn.agile.StatisticValueCalculator.viewmodel.StatisticCalculatorViewModel;
 
 public class CalculatorWindowController {
+    @FXML
+    private TextArea logArea;
     @FXML
     private TableColumn<Pair<String, String>, String> columnNumber;
     @FXML
@@ -51,6 +54,8 @@ public class CalculatorWindowController {
 
     @FXML
     private void initialize() {
+        viewModel.setLogger(new TxtLoggerOfStatisticCalculator("StatisticCalculatorLogger.log"));
+
         final ChangeListener<Boolean> inputFieldFocusChangeListener =
                 new ChangeListener<Boolean>() {
             @Override
@@ -120,7 +125,7 @@ public class CalculatorWindowController {
                     @Override
                     public void changed(final ObservableValue<? extends Number> observable,
                                         final Number oldValue, final Number newValue) {
-                        viewModel.selectRowInStatisticData(newValue.intValue());
+                        viewModel.selectRowInStatisticData(newValue.intValue() + 1);
                     }
                 });
 

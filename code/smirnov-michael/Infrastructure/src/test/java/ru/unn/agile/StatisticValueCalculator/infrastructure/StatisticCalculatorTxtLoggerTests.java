@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class StatisticCalculatorTxtLoggerTests {
 
-    private static final String LOG_PATH = "StatisticCalculatorLog.log";
+    private static final String LOG_PATH = "StatisticCalculatorLogger.log";
     private TxtLoggerOfStatisticCalculator logger;
 
     @Before
