@@ -193,17 +193,19 @@ public class DequeViewModel {
     }
 
     public void setAction(final int actionIndex) {
-        action = Action.values()[actionIndex];
+        Action action = Action.values()[actionIndex];
 
         setAction(action);
     }
 
     public void setAction(final Action action) {
+        if (this.action != action) {
+            logger.log(LogMessages.ACTION_CHANGED + action.toString());
+        }
+
         this.action = action;
 
         updateDoActionButtonEnabled();
-
-        logger.log(LogMessages.ACTION_CHANGED + action.toString());
     }
 
     public Action getAction() {
