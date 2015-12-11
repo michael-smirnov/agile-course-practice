@@ -275,6 +275,138 @@ public class ViewModelTest {
         assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessage.PRESS_CALCULATE + ".*"));
     }
 
+    @Test
+    public void loggerHasCorrectNumbersAfterCalculate() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + viewModel.getFirstRealProperty().get() +
+                                                     ".*" + viewModel.getFirstImaginaryProperty().get() +
+                                                     ".*" + viewModel.getSecondRealProperty().get() +
+                                                     ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
+    }
+
+    @Test
+    public void loggerHasResultAfterCalculate() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*Result was: .*"));
+    }
+
+    @Test
+    public void loggerHasOperationTypeAfterCalculate() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + viewModel.getOperationProperty().get() + ".*"));
+    }
+
+    @Test
+    public void loggerHasCorrectResulltMessageAfterZeroDivider() {
+        setComplexNumberAndZero();
+        viewModel.getOperationProperty().set(Operation.DIVIDE);
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + "There was not result because of zero divider" + ".*"));
+    }
+
+    @Test
+    public void loggerHasCorrectMessageAfterCalculationNumbers() {
+        setPositiveData();
+
+        viewModel.calculate();
+
+        String message = "Calculate pressed. ";
+        message += "Arguments was: Re1 = " + viewModel.getFirstRealProperty().get()
+                + " Im1 = " + viewModel.getFirstImaginaryProperty().get()
+                + " Re2 = " + viewModel.getSecondRealProperty().get()
+                + " Im2 = " + viewModel.getSecondImaginaryProperty().get() + ". "
+                + "Operation was: " + viewModel.getOperationProperty().get().toString() + ". "
+                + "Result was: " + viewModel.getResultProperty().get() + ".";
+        assertEquals(message, viewModel.getLog().get(0));
+    }
+
+    @Test
+    public void canPutSeveralMessagesInLog() {
+        for (int i = 0; i < 10; i ++) {
+            viewModel.calculate();
+        }
+
+        assertEquals(10, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logShowThatOperationIsChanged() {
+        viewModel.onOperationChanged(Operation.ADD, Operation.DIVIDE);
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + Operation.DIVIDE + ".*"));
+    }
+
+    @Test
+    public void logCanNotShowThatOperationIsChangedWhenItIsNotChanged() {
+        viewModel.onOperationChanged(Operation.ADD, Operation.ADD);
+
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void doLogWhenChangedInputValue() {
+        viewModel.getFirstImaginaryProperty().set("20");
+        viewModel.onInputFocusChanged();
+
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void doNotLogTwiceWhenInputIsNotChanged() {
+        viewModel.getFirstImaginaryProperty().set("999");
+        viewModel.onInputFocusChanged();
+        viewModel.getFirstImaginaryProperty().set("999");
+        viewModel.onInputFocusChanged();
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void logContainLogMessageWhenFocusChanged() {
+        viewModel.getFirstRealProperty().set("155");
+        viewModel.onInputFocusChanged();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessage.UPDATE_INPUT + ".*"));
+    }
+
+    @Test
+    public void logContainNumbersWhenInputFocusChanged() {
+        viewModel.getFirstRealProperty().set("355");
+        viewModel.onInputFocusChanged();
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + viewModel.getFirstRealProperty().get() +
+                                                     ".*" + viewModel.getFirstImaginaryProperty().get() +
+                                                     ".*" + viewModel.getSecondRealProperty().get() +
+                                                     ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
+    }
+
+    @Test
+    public void logContainErrorMessageWhenFormatIsInvalid() {
+        viewModel.getFirstImaginaryProperty().set("abc");
+
+        assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessage.GET_ERROR
+                 + viewModel.getErrorsProperty().get().toString() + ".*"));
+    }
+
+    @Test
+    public void doNotLogErrorTwiceWhenFormatIsInvalid() {
+        viewModel.getFirstImaginaryProperty().set("abc");
+        viewModel.getFirstImaginaryProperty().set("abscsd");
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
     private void setPositiveData() {
         viewModel.getFirstRealProperty().set("2");
         viewModel.getFirstImaginaryProperty().set("3");

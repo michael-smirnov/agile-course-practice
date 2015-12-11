@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class Logger implements ILogger{
+public class Logger implements ILogger {
     private final String fileName;
     private BufferedWriter writer;
 
@@ -31,7 +31,7 @@ public class Logger implements ILogger{
     }
 
     @Override
-    public void addToLog(String message) {
+    public void addToLog(final String message) {
         try {
             writer.write(getCurrentTime() + " : " + message + "\n");
             writer.flush();
