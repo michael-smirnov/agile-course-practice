@@ -6,7 +6,6 @@ import javafx.beans.value.ObservableValue;
 import ru.unn.agile.Complex.model.Complex;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import sun.plugin.javascript.navig.LinkArray;
 
 import java.util.ArrayList;
 import java.util.List;
