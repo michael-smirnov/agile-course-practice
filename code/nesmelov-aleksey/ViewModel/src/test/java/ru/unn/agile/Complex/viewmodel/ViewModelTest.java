@@ -282,11 +282,8 @@ public class ViewModelTest {
         viewModel.calculate();
 
         assertTrue(viewModel.getLog().get(0).matches(
-                  ".*" + viewModel.getFirstRealProperty().get()
-                + ".*" + viewModel.getFirstImaginaryProperty().get()
-                + ".*" + viewModel.getSecondRealProperty().get()
-                + ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"
-        ));
+            ".*" + viewModel.getFirstRealProperty().get() + ".*" + viewModel.getFirstImaginaryProperty().get()
+          + ".*" + viewModel.getSecondRealProperty().get() + ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
     }
 
     @Test
