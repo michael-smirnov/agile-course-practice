@@ -35,6 +35,7 @@ public class ViewModel {
     private final StringProperty secondImaginary = new SimpleStringProperty();
     private final StringProperty result = new SimpleStringProperty();
     private final StringProperty errors = new SimpleStringProperty();
+    private final StringProperty log = new SimpleStringProperty();
     private final ObjectProperty<Operation> operation = new SimpleObjectProperty<Operation>();
     private final BooleanProperty disabledCalculate = new SimpleBooleanProperty();
     private final List<ChangedValueListener> changedValueListeners = new ArrayList<>();
@@ -73,6 +74,7 @@ public class ViewModel {
             field.set("0.0");
         }
         result.set("");
+        log.set("Log.");
         lastErrors.set(Errors.NOT_ERROR.toString());
         errors.set(Errors.NOT_ERROR.toString());
         operation.set(Operation.ADD);
@@ -109,6 +111,10 @@ public class ViewModel {
         return errors;
     }
 
+    public StringProperty getLogProperty() {
+        return log;
+    }
+
     public ObjectProperty<Operation> getOperationProperty() {
         return operation;
     }
@@ -127,6 +133,15 @@ public class ViewModel {
 
     public final boolean getDisabledCalculate() {
         return disabledCalculate.get();
+    }
+
+    private void updateLog() {
+        List<String> allFromLog = logger.getLog();
+        String record = new String();
+        for (String logSting : allFromLog) {
+            record += logSting + "\n";
+        }
+        log.set(record);
     }
 
     public void calculate() {
@@ -170,12 +185,13 @@ public class ViewModel {
                 + " Re2 = " + secondReal.get()
                 + " Im2 = " + secondImaginary.get() + "."
                 + " Operation was: " + operation.get().toString() + ". ";
-        if (errors.get() == Errors.ZERO_DIVIDER.toString()) {
+        if (errors.get().toString() == Errors.ZERO_DIVIDER.toString()) {
             message += "There was not result because of zero divider.";
         } else {
             message += "Result was: " + result.get() + ".";
         }
         logger.addToLog(message);
+        updateLog();
     }
 
     public List<String> getLog() {
@@ -204,6 +220,7 @@ public class ViewModel {
         if (errors.get() != lastErrors.get()) {
             String message = LogMessage.GET_ERROR.toString() + errors.get();
             logger.addToLog(message);
+            updateLog();
             lastErrors.set(errors.get().toString());
         }
     }
@@ -212,6 +229,7 @@ public class ViewModel {
         if (!oldValue.equals(newValue)) {
             String message = LogMessage.CHANGE_OPERATION.toString() + newValue.toString();
             logger.addToLog(message);
+            updateLog();
         }
     }
 
@@ -224,6 +242,7 @@ public class ViewModel {
                         + " Re2 = " + secondReal.get() + ","
                         + " Im2 = " + secondImaginary.get() + ".";
                 logger.addToLog(message);
+                updateLog();
                 listener.setDefault();
                 break;
             }
