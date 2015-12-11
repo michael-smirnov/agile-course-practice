@@ -276,18 +276,6 @@ public class ViewModelTest {
     }
 
     @Test
-    public void loggerHasCorrectNumbersAfterCalculate() {
-        setPositiveData();
-
-        viewModel.calculate();
-
-        assertTrue(viewModel.getLog().get(0).matches(".*" + viewModel.getFirstRealProperty().get() +
-                                                     ".*" + viewModel.getFirstImaginaryProperty().get() +
-                                                     ".*" + viewModel.getSecondRealProperty().get() +
-                                                     ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
-    }
-
-    @Test
     public void loggerHasResultAfterCalculate() {
         setPositiveData();
 
