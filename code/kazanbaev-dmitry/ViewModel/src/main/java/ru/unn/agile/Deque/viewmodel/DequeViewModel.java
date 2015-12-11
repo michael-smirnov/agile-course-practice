@@ -3,7 +3,6 @@ package ru.unn.agile.Deque.viewmodel;
 import ru.unn.agile.Deque.model.Deque;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class DequeViewModel {
     private final Deque<Integer> deque;
@@ -204,7 +203,7 @@ public class DequeViewModel {
 
         updateDoActionButtonEnabled();
 
-        logger.log(new Date() + " - " + LogMessages.ACTION_CHANGED + action.toString());
+        logger.log(LogMessages.ACTION_CHANGED + action.toString());
     }
 
     public Action getAction() {
@@ -238,6 +237,6 @@ public class DequeViewModel {
     public void doAction() {
         action.doAction();
 
-        logger.log(new Date() + " - " + LogMessages.ACTION_PERFORMED + action.toString());
+        logger.log(LogMessages.ACTION_PERFORMED + action.toString());
     }
 }

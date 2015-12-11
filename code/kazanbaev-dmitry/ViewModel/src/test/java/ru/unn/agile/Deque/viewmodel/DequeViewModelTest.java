@@ -12,10 +12,14 @@ import static org.junit.Assert.*;
 public class DequeViewModelTest {
     private DequeViewModel viewModel;
 
+    public void setViewModel(final DequeViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void initializeDequeViewModel() {
         IDequeLogger logger = new FakeDequeLogger();
-        viewModel = new DequeViewModel(logger);
+        setViewModel(new DequeViewModel(logger));
     }
 
     @Test
