@@ -16,6 +16,19 @@ public class DequeViewModelTest {
     }
 
     @Test
+    public void canCreateViewModelWithLogger() {
+        FakeDequeLogger logger = new FakeDequeLogger();
+        DequeViewModel viewModel = new DequeViewModel(logger);
+
+        assertNotNull(viewModel);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void canNotCreateViewModelWithNull() {
+        DequeViewModel viewModel = new DequeViewModel(null);
+    }
+
+    @Test
     public void byDefaultPushActionIsDisabled() {
         assertFalse(viewModel.isPushActionEnabled());
     }

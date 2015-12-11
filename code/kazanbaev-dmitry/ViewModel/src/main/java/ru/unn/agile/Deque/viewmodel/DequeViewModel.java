@@ -14,6 +14,7 @@ public class DequeViewModel {
     private boolean isDoActionButtonEnabled;
 
     private Action action;
+    //private IDequeLogger logger;
 
     public enum Action {
         PushFront {
@@ -122,6 +123,15 @@ public class DequeViewModel {
         deque = new Deque<>();
         action = Action.PushFront;
         action.setViewModel(this);
+    }
+
+    public DequeViewModel(final IDequeLogger logger) {
+        this();
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger can't be null");
+        }
+        IDequeLogger iDequeLogger = logger;
+        //TODO refactor
     }
 
     private void setPopClearCheckActionsEnabled(final boolean isEnabled) {
