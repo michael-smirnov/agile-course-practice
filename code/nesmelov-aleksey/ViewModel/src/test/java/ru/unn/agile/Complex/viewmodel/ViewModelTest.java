@@ -1,23 +1,22 @@
-package test.java.ru.unn.agile.Complex.viewmodel;
+package ru.unn.agile.Complex.viewmodel;
 
-import ru.unn.agile.Complex.model.Complex;
-import ru.unn.agile.Complex.viewmodel.FakeLogger;
-import ru.unn.agile.Complex.viewmodel.LogMessage;
-import ru.unn.agile.Complex.viewmodel.Operation;
-import ru.unn.agile.Complex.viewmodel.ViewModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.junit.Assert.*;
-import static org.junit.Assert.fail;
 
 public class ViewModelTest {
     private ViewModel viewModel;
 
+    public void setViewModel(ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void setUp() {
-        viewModel = new ViewModel(new FakeLogger());
+        if (viewModel == null) {
+            viewModel = new ViewModel(new FakeLogger());
+        }
     }
 
     @After
@@ -277,7 +276,7 @@ public class ViewModelTest {
     }
 
     @Test
-    public void loggerHasCorrectArgumentsAfterCalculate() {
+    public void loggerHasCorrectNumbersAfterCalculate() {
         setPositiveData();
 
         viewModel.calculate();
@@ -286,7 +285,8 @@ public class ViewModelTest {
                   ".*" + viewModel.getFirstRealProperty().get()
                 + ".*" + viewModel.getFirstImaginaryProperty().get()
                 + ".*" + viewModel.getSecondRealProperty().get()
-                + ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
+                + ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"
+        ));
     }
 
     @Test

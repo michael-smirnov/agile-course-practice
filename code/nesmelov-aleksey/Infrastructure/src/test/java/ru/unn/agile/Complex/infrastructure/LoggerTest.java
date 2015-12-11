@@ -1,9 +1,7 @@
 package ru.unn.agile.Complex.infrastructure;
 
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 

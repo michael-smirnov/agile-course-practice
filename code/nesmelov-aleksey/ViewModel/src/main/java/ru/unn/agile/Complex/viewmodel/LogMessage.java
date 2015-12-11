@@ -4,7 +4,7 @@ public enum LogMessage {
     PRESS_CALCULATE("Calculate pressed. "),
     CHANGE_OPERATION("Operation was changed. Now it is "),
     UPDATE_INPUT("Updated input. Now it is "),
-    GET_ERROR ("GET error: ");
+    GET_ERROR ("Get error: ");
 
     private final String name;
 
