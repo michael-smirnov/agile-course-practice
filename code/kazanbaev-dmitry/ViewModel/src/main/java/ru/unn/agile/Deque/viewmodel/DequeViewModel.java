@@ -3,6 +3,7 @@ package ru.unn.agile.Deque.viewmodel;
 import ru.unn.agile.Deque.model.Deque;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DequeViewModel {
     private final Deque<Integer> deque;
@@ -19,7 +20,7 @@ public class DequeViewModel {
     private IDequeLogger logger;
 
     public enum Action {
-        PushFront {
+        PushFront("PushFront") {
             @Override
             public void doAction() {
                 viewModel.deque.pushFront(Integer.valueOf(viewModel.inputNumber));
@@ -31,7 +32,7 @@ public class DequeViewModel {
                 return viewModel.isPushActionEnabled();
             }
         },
-        PushBack {
+        PushBack("PushBack") {
             @Override
             public void doAction() {
                 viewModel.deque.pushBack(Integer.valueOf(viewModel.inputNumber));
@@ -43,7 +44,7 @@ public class DequeViewModel {
                 return viewModel.isPushActionEnabled();
             }
         },
-        PopFront {
+        PopFront("PopFront") {
             @Override
             public void doAction() {
                 Integer value = viewModel.deque.popFront();
@@ -58,7 +59,7 @@ public class DequeViewModel {
                 return viewModel.isPopActionEnabled();
             }
         },
-        PopBack {
+        PopBack("PopBack") {
             @Override
             public void doAction() {
                 Integer value = viewModel.deque.popBack();
@@ -73,7 +74,7 @@ public class DequeViewModel {
                 return viewModel.isPopActionEnabled();
             }
         },
-        Clear {
+        Clear("Clear") {
             @Override
             public void doAction() {
                 viewModel.deque.clear();
@@ -85,7 +86,7 @@ public class DequeViewModel {
                 return viewModel.isClearActionEnabled();
             }
         },
-        Contains {
+        Contains("Contains") {
             @Override
             public void doAction() {
                 viewModel.output = String.valueOf(
@@ -100,6 +101,16 @@ public class DequeViewModel {
         };
 
         private static DequeViewModel viewModel;
+        private String description;
+
+        Action(final String description) {
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return description;
+        }
 
         public void setViewModel(final DequeViewModel viewModel) {
             Action.viewModel = viewModel;
@@ -118,6 +129,22 @@ public class DequeViewModel {
 
         public int getSize() {
             return viewModel.deque.getSize();
+        }
+    }
+
+    public enum LogMessages {
+        ACTION_PERFORMED("Occured following action: "),
+        ACTION_CHANGED("Action has been changed to: ");
+
+        private String description;
+
+        LogMessages(final String description) {
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return description;
         }
     }
 
@@ -208,5 +235,7 @@ public class DequeViewModel {
 
     public void doAction() {
         action.doAction();
+
+        logger.log(new Date() + " - " + LogMessages.ACTION_PERFORMED + action.toString());
     }
 }

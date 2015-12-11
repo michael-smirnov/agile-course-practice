@@ -319,4 +319,26 @@ public class DequeViewModelTest {
 
         assertEquals(Action.PopBack, viewModel.getAction());
     }
+
+    @Test
+    public void doesPushFrontActionAddSomethingInLog() {
+        viewModel.setAction(Action.PushFront);
+        viewModel.setInputNumber("8");
+
+        viewModel.doAction();
+
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void pushFrontActionAddsCorrectMessageInLog() {
+        viewModel.setAction(Action.PushFront);
+        viewModel.setInputNumber("8");
+
+        viewModel.doAction();
+        String actualMessage = viewModel.getLog().get(0);
+
+        assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.ACTION_PERFORMED
+                + viewModel.getAction().toString() + ".*"));
+    }
 }
