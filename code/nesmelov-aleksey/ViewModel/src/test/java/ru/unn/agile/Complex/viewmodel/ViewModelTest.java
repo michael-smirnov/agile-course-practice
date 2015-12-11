@@ -383,15 +383,14 @@ public class ViewModelTest {
     }
 
     @Test
-    public void logContainNumbersWhenFocusChanged() {
-        viewModel.getFirstRealProperty().set("155");
+    public void logContainNumbersWhenInpupFocusChanged() {
+        viewModel.getFirstRealProperty().set("355");
         viewModel.onInputFocusChanged();
 
         assertTrue(viewModel.getLog().get(0).matches(
-                       ".*" + viewModel.getFirstRealProperty().get()
-                        + ".*" + viewModel.getFirstImaginaryProperty().get()
-                        + ".*" + viewModel.getSecondRealProperty().get()
-                        + ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
+                  ".*" + viewModel.getFirstRealProperty().get() + ".*" + viewModel.getFirstImaginaryProperty().get()
+                + ".*" + viewModel.getSecondRealProperty().get() + ".*" + viewModel.getSecondImaginaryProperty().get()
+                + ".*" ));
     }
 
     @Test
