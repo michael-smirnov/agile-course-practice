@@ -336,9 +336,26 @@ public class DequeViewModelTest {
         viewModel.setInputNumber("8");
 
         viewModel.doAction();
-        String actualMessage = viewModel.getLog().get(0);
+        String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
 
         assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.ACTION_PERFORMED
+                + viewModel.getAction().toString() + ".*"));
+    }
+
+    @Test
+    public void settingActionAddsSomethingInLog() {
+        viewModel.setAction(Action.PopBack);
+
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void settingActionAddsCorrectMessageInLog() {
+        viewModel.setAction(Action.Clear);
+
+        String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.ACTION_CHANGED
                 + viewModel.getAction().toString() + ".*"));
     }
 }

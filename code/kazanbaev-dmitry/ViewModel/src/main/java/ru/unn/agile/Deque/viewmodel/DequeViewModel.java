@@ -203,6 +203,8 @@ public class DequeViewModel {
         this.action = action;
 
         updateDoActionButtonEnabled();
+
+        logger.log(new Date() + " - " + LogMessages.ACTION_CHANGED + action.toString());
     }
 
     public Action getAction() {
