@@ -5,6 +5,8 @@ import org.junit.Test;
 import ru.unn.agile.Deque.model.Deque;
 import ru.unn.agile.Deque.viewmodel.DequeViewModel.Action;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class DequeViewModelTest {
@@ -12,14 +14,12 @@ public class DequeViewModelTest {
 
     @Before
     public void initializeDequeViewModel() {
-        viewModel = new DequeViewModel();
+        IDequeLogger logger = new FakeDequeLogger();
+        viewModel = new DequeViewModel(logger);
     }
 
     @Test
     public void canCreateViewModelWithLogger() {
-        FakeDequeLogger logger = new FakeDequeLogger();
-        DequeViewModel viewModel = new DequeViewModel(logger);
-
         assertNotNull(viewModel);
     }
 
@@ -46,6 +46,13 @@ public class DequeViewModelTest {
     @Test
     public void byDefaultCheckActionIsDisabled() {
         assertFalse(viewModel.isContainsActionEnabled());
+    }
+
+    @Test
+    public void byDefaultLogIsEmpty() {
+        ArrayList<String> log = viewModel.getLog();
+
+        assertTrue(log.isEmpty());
     }
 
     @Test

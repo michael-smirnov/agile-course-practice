@@ -2,6 +2,8 @@ package ru.unn.agile.Deque.viewmodel;
 
 import ru.unn.agile.Deque.model.Deque;
 
+import java.util.ArrayList;
+
 public class DequeViewModel {
     private final Deque<Integer> deque;
 
@@ -14,7 +16,7 @@ public class DequeViewModel {
     private boolean isDoActionButtonEnabled;
 
     private Action action;
-    //private IDequeLogger logger;
+    private IDequeLogger logger;
 
     public enum Action {
         PushFront {
@@ -130,8 +132,11 @@ public class DequeViewModel {
         if (logger == null) {
             throw new IllegalArgumentException("Logger can't be null");
         }
-        IDequeLogger iDequeLogger = logger;
-        //TODO refactor
+        this.logger = logger;
+    }
+
+    public ArrayList<String> getLog() {
+        return logger.getLog();
     }
 
     private void setPopClearCheckActionsEnabled(final boolean isEnabled) {
