@@ -1,5 +1,6 @@
 dependencies {
     compile project(':molotkov-andrei-ViewModel')
+    compile project(':molotkov-andrei-Infrastructure')
 }
 
 sourceSets {

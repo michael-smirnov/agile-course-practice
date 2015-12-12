@@ -1,26 +1,30 @@
 package ru.unn.NewtonMethod.viewModel;
 
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.Matcher;
 
-public class NewtonMethodRegexMatcher extends TypeSafeMatcher {
+public class NewtonMethodRegexMatcher extends BaseMatcher {
     private final String regex;
 
     public NewtonMethodRegexMatcher(final String regex) {
         this.regex = regex;
     }
 
-    @Override
-    protected boolean matchesSafely(final Object item) {
-        return item.toString().matches(regex);
+    public boolean matches(final Object o) {
+        return ((String) o).matches(regex);
     }
 
-    @Override
     public void describeTo(final Description description) {
-        description.appendText("Matches regular expression=`" + regex + "`");
+        description.appendText("matches regex = ");
+        description.appendText(regex);
     }
 
-    public static NewtonMethodRegexMatcher matches(final String regex) {
-        return new NewtonMethodRegexMatcher(regex);
+    public static Matcher<? super String> matchesPattern(final String regex) {
+        NewtonMethodRegexMatcher matcher = new NewtonMethodRegexMatcher(regex);
+        //NOTE: this ugly cast is needed to workaround 'unchecked' Java warning
+        @SuppressWarnings (value = "unchecked")
+        Matcher<? super String> castedMatcher = (Matcher<? super String>)   matcher;
+        return castedMatcher;
     }
 }

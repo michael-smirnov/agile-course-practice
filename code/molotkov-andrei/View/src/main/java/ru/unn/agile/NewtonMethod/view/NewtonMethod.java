@@ -1,13 +1,11 @@
 package ru.unn.agile.NewtonMethod.view;
 
 import ru.unn.NewtonMethod.viewModel.NewtonMethodViewModel;
+import ru.unn.agile.NewtonMethod.infrastructure.NewtonMethodTxtLogger;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.util.List;
 
 public final class NewtonMethod {
     private final NewtonMethodViewModel viewModel;
@@ -19,6 +17,7 @@ public final class NewtonMethod {
     private JTextField txtRoot;
     private JLabel labelStatus;
     private JTextField txtDerivative;
+    private JList newtonMethodListLog;
 
     private NewtonMethod(final NewtonMethodViewModel viewModel) {
         this.viewModel = viewModel;
@@ -46,6 +45,30 @@ public final class NewtonMethod {
         txtRightPoint.addKeyListener(keyListener);
         txtFunction.addKeyListener(keyListener);
         txtDerivative.addKeyListener(keyListener);
+
+        FocusAdapter focusListener = new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                newtonMethodBackBind();
+                viewModel.valueFieldFocusLost();
+                newtonMethodBind();
+            }
+        };
+
+        txtLeftPont.addFocusListener(focusListener);
+        txtRightPoint.addFocusListener(focusListener);
+        txtFunction.addFocusListener(focusListener);
+        txtDerivative.addFocusListener(focusListener);
+    }
+
+    public static void main(final String[] args) {
+        JFrame frame = new JFrame("Newton method");
+        String newtonMethodLogFileName = "./NewtonMethod.log";
+        NewtonMethodTxtLogger txtLogger = new NewtonMethodTxtLogger(newtonMethodLogFileName);
+        frame.setContentPane(new NewtonMethod(new NewtonMethodViewModel(txtLogger)).mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     private void newtonMethodBind() {
@@ -54,6 +77,10 @@ public final class NewtonMethod {
         labelStatus.setText(viewModel.getStatus());
         txtLeftPont.setText(viewModel.getLeftPoint());
         txtRightPoint.setText(viewModel.getRightPoint());
+
+        List<String> newtonMethodLog = viewModel.getLog();
+        String[] items = newtonMethodLog.toArray(new String[newtonMethodLog.size()]);
+        newtonMethodListLog.setListData(items);
     }
 
     private void newtonMethodBackBind() {
@@ -62,13 +89,4 @@ public final class NewtonMethod {
         viewModel.setLeftPointOfRange(txtLeftPont.getText());
         viewModel.setRightPointOfRange(txtRightPoint.getText());
     }
-
-    public static void main(final String[] args) {
-        JFrame frame = new JFrame("Newton method");
-        frame.setContentPane(new NewtonMethod(new NewtonMethodViewModel()).mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
 }

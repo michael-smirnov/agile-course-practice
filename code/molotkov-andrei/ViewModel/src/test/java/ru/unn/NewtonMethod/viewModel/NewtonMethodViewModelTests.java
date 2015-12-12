@@ -7,10 +7,14 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static ru.unn.NewtonMethod.viewModel.NewtonMethodRegexMatcher.matches;
+import static ru.unn.NewtonMethod.viewModel.NewtonMethodRegexMatcher.matchesPattern;
 
 public class NewtonMethodViewModelTests {
     private NewtonMethodViewModel viewModel;
+
+    public void setViewModel(final NewtonMethodViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
 
     @Before
     public void setUp() {
@@ -205,7 +209,7 @@ public class NewtonMethodViewModelTests {
         viewModel.valueFieldFocusLost();
         String logMessage = viewModel.getLog().get(0);
 
-        assertThat(logMessage, matches(".*"
+        assertThat(logMessage, matchesPattern(".*"
                 + NewtonMethodViewModel.LogMessages.RANGE_FIELD_CHANGED + ".*"));
     }
 
@@ -216,8 +220,8 @@ public class NewtonMethodViewModelTests {
         viewModel.valueFieldFocusLost();
         String logMessage = viewModel.getLog().get(0);
 
-        assertThat(logMessage, matches(".*" + NewtonMethodViewModel.LogMessages.RANGE_FIELD_CHANGED
-        + "\\[" + viewModel.getLeftPoint() + ";" + viewModel.getRightPoint() + "]"));
+        assertThat(logMessage, matchesPattern(".*" + NewtonMethodViewModel.LogMessages.RANGE_FIELD_CHANGED
+                + "\\[" + viewModel.getLeftPoint() + ";" + viewModel.getRightPoint() + "]"));
     }
 
     @Test
@@ -246,7 +250,7 @@ public class NewtonMethodViewModelTests {
         viewModel.valueFieldFocusLost();
         String logMessage = viewModel.getLog().get(0);
 
-        assertThat(logMessage, matches(".*"
+        assertThat(logMessage, matchesPattern(".*"
                 + NewtonMethodViewModel.LogMessages.FUNCTION_CHANGED + ".*"));
     }
 
@@ -258,7 +262,7 @@ public class NewtonMethodViewModelTests {
         viewModel.valueFieldFocusLost();
         String logMessage = viewModel.getLog().get(0);
 
-        assertThat(logMessage, matches(".*" + NewtonMethodViewModel.LogMessages.FUNCTION_CHANGED
+        assertThat(logMessage, matchesPattern(".*" + NewtonMethodViewModel.LogMessages.FUNCTION_CHANGED
                 + "function \\[" + viewModel.getFunction() + "\\]; "
                 + "derivative \\[" + viewModel.getDerivative() + "\\]"));
     }
@@ -289,7 +293,7 @@ public class NewtonMethodViewModelTests {
         viewModel.processKeyInTextField(10);
         String logMessage = viewModel.getLog().get(2);
 
-        assertThat(logMessage, matches(".*"
+        assertThat(logMessage, matchesPattern(".*"
                 + NewtonMethodViewModel.LogMessages.CALCULATE_BUTTON_PRESSED + ".*"));
     }
 

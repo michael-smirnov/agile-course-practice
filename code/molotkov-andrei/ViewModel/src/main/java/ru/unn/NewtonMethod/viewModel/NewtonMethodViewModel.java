@@ -212,13 +212,11 @@ public class NewtonMethodViewModel {
             numberFillFields++;
         }
         if (!function.isEmpty()) {
-            function += "=";
-            converter.convert(function);
+            converter.convert(function + "=");
             numberFillFields++;
         }
         if (!derivative.isEmpty()) {
-            derivative += "=";
-            converter.convert(derivative);
+            converter.convert(derivative + "=");
             numberFillFields++;
         }
     }
@@ -237,7 +235,7 @@ public class NewtonMethodViewModel {
 
     private void calculateRoot() {
         logger.log(calculateLogMessage());
-        NewtonMethod newtonMethod = new NewtonMethod(function, derivative);
+        NewtonMethod newtonMethod = new NewtonMethod(function + "=", derivative + "=");
         try {
             root = newtonMethod.searchRoot(Double.parseDouble(leftPointOfRange),
                                            Double.parseDouble(rightPointOfRange));
