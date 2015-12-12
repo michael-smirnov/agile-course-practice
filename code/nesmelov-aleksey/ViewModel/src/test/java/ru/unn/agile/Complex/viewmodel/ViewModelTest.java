@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class ViewModelTest {
     private ViewModel viewModel;
 
-    public void setViewModel(ViewModel viewModel) {
+    public void setViewModel(final ViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
@@ -290,7 +290,8 @@ public class ViewModelTest {
 
         viewModel.calculate();
 
-        assertTrue(viewModel.getLog().get(0).matches(".*" + viewModel.getOperationProperty().get() + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(".*"
+                   + viewModel.getOperationProperty().get() + ".*"));
     }
 
     @Test
@@ -300,12 +301,13 @@ public class ViewModelTest {
 
         viewModel.calculate();
 
-        assertTrue(viewModel.getLog().get(0).matches(".*" + "There was not result because of zero divider" + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(".*"
+                   + "There was not result because of zero divider" + ".*"));
     }
 
     @Test
     public void canPutSeveralMessagesInLog() {
-        for (int i = 0; i < 10; i ++) {
+        for (int i = 0; i < 10; i++) {
             viewModel.calculate();
         }
 
@@ -357,10 +359,10 @@ public class ViewModelTest {
         viewModel.getFirstRealProperty().set("355");
         viewModel.onInputFocusChanged();
 
-        assertTrue(viewModel.getLog().get(0).matches(".*" + viewModel.getFirstRealProperty().get() +
-                                                     ".*" + viewModel.getFirstImaginaryProperty().get() +
-                                                     ".*" + viewModel.getSecondRealProperty().get() +
-                                                     ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(".*" + viewModel.getFirstRealProperty().get()
+                   + ".*" + viewModel.getFirstImaginaryProperty().get()
+                   + ".*" + viewModel.getSecondRealProperty().get()
+                   + ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
     }
 
     @Test
