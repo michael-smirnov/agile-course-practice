@@ -4,14 +4,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
+import static ru.unn.NewtonMethod.viewModel.NewtonMethodRegexMatcher.matches;
 
 public class NewtonMethodViewModelTests {
     private NewtonMethodViewModel viewModel;
 
     @Before
     public void setUp() {
-        viewModel = new NewtonMethodViewModel();
+        viewModel = new NewtonMethodViewModel(new FakeNewtonMethodLogger());
     }
 
     @After
@@ -167,5 +170,165 @@ public class NewtonMethodViewModelTests {
         viewModel.processKeyInTextField(10);
 
         assertEquals("-1.586", viewModel.getRoot());
+    }
+
+    @Test
+    public void canCreateNewtonMethodViewModelLogger() {
+        assertNotNull(viewModel);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void canNotCreateNewtonMethodViewModelWithNullLogger() {
+        new NewtonMethodViewModel(null);
+    }
+
+    @Test
+    public void logIsEmptyInTheBeginning() {
+        List<String> log = viewModel.getLog();
+
+        assertEquals(0, log.size());
+    }
+
+    @Test
+    public void isEditingRangeFieldsAddNewMessageToLog() {
+        viewModel.setLeftPointOfRange("-9");
+
+        viewModel.valueFieldFocusLost();
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void isLogContainProperMessageAfterRangeFieldsEdited() {
+        viewModel.setRightPointOfRange("10.78");
+
+        viewModel.valueFieldFocusLost();
+        String logMessage = viewModel.getLog().get(0);
+
+        assertThat(logMessage, matches(".*"
+                + NewtonMethodViewModel.LogMessages.RANGE_FIELD_CHANGED + ".*"));
+    }
+
+    @Test
+    public void areBordersOfRangeCorrectlyLoggedOnEditing() {
+        inputData();
+
+        viewModel.valueFieldFocusLost();
+        String logMessage = viewModel.getLog().get(0);
+
+        assertThat(logMessage, matches(".*" + NewtonMethodViewModel.LogMessages.RANGE_FIELD_CHANGED
+        + "\\[" + viewModel.getLeftPoint() + ";" + viewModel.getRightPoint() + "]"));
+    }
+
+    @Test
+    public void doNotLogIfRangeFieldsDoNotChange() {
+        viewModel.setLeftPointOfRange("-12.23");
+        viewModel.valueFieldFocusLost();
+        viewModel.setLeftPointOfRange("-12.23");
+        viewModel.valueFieldFocusLost();
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void isEditingFunctionsFieldsAddNewMessageToLog() {
+        viewModel.setFunction("(x+3)*(x+3)-2");
+
+        viewModel.valueFieldFocusLost();
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void isLogContainProperMessageAfterFunctionFieldsEdited() {
+        viewModel.setDerivative("x*2");
+
+        viewModel.valueFieldFocusLost();
+        String logMessage = viewModel.getLog().get(0);
+
+        assertThat(logMessage, matches(".*"
+                + NewtonMethodViewModel.LogMessages.FUNCTION_CHANGED + ".*"));
+    }
+
+    @Test
+    public void areFunctionsCorrectlyLoggedOnEditing() {
+        viewModel.setFunction("x");
+        viewModel.setDerivative("1");
+
+        viewModel.valueFieldFocusLost();
+        String logMessage = viewModel.getLog().get(0);
+
+        assertThat(logMessage, matches(".*" + NewtonMethodViewModel.LogMessages.FUNCTION_CHANGED
+                + "function \\[" + viewModel.getFunction() + "\\]; "
+                + "derivative \\[" + viewModel.getDerivative() + "\\]"));
+    }
+
+    @Test
+    public void doNotLogIfFunctionFieldsDoNotChange() {
+        viewModel.setFunction("(x+3)*(x+3)-2");
+        viewModel.valueFieldFocusLost();
+        viewModel.setFunction("(x+3)*(x+3)-2");
+        viewModel.valueFieldFocusLost();
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void isPressingCalculateButtonAddNewMessageToLog() {
+        inputData();
+
+        viewModel.processKeyInTextField(10);
+
+        assertEquals(3, viewModel.getLog().size());
+    }
+
+    @Test
+    public void isLogContainProperMessageAfterPressingCalculateButton() {
+        inputData();
+
+        viewModel.processKeyInTextField(10);
+        String logMessage = viewModel.getLog().get(2);
+
+        assertThat(logMessage, matches(".*"
+                + NewtonMethodViewModel.LogMessages.CALCULATE_BUTTON_PRESSED + ".*"));
+    }
+
+    @Test
+    public void canPutSeveralLogMessages() {
+        inputData();
+
+        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(10);
+
+        assertEquals(5, viewModel.getLog().size());
+    }
+
+    @Test
+    public void isCalculateNotCalledWhenButtonIsDisabledAndFunctionFieldsEdited() {
+        viewModel.setFunction("(x+3)*(x+3)-2");
+
+        viewModel.processKeyInTextField(10);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void isCalculateNotCalledWhenButtonIsDisabledAndRangeFieldsEdited() {
+        viewModel.setRightPointOfRange("10");
+
+        viewModel.processKeyInTextField(10);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void isCalculateNotCalledWhenButtonIsDisabledAndRangeAndFunctionFieldsEdited() {
+        viewModel.setRightPointOfRange("10");
+        viewModel.setFunction("(x+3)*(x+3)-2");
+
+        viewModel.processKeyInTextField(10);
+
+        assertEquals(2, viewModel.getLog().size());
     }
 }
