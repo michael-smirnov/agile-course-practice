@@ -51,7 +51,7 @@ public class ViewModel {
     private final StringProperty lastErrors = new SimpleStringProperty();
     private ILogger logger = null;
 
-    public ViewModel(ILogger logger) {
+    public ViewModel(final ILogger logger) {
         setDefaultParameters();
         setLogger(logger);
     }
@@ -177,7 +177,7 @@ public class ViewModel {
         }
 
         String message = LogMessage.PRESS_CALCULATE.toString();
-        message +="Arguments was:"
+        message += "Arguments was:"
                 + " Re1 = " + firstReal.get()
                 + " Im1 = " + firstImaginary.get()
                 + " Re2 = " + secondReal.get()
