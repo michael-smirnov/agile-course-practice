@@ -304,22 +304,6 @@ public class ViewModelTest {
     }
 
     @Test
-    public void loggerHasCorrectMessageAfterCalculationNumbers() {
-        setPositiveData();
-
-        viewModel.calculate();
-
-        String message = "Calculate pressed. ";
-        message += "Arguments was: Re1 = " + viewModel.getFirstRealProperty().get()
-                + " Im1 = " + viewModel.getFirstImaginaryProperty().get()
-                + " Re2 = " + viewModel.getSecondRealProperty().get()
-                + " Im2 = " + viewModel.getSecondImaginaryProperty().get() + ". "
-                + "Operation was: " + viewModel.getOperationProperty().get().toString() + ". "
-                + "Result was: " + viewModel.getResultProperty().get() + ".";
-        assertEquals(message, viewModel.getLog().get(0));
-    }
-
-    @Test
     public void canPutSeveralMessagesInLog() {
         for (int i = 0; i < 10; i ++) {
             viewModel.calculate();
