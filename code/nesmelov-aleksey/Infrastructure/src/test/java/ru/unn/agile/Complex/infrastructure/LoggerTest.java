@@ -7,23 +7,23 @@ import static junit.framework.TestCase.assertTrue;
 
 public class LoggerTest {
     private Logger logger;
-    private static final String fileName = "./LoggerTest.log";
+    private static final String FILE_NAME = "./LoggerTest.log";
 
     @Before
     public void setUp() {
-        logger = new Logger(fileName);
+        logger = new Logger(FILE_NAME);
     }
 
     @Test
     public void canCreateLogger() {
-        assertNotNull(new Logger(fileName));
+        assertNotNull(new Logger(FILE_NAME));
     }
 
     @Test
     public void canWriteLog() {
         logger.addToLog("Test message.");
 
-        assertTrue(logger.getLog().get(0).matches(".* Test message..*" ));
+        assertTrue(logger.getLog().get(0).matches(".* Test message..*"));
     }
 
     @Test
