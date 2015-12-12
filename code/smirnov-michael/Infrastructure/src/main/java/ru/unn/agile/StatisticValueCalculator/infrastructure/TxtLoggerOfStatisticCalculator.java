@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class TxtLoggerOfStatisticCalculator implements ILoggerOfStatisticCalculator {
-
     private static final String DATA_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private final String logPath;
     private BufferedWriter logWriter;

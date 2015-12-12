@@ -9,6 +9,6 @@ public class StatisticCalculatorViewModelTestsWithTxtLogger
     public void setUp() {
         StatisticCalculatorViewModel viewModel = new StatisticCalculatorViewModel();
         viewModel.setLogger(new TxtLoggerOfStatisticCalculator("StatisticCalculatorLogger.log"));
-        super.setExternalViewModel(viewModel);
+        super.setViewModel(viewModel);
     }
 }

@@ -1,10 +1,10 @@
 package ru.unn.agile.StatisticValueCalculator.viewmodel;
 
 public enum StatisticValue {
-    ENUMERATION("Enumeration"),
+    MEAN("Mean"),
     VARIANCE("Variance"),
     PROBABILITY("Probability", StatisticParameter.EVENT),
-    ROW_MOMENT("Row moment", StatisticParameter.ORDER),
+    RAW_MOMENT("Raw moment", StatisticParameter.ORDER),
     CENTRAL_MOMENT("Central moment", StatisticParameter.ORDER);
 
     private final String name;

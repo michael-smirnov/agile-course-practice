@@ -50,11 +50,11 @@ public class StatisticCalculatorViewModel {
 
     private int selectedRowInStatisticData = -1;
     private ILoggerOfStatisticCalculator logger;
-    private Boolean dataTableIsReforming = false;
+    private Boolean isDataTableReforming = false;
 
     public StatisticCalculatorViewModel() {
         selectedStatistic =
-                new SimpleObjectProperty<>(StatisticValue.ENUMERATION);
+                new SimpleObjectProperty<>(StatisticValue.MEAN);
         setSelectedStatistic(selectedStatistic.get());
 
         inputRow.addListener(valueChangeListener);
@@ -113,7 +113,7 @@ public class StatisticCalculatorViewModel {
     }
     public List<String> getLog() {
         if (logger == null) {
-            return new ArrayList<>();
+            throw new NullPointerException("Logger is not set");
         }
 
         return logger.getLog();
@@ -192,6 +192,7 @@ public class StatisticCalculatorViewModel {
         Integer numberOfAddValue = statisticData.size() + 1;
         statisticData.add(new Pair<>(numberOfAddValue.toString(), inputRow.getValue()));
         calculationIsDisabled.set(false);
+        clearCalculatedStatistic();
 
         if (logger != null) {
             logger.addMessage(LogMessages.newValueToDataTableIsAdded(inputRow.get()));
@@ -207,7 +208,7 @@ public class StatisticCalculatorViewModel {
             selectedRowInStatisticData = rowNumber;
             deleteDataRowIsDisabled.set(false);
 
-            if (logger != null && !dataTableIsReforming) {
+            if (logger != null && !isDataTableReforming) {
                 logger.addMessage(
                         LogMessages.rowInDataTableSelected(rowNumber,
                                 statisticData.get(rowNumber - 1).getValue()));
@@ -230,11 +231,13 @@ public class StatisticCalculatorViewModel {
             statisticData.remove(selectedRowInStatisticData - 1);
             calculationIsDisabled.set(statisticData.isEmpty());
             reformIndexesInStatisticData();
+            clearCalculatedStatistic();
         }
     }
     public void clearStatisticData() {
         statisticData.clear();
         calculationIsDisabled.set(true);
+        clearCalculatedStatistic();
 
         if (logger != null) {
             logger.addMessage(LogMessages.dataTableIsCleared());
@@ -250,7 +253,7 @@ public class StatisticCalculatorViewModel {
 
         IStatisticValueCalculator calculator;
         switch (selectedStatistic.get()) {
-            case ENUMERATION:
+            case MEAN:
                 calculator = new MeanCalculator();
                 break;
 
@@ -263,7 +266,7 @@ public class StatisticCalculatorViewModel {
                 calculator = new ProbabilityOfEventCalculator(event);
                 break;
 
-            case ROW_MOMENT:
+            case RAW_MOMENT:
                 int order = Integer.parseInt(inputStatisticParameter.get());
                 calculator = new RawMomentCalculator(order);
                 break;
@@ -289,9 +292,9 @@ public class StatisticCalculatorViewModel {
             updateLogProperty();
         }
     }
-    public void onInputFieldFocusChanged(final Boolean previousFocusStatus,
-                                         final Boolean currentFocusStatus) {
-        if (!previousFocusStatus && currentFocusStatus) {
+    public void onInputFieldFocusChanged(final Boolean wasFocusedEarlier,
+                                         final Boolean isFocusedNow) {
+        if (!wasFocusedEarlier && isFocusedNow) {
             return;
         }
         if (valueChangeListener.isChanged()) {
@@ -311,6 +314,10 @@ public class StatisticCalculatorViewModel {
         }
     }
 
+    private void clearCalculatedStatistic() {
+        nameOfCalculatedStatistic.set("");
+        valueOfCalculatedStatistic.set("");
+    }
     private void updateLogProperty() {
         List<String> logMessages = logger.getLog();
         String logText = "";
@@ -323,7 +330,7 @@ public class StatisticCalculatorViewModel {
     }
 
     private void reformIndexesInStatisticData() {
-        dataTableIsReforming = true;
+        isDataTableReforming = true;
 
         for (Integer i = 1; i <= statisticData.size(); i++) {
             Pair<String, String> oldRow = statisticData.get(i - 1);
@@ -331,22 +338,49 @@ public class StatisticCalculatorViewModel {
             statisticData.set(i - 1, newRow);
         }
 
-        dataTableIsReforming = false;
+        isDataTableReforming = false;
+    }
+
+    private void checkValidationOfStatisticParameterValue() {
+        StatisticParameter parameterName =
+                getSelectedStatistic()
+                        .getParameter();
+        String parameterValue = inputStatisticParameter.get();
+
+        inputStatisticParameterError.set(InputNote.VALID_INPUT);
+        if (parameterName == StatisticParameter.ORDER) {
+            try {
+                Integer order = Integer.parseInt(parameterValue);
+                if (order <= 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException exception) {
+                inputStatisticParameterError.set(InputNote.NOT_A_POSITIVE_INTEGER);
+                calculationIsDisabled.set(true);
+            }
+        }
+
+        try {
+            Double.parseDouble(parameterValue);
+        } catch (NumberFormatException exception) {
+            inputStatisticParameterError.set(InputNote.NOT_A_NUMBER);
+            calculationIsDisabled.set(true);
+        }
     }
 
     private class ValueChangedListener {
-        private String currentAddValue = "";
-        private String previousAddValue = "";
+        private String currentValue = "";
+        private String previousValue = "";
 
         public void changeValue(final String newValue) {
-            previousAddValue = currentAddValue;
-            currentAddValue = newValue;
+            previousValue = currentValue;
+            currentValue = newValue;
         }
         public Boolean isChanged() {
-            return !currentAddValue.equals(previousAddValue);
+            return !currentValue.equals(previousValue);
         }
         public void resetChangedState() {
-            previousAddValue = currentAddValue;
+            previousValue = currentValue;
         }
     }
 
@@ -385,6 +419,15 @@ public class StatisticCalculatorViewModel {
                     logger.addMessage(LogMessages.statisticValueSelected(newValue));
                     updateLogProperty();
                 }
+
+                //checkValidationOfStatisticParameterValue();
+                StatisticParameter parameter = newValue.getParameter();
+                if (parameter == StatisticParameter.EVENT) {
+                    inputStatisticParameter.set("0.0");
+                } else if (parameter == StatisticParameter.ORDER) {
+                    inputStatisticParameter.set("1");
+                }
+
                 super.resetChangedState();
             }
         }
@@ -397,8 +440,6 @@ public class StatisticCalculatorViewModel {
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
             super.changeValue(newValue);
-
-            inputStatisticParameterError.set(InputNote.VALID_INPUT);
             calculationIsDisabled.set(statisticData.isEmpty());
 
             if (selectedStatistic.getValue().getParameter() == null) {
@@ -410,27 +451,7 @@ public class StatisticCalculatorViewModel {
                 return;
             }
 
-            StatisticParameter currentParameterName =
-                    getSelectedStatistic()
-                            .getParameter();
-            if (currentParameterName == StatisticParameter.ORDER) {
-                try {
-                    Integer order = Integer.parseInt(newValue);
-                    if (order <= 0) {
-                        throw new NumberFormatException();
-                    }
-                } catch (NumberFormatException exception) {
-                    inputStatisticParameterError.set(InputNote.NOT_A_POSITIVE_INTEGER);
-                    calculationIsDisabled.set(true);
-                }
-            }
-
-            try {
-                Double.parseDouble(newValue);
-            } catch (NumberFormatException exception) {
-                inputStatisticParameterError.set(InputNote.NOT_A_NUMBER);
-                calculationIsDisabled.set(true);
-            }
+            checkValidationOfStatisticParameterValue();
         }
     }
 }

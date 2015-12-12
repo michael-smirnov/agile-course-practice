@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 public class StatisticCalculatorViewModelTestsOnLogging {
     private StatisticCalculatorViewModel viewModel;
 
-    public void setExternalViewModel(final StatisticCalculatorViewModel viewModel) {
+    public void setViewModel(final StatisticCalculatorViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
@@ -38,7 +38,6 @@ public class StatisticCalculatorViewModelTestsOnLogging {
 
         viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
-        String m = LogMessages.inputParameterValueIsSet(StatisticParameter.EVENT, eventValue);
         assertTrue(viewModel.getLog().get(1).matches(".*"
                 + LogMessages.inputParameterValueIsSet(StatisticParameter.EVENT, eventValue)));
     }
@@ -46,6 +45,7 @@ public class StatisticCalculatorViewModelTestsOnLogging {
     @Test
     public void logNotContainsAddRowValueWhenAddRowTextFieldJustLeaveFocus() {
         viewModel.onInputFieldFocusChanged(Boolean.TRUE, Boolean.FALSE);
+
         assertTrue(viewModel.getLog().isEmpty());
     }
 

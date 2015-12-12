@@ -23,18 +23,22 @@ public class StatisticCalculatorViewModelTests {
 
     @Test
     public void checkSetDefaultValuesWhenJustStarted() {
-        assertTrue(viewModel.getLog().isEmpty());
         assertEquals(viewModel.nameOfCalculatedStatisticProperty().get(), "");
         assertEquals(viewModel.valueOfCalculatedStatisticProperty().get(), "");
         assertEquals(viewModel.inputRowErrorProperty().get(), InputNote.VALID_INPUT);
         assertEquals(viewModel.inputStatisticParameterErrorProperty().get().toString(), "");
-        assertEquals(viewModel.selectedStatisticProperty().get(), StatisticValue.ENUMERATION);
+        assertEquals(viewModel.selectedStatisticProperty().get(), StatisticValue.MEAN);
         assertEquals(viewModel.inputRowProperty().get(), "1.0");
         assertEquals(viewModel.inputStatisticParameterProperty().get(), "0.0");
 
         ObservableList<StatisticValue> statisticsList =
                 FXCollections.observableArrayList(StatisticValue.values());
         assertEquals(viewModel.getListOfAvailableStatistics(), statisticsList);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void throwsWhenTryToGetLogAndLoggerIsNotSet() {
+        viewModel.getLog();
     }
 
     @Test
@@ -48,7 +52,7 @@ public class StatisticCalculatorViewModelTests {
 
     @Test
     public void statisticParameterFieldIsHidedWhenSelectedStatisticIsNotProbability() {
-        viewModel.setSelectedStatistic(StatisticValue.ENUMERATION);
+        viewModel.setSelectedStatistic(StatisticValue.MEAN);
 
         assertFalse(viewModel.inputStatisticParameterFieldIsVisibleProperty().get());
     }
@@ -101,7 +105,7 @@ public class StatisticCalculatorViewModelTests {
 
     @Test
     public void orderInputErrorIsShownWhenRawMomentChosenAndOrderIsNotPositiveInteger() {
-        viewModel.selectedStatisticProperty().set(StatisticValue.ROW_MOMENT);
+        viewModel.selectedStatisticProperty().set(StatisticValue.RAW_MOMENT);
         viewModel.inputStatisticParameterProperty().set("-1.2");
 
         assertEquals(viewModel.inputStatisticParameterErrorProperty().get(),
@@ -144,7 +148,7 @@ public class StatisticCalculatorViewModelTests {
 
     @Test
     public void calculatingStatisticIsDisabledWhenOrderOfRawMomentIsZero() {
-        viewModel.selectedStatisticProperty().set(StatisticValue.ROW_MOMENT);
+        viewModel.selectedStatisticProperty().set(StatisticValue.RAW_MOMENT);
         viewModel.inputStatisticParameterProperty().set("0");
 
         assertTrue(viewModel.calculationIsDisabledProperty().get());
@@ -152,7 +156,7 @@ public class StatisticCalculatorViewModelTests {
 
     @Test
     public void calculatingStatisticIsEnabledWhenParameterValueIsNotNumberAndEnumerationChosen() {
-        viewModel.selectedStatisticProperty().set(StatisticValue.ENUMERATION);
+        viewModel.selectedStatisticProperty().set(StatisticValue.MEAN);
         viewModel.inputStatisticParameterProperty().set("abc");
 
         assertFalse(viewModel.getCalculationIsDisabled());
@@ -209,7 +213,7 @@ public class StatisticCalculatorViewModelTests {
 
     @Test
     public void enumerationValueIsShownAfterCalculatingEnumeration() {
-        viewModel.setSelectedStatistic(StatisticValue.ENUMERATION);
+        viewModel.setSelectedStatistic(StatisticValue.MEAN);
 
         viewModel.calculateSelectedStatistic();
 
@@ -218,7 +222,7 @@ public class StatisticCalculatorViewModelTests {
 
     @Test
     public void parameterNameIsEqualToOrderWhenRowMomentSelected() {
-        viewModel.setSelectedStatistic(StatisticValue.ROW_MOMENT);
+        viewModel.setSelectedStatistic(StatisticValue.RAW_MOMENT);
 
         assertEquals(viewModel.parameterNameOfSelectedStatisticProperty().get().toString(),
                 StatisticParameter.ORDER.toString());
@@ -248,13 +252,13 @@ public class StatisticCalculatorViewModelTests {
 
     @Test
     public void nameOfCalculatedStatisticIsEqualsToRowMomentAfterCalculateRowMomentOfSecondOrder() {
-        viewModel.setSelectedStatistic(StatisticValue.ROW_MOMENT);
+        viewModel.setSelectedStatistic(StatisticValue.RAW_MOMENT);
         viewModel.inputStatisticParameterProperty().setValue("2");
 
         viewModel.calculateSelectedStatistic();
 
         assertEquals(viewModel.getNameOfCalculatedStatistic(),
-                StatisticValue.ROW_MOMENT.toString());
+                StatisticValue.RAW_MOMENT.toString());
     }
 
     @Test
