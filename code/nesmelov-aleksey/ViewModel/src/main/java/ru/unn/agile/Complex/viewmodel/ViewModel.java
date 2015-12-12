@@ -254,13 +254,13 @@ public class ViewModel {
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
             refreshInputErrors();
-            if (oldValue != newValue) {
+            if (!oldValue.equals(newValue)) {
                 currentValue = newValue;
             }
         }
 
         public boolean inputIsChanged() {
-            return currentValue != previousValue;
+            return !currentValue.equals(previousValue);
         }
 
         public void setDefault() {
