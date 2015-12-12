@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class Logger implements ILogger {
     private final String fileName;
-    private BufferedWriter writer;
+    private final BufferedWriter writer;
 
     private String getCurrentTime() {
         Calendar calendar = Calendar.getInstance();
@@ -22,12 +22,14 @@ public class Logger implements ILogger {
     public Logger(final String fileName) {
         this.fileName = fileName;
 
-        writer = null;
+        BufferedWriter tmpWriter = null;
+
         try {
-            writer = new BufferedWriter(new FileWriter(fileName));
+            tmpWriter = new BufferedWriter(new FileWriter(fileName));
         } catch (IOException e) {
             System.out.println(e.toString());
         }
+        writer = tmpWriter;
     }
 
     @Override
