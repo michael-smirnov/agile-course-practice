@@ -185,7 +185,7 @@ public class NewtonMethodViewModelTests {
     }
 
     @Test
-    public void logIsEmptyInTheBeginning() {
+    public void isLogEmptyByDefault() {
         List<String> log = viewModel.getLog();
 
         assertEquals(0, log.size());
@@ -201,7 +201,7 @@ public class NewtonMethodViewModelTests {
     }
 
     @Test
-    public void isLogContainProperMessageAfterRangeFieldsEdited() {
+    public void isLogContainProperLogMessageAfterRangeFieldsEdited() {
         viewModel.setRightPointOfRange("10.78");
 
         viewModel.valueFieldFocusLost();
@@ -241,7 +241,7 @@ public class NewtonMethodViewModelTests {
     }
 
     @Test
-    public void isLogContainProperMessageAfterFunctionFieldsEdited() {
+    public void isLogContainProperLogMessageAfterFunctionFieldsEdited() {
         viewModel.setDerivative("x*2");
 
         viewModel.valueFieldFocusLost();
@@ -283,7 +283,7 @@ public class NewtonMethodViewModelTests {
     }
 
     @Test
-    public void isLogContainProperMessageAfterPressingCalculateButton() {
+    public void isLogContainProperLogMessageAfterPressingCalculateButton() {
         inputData();
 
         viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
@@ -293,7 +293,7 @@ public class NewtonMethodViewModelTests {
     }
 
     @Test
-    public void canPutSeveralLogMessages() {
+    public void canPutSeveralLogMessagesIfCalledCalculate() {
         inputData();
 
         viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());

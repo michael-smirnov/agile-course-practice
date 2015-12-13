@@ -235,7 +235,7 @@ public class NewtonMethodViewModel {
     }
 
     private void calculateRoot() {
-        logger.log(calculateLogMessage());
+        logger.log(getLogMessageWhenCalculateRoot());
         NewtonMethod newtonMethod = new NewtonMethod(function + "=", derivative + "=");
         try {
             root = newtonMethod.searchRoot(Double.parseDouble(leftPointOfRange),
@@ -249,10 +249,9 @@ public class NewtonMethodViewModel {
         status = Status.SUCCESS;
     }
 
-    private String calculateLogMessage() {
-        String message = LogMessages.CALCULATE_BUTTON_PRESSED + "Function: [" + function + "];"
+    private String getLogMessageWhenCalculateRoot() {
+        return LogMessages.CALCULATE_BUTTON_PRESSED + "Function: [" + function + "];"
                 + "Range: [" + leftPointOfRange + ";" + rightPointOfRange + "].";
-        return message;
     }
 
     private void roundResult(final int numberDecimalPlaces) {
@@ -265,27 +264,25 @@ public class NewtonMethodViewModel {
         if (!isInputFunctionsChanged) {
             return;
         }
-        logger.log(editingLogMessageForFunction());
+        logger.log(getLogMessageWhenEditingFunctionFields());
         isInputFunctionsChanged = false;
     }
 
-    private String editingLogMessageForFunction() {
-        String message = LogMessages.FUNCTION_CHANGED
+    private String getLogMessageWhenEditingFunctionFields() {
+        return LogMessages.FUNCTION_CHANGED
                 + "function [" + function + "]; derivative [" + derivative + "]";
-        return message;
     }
 
     private void logInputRangeParams() {
         if (!isInputRangeChanged) {
             return;
         }
-        logger.log(editingLogMessageForRange());
+        logger.log(getLogMessageWhenEditingRangeFields());
         isInputRangeChanged = false;
     }
 
-    private String editingLogMessageForRange() {
-        String message = LogMessages.RANGE_FIELD_CHANGED
+    private String getLogMessageWhenEditingRangeFields() {
+        return LogMessages.RANGE_FIELD_CHANGED
                 + "[" + leftPointOfRange + ";" + rightPointOfRange + "]";
-        return message;
     }
 }
