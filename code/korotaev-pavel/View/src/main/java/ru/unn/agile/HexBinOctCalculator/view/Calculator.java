@@ -43,10 +43,12 @@ public class Calculator {
             }
         };
 
-        final ChangeListener<NumeralSystem> systemChangeListener = new ChangeListener<NumeralSystem>() {
+        final ChangeListener<NumeralSystem> systemChangeListener
+                = new ChangeListener<NumeralSystem>() {
             @Override
             public void changed(final ObservableValue<? extends NumeralSystem> observable,
-                                final NumeralSystem previousValue, final NumeralSystem replacedValue) {
+                                final NumeralSystem previousValue,
+                                final NumeralSystem replacedValue) {
                 viewModel.systemChanged(previousValue, replacedValue);
             }
         };
@@ -67,7 +69,8 @@ public class Calculator {
         cbSystemRes.valueProperty().addListener(new ChangeListener<NumeralSystem>() {
             @Override
             public void changed(final ObservableValue<? extends NumeralSystem> observable,
-                                final NumeralSystem previousValue, final NumeralSystem replacedValue) {
+                                final NumeralSystem previousValue,
+                                final NumeralSystem replacedValue) {
                 viewModel.resultSystemChanged(previousValue, replacedValue);
             }
         });
