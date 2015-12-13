@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class NewtonMethodTxtLogger implements INewtonMethodLogger {
-    private BufferedWriter writer;
+    private BufferedWriter newtonMethodLogWriter;
     private final String logFileName;
 
     public NewtonMethodTxtLogger(final String logFileName) {
         this.logFileName = logFileName;
 
         try {
-            writer = new BufferedWriter(new FileWriter(logFileName));
+            newtonMethodLogWriter = new BufferedWriter(new FileWriter(logFileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -26,31 +26,29 @@ public class NewtonMethodTxtLogger implements INewtonMethodLogger {
     @Override
     public void log(final String message) {
         try {
-            writer.write("< " + getCurrentDateTime() + " > " + message);
-            writer.newLine();
-            writer.flush();
+            newtonMethodLogWriter.write("< " + getCurrentDateTime() + " > " + message);
+            newtonMethodLogWriter.newLine();
+            newtonMethodLogWriter.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     @Override
     public List<String> getLog() {
-        BufferedReader reader;
+        BufferedReader newtonMethodLogReader;
         List<String> log = new ArrayList<>();
         try {
-            reader = new BufferedReader(new FileReader(logFileName));
-            String line = reader.readLine();
+            newtonMethodLogReader = new BufferedReader(new FileReader(logFileName));
+            String line = newtonMethodLogReader.readLine();
 
             while (line != null) {
                 log.add(line);
-                line = reader.readLine();
+                line = newtonMethodLogReader.readLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
         return log;
     }
 

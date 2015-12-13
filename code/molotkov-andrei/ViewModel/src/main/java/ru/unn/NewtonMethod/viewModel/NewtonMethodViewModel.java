@@ -43,6 +43,8 @@ public class NewtonMethodViewModel {
         ENTER(10),
         ANY(777);
 
+        private int key;
+
         KeyboardKeys(final int key) {
             this.key = key;
         }
@@ -50,8 +52,6 @@ public class NewtonMethodViewModel {
         public int getKey() {
             return key;
         }
-
-        private int key;
     }
 
     public enum Status {
@@ -62,19 +62,20 @@ public class NewtonMethodViewModel {
         SUCCESS("Success"),
         NO_ROOT("Root is not in range");
 
+        private String message;
+
         Status(final String message) {
             this.message = message;
         }
 
-        public String getMessage() {
+        @Override
+        public String toString() {
             return message;
         }
 
         public void setMessage(final String message) {
             this.message = message;
         }
-
-        private String message;
     }
 
     public enum LogMessages {
@@ -168,7 +169,7 @@ public class NewtonMethodViewModel {
     }
 
     public String getStatus() {
-        return status.getMessage();
+        return status.toString();
     }
 
     private void enterPressed() {
@@ -269,8 +270,8 @@ public class NewtonMethodViewModel {
     }
 
     private String editingLogMessageForFunction() {
-        String message = LogMessages.FUNCTION_CHANGED +
-                "function [" + function + "]; derivative [" + derivative + "]";
+        String message = LogMessages.FUNCTION_CHANGED
+                + "function [" + function + "]; derivative [" + derivative + "]";
         return message;
     }
 
@@ -283,8 +284,8 @@ public class NewtonMethodViewModel {
     }
 
     private String editingLogMessageForRange() {
-        String message = LogMessages.RANGE_FIELD_CHANGED +
-                "[" + leftPointOfRange + ";" + rightPointOfRange + "]";
+        String message = LogMessages.RANGE_FIELD_CHANGED
+                + "[" + leftPointOfRange + ";" + rightPointOfRange + "]";
         return message;
     }
 }

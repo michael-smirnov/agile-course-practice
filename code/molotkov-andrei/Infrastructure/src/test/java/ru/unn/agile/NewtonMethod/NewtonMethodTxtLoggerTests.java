@@ -23,7 +23,7 @@ public class NewtonMethodTxtLoggerTests {
     }
 
     @Test
-    public void canCreateLeftistHeapTxtLogger() {
+    public void canCreateNewtonMethodTxtLogger() {
         assertNotNull(txtLogger);
     }
 

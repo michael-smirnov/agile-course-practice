@@ -10,14 +10,14 @@ import java.util.List;
 public final class NewtonMethod {
     private final NewtonMethodViewModel viewModel;
     private JPanel mainPanel;
-    private JTextField txtLeftPont;
+    private JTextField txtLeftPoint;
     private JTextField txtRightPoint;
     private JTextField txtFunction;
     private JButton calculateButton;
     private JTextField txtRoot;
     private JLabel labelStatus;
     private JTextField txtDerivative;
-    private JList newtonMethodListLog;
+    private JList<String> newtonMethodListLog;
 
     private NewtonMethod(final NewtonMethodViewModel viewModel) {
         this.viewModel = viewModel;
@@ -41,21 +41,21 @@ public final class NewtonMethod {
             }
         };
 
-        txtLeftPont.addKeyListener(keyListener);
+        txtLeftPoint.addKeyListener(keyListener);
         txtRightPoint.addKeyListener(keyListener);
         txtFunction.addKeyListener(keyListener);
         txtDerivative.addKeyListener(keyListener);
 
         FocusAdapter focusListener = new FocusAdapter() {
             @Override
-            public void focusLost(FocusEvent e) {
+            public void focusLost(final FocusEvent e) {
                 newtonMethodBackBind();
                 viewModel.valueFieldFocusLost();
                 newtonMethodBind();
             }
         };
 
-        txtLeftPont.addFocusListener(focusListener);
+        txtLeftPoint.addFocusListener(focusListener);
         txtRightPoint.addFocusListener(focusListener);
         txtFunction.addFocusListener(focusListener);
         txtDerivative.addFocusListener(focusListener);
@@ -75,7 +75,7 @@ public final class NewtonMethod {
         calculateButton.setEnabled(viewModel.isCalculateButtonEnabled());
         txtRoot.setText(viewModel.getRoot());
         labelStatus.setText(viewModel.getStatus());
-        txtLeftPont.setText(viewModel.getLeftPoint());
+        txtLeftPoint.setText(viewModel.getLeftPoint());
         txtRightPoint.setText(viewModel.getRightPoint());
 
         List<String> newtonMethodLog = viewModel.getLog();
@@ -86,7 +86,7 @@ public final class NewtonMethod {
     private void newtonMethodBackBind() {
         viewModel.setFunction(txtFunction.getText());
         viewModel.setDerivative(txtDerivative.getText());
-        viewModel.setLeftPointOfRange(txtLeftPont.getText());
+        viewModel.setLeftPointOfRange(txtLeftPoint.getText());
         viewModel.setRightPointOfRange(txtRightPoint.getText());
     }
 }

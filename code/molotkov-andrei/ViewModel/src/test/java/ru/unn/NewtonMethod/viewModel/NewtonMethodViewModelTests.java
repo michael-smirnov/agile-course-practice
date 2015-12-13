@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static ru.unn.NewtonMethod.viewModel.NewtonMethodRegexMatcher.matchesPattern;
+import static ru.unn.NewtonMethod.viewModel.NewtonMethodViewModel.*;
 
 public class NewtonMethodViewModelTests {
     private NewtonMethodViewModel viewModel;
@@ -28,7 +29,7 @@ public class NewtonMethodViewModelTests {
 
     @Test
     public void isStatusWaitingInTheBeginning() {
-        assertEquals(NewtonMethodViewModel.Status.WAITING.getMessage(), viewModel.getStatus());
+        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
     }
 
     private void inputData() {
@@ -42,40 +43,38 @@ public class NewtonMethodViewModelTests {
     public void isStatusReadyWhenFieldsAreFill() {
         inputData();
 
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
-        assertEquals(NewtonMethodViewModel.Status.READY.getMessage(), viewModel.getStatus());
+        assertEquals(Status.READY.toString(), viewModel.getStatus());
     }
 
     @Test
     public void canReportBadFormatRange() {
         viewModel.setLeftPointOfRange("a");
 
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
-        assertEquals(NewtonMethodViewModel.Status.BAD_FORMAT_RANGE.getMessage(),
-                    viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT_RANGE.toString(), viewModel.getStatus());
     }
 
     @Test
     public void canReportBadFormatFunction() {
         viewModel.setFunction("x+x(");
 
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
-        assertEquals(NewtonMethodViewModel.Status.BAD_FORMAT_FUNCTION.getMessage(),
-                    viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT_FUNCTION.toString(), viewModel.getStatus());
     }
 
     @Test
     public void canCleanStatusIfParseIsOK() {
         viewModel.setRightPointOfRange("a");
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
         viewModel.setRightPointOfRange("1.0");
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
-        assertEquals(NewtonMethodViewModel.Status.WAITING.getMessage(), viewModel.getStatus());
+        assertEquals(Status.WAITING.toString(), viewModel.getStatus());
     }
 
     @Test
@@ -87,7 +86,7 @@ public class NewtonMethodViewModelTests {
     public void isCalculateButtonDisabledWhenFormatIsBad() {
         viewModel.setRightPointOfRange("trash");
 
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
         assertFalse(viewModel.isCalculateButtonEnabled());
     }
@@ -96,7 +95,7 @@ public class NewtonMethodViewModelTests {
     public void isCalculateButtonDisabledWhenIncorrectFunction() {
         viewModel.setFunction("x*x-2)");
 
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
         assertFalse(viewModel.isCalculateButtonEnabled());
     }
@@ -106,7 +105,7 @@ public class NewtonMethodViewModelTests {
         viewModel.setRightPointOfRange("1");
         viewModel.setLeftPointOfRange("1");
 
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
         assertFalse(viewModel.isCalculateButtonEnabled());
     }
@@ -115,9 +114,9 @@ public class NewtonMethodViewModelTests {
     public void canSetSuccessMessage() {
         inputData();
 
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
-        assertEquals(NewtonMethodViewModel.Status.SUCCESS.getMessage(), viewModel.getStatus());
+        assertEquals(Status.SUCCESS.toString(), viewModel.getStatus());
     }
 
     @Test
@@ -125,44 +124,43 @@ public class NewtonMethodViewModelTests {
         inputData();
         viewModel.setLeftPointOfRange("-1");
 
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
-        assertEquals(NewtonMethodViewModel.Status.NO_ROOT.getMessage(), viewModel.getStatus());
+        assertEquals(Status.NO_ROOT.toString(), viewModel.getStatus());
     }
 
     @Test
     public void canSetBadFormatMessage() {
         viewModel.setLeftPointOfRange("a");
 
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
-        assertEquals(NewtonMethodViewModel.Status.BAD_FORMAT_RANGE.getMessage(),
-                    viewModel.getStatus());
+        assertEquals(Status.BAD_FORMAT_RANGE.toString(), viewModel.getStatus());
     }
 
     @Test
     public void isStatusReadyWhenKeyIsNotEnter() {
         inputData();
 
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
-        assertEquals(NewtonMethodViewModel.Status.READY.getMessage(), viewModel.getStatus());
+        assertEquals(Status.READY.toString(), viewModel.getStatus());
     }
 
     @Test
     public void isStatusSuccessWhenKeyIsEnter() {
         inputData();
 
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ENTER.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
-        assertEquals(NewtonMethodViewModel.Status.SUCCESS.getMessage(), viewModel.getStatus());
+        assertEquals(Status.SUCCESS.toString(), viewModel.getStatus());
     }
 
     @Test
     public void whenEnterFunctionAndRangeCalculateButtonIsEnabled() {
         inputData();
 
-        viewModel.processKeyInTextField(NewtonMethodViewModel.KeyboardKeys.ANY.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ANY.getKey());
 
         assertTrue(viewModel.isCalculateButtonEnabled());
     }
@@ -171,7 +169,7 @@ public class NewtonMethodViewModelTests {
     public void whenCalculateRootDisplayResult() {
         inputData();
 
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
         assertEquals("-1.586", viewModel.getRoot());
     }
@@ -209,8 +207,7 @@ public class NewtonMethodViewModelTests {
         viewModel.valueFieldFocusLost();
         String logMessage = viewModel.getLog().get(0);
 
-        assertThat(logMessage, matchesPattern(".*"
-                + NewtonMethodViewModel.LogMessages.RANGE_FIELD_CHANGED + ".*"));
+        assertThat(logMessage, matchesPattern(".*" + LogMessages.RANGE_FIELD_CHANGED + ".*"));
     }
 
     @Test
@@ -220,7 +217,7 @@ public class NewtonMethodViewModelTests {
         viewModel.valueFieldFocusLost();
         String logMessage = viewModel.getLog().get(0);
 
-        assertThat(logMessage, matchesPattern(".*" + NewtonMethodViewModel.LogMessages.RANGE_FIELD_CHANGED
+        assertThat(logMessage, matchesPattern(".*" + LogMessages.RANGE_FIELD_CHANGED
                 + "\\[" + viewModel.getLeftPoint() + ";" + viewModel.getRightPoint() + "]"));
     }
 
@@ -250,8 +247,7 @@ public class NewtonMethodViewModelTests {
         viewModel.valueFieldFocusLost();
         String logMessage = viewModel.getLog().get(0);
 
-        assertThat(logMessage, matchesPattern(".*"
-                + NewtonMethodViewModel.LogMessages.FUNCTION_CHANGED + ".*"));
+        assertThat(logMessage, matchesPattern(".*" + LogMessages.FUNCTION_CHANGED + ".*"));
     }
 
     @Test
@@ -262,7 +258,7 @@ public class NewtonMethodViewModelTests {
         viewModel.valueFieldFocusLost();
         String logMessage = viewModel.getLog().get(0);
 
-        assertThat(logMessage, matchesPattern(".*" + NewtonMethodViewModel.LogMessages.FUNCTION_CHANGED
+        assertThat(logMessage, matchesPattern(".*" + LogMessages.FUNCTION_CHANGED
                 + "function \\[" + viewModel.getFunction() + "\\]; "
                 + "derivative \\[" + viewModel.getDerivative() + "\\]"));
     }
@@ -281,7 +277,7 @@ public class NewtonMethodViewModelTests {
     public void isPressingCalculateButtonAddNewMessageToLog() {
         inputData();
 
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
         assertEquals(3, viewModel.getLog().size());
     }
@@ -290,20 +286,19 @@ public class NewtonMethodViewModelTests {
     public void isLogContainProperMessageAfterPressingCalculateButton() {
         inputData();
 
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
         String logMessage = viewModel.getLog().get(2);
 
-        assertThat(logMessage, matchesPattern(".*"
-                + NewtonMethodViewModel.LogMessages.CALCULATE_BUTTON_PRESSED + ".*"));
+        assertThat(logMessage, matchesPattern(".*" + LogMessages.CALCULATE_BUTTON_PRESSED + ".*"));
     }
 
     @Test
     public void canPutSeveralLogMessages() {
         inputData();
 
-        viewModel.processKeyInTextField(10);
-        viewModel.processKeyInTextField(10);
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
         assertEquals(5, viewModel.getLog().size());
     }
@@ -312,7 +307,7 @@ public class NewtonMethodViewModelTests {
     public void isCalculateNotCalledWhenButtonIsDisabledAndFunctionFieldsEdited() {
         viewModel.setFunction("(x+3)*(x+3)-2");
 
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
         assertEquals(1, viewModel.getLog().size());
     }
@@ -321,17 +316,17 @@ public class NewtonMethodViewModelTests {
     public void isCalculateNotCalledWhenButtonIsDisabledAndRangeFieldsEdited() {
         viewModel.setRightPointOfRange("10");
 
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
         assertEquals(1, viewModel.getLog().size());
     }
 
     @Test
-    public void isCalculateNotCalledWhenButtonIsDisabledAndRangeAndFunctionFieldsEdited() {
+    public void isCalculateNotCalledWhenButtonIsDisabledAndWhenRangeAndFunctionFieldsEdited() {
         viewModel.setRightPointOfRange("10");
         viewModel.setFunction("(x+3)*(x+3)-2");
 
-        viewModel.processKeyInTextField(10);
+        viewModel.processKeyInTextField(KeyboardKeys.ENTER.getKey());
 
         assertEquals(2, viewModel.getLog().size());
     }
