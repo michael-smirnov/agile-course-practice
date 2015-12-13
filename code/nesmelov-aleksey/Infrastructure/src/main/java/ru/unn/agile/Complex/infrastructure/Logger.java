@@ -12,11 +12,11 @@ import java.util.Locale;
 public class Logger implements ILogger {
     private final String fileName;
     private final BufferedWriter writer;
-    private final String dateFormat = "yyyy-MM-dd HH:mm:ss";
+    private final String dateFormatter = "yyyy-MM-dd HH:mm:ss";
 
     private String getCurrentTime() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatter, Locale.ENGLISH);
         return dateFormat.format(calendar.getTime());
     }
 
