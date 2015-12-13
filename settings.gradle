@@ -162,6 +162,8 @@ include "code/molotkov-andrei/ViewModel"
 project(":code/molotkov-andrei/ViewModel").name = "molotkov-andrei-ViewModel"
 include "code/molotkov-andrei/View"
 project(":code/molotkov-andrei/View").name = "molotkov-andrei-View"
+include "code/molotkov-andrei/Infrastructure"
+project(":code/molotkov-andrei/Infrastructure").name = "molotkov-andrei-Infrastructure"
 
 // Moshkov Yurij
 include "code/moshkov-yuriy/Model"
