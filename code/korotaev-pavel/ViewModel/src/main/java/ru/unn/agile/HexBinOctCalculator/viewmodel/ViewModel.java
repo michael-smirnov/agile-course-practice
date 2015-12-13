@@ -117,7 +117,8 @@ public class ViewModel {
         updateLogs();
     }
 
-    public void resultSystemChanged(final NumeralSystem previousValue, final NumeralSystem replacedValue) {
+    public void resultSystemChanged(final NumeralSystem previousValue,
+                                    final NumeralSystem replacedValue) {
         if (previousValue.equals(replacedValue)) {
             return;
         }
@@ -143,7 +144,8 @@ public class ViewModel {
         }
     }
 
-    public void systemChanged(final NumeralSystem previousValue, final NumeralSystem replacedValue) {
+    public void systemChanged(final NumeralSystem previousValue,
+                              final NumeralSystem replacedValue) {
         if (previousValue.equals(replacedValue)) {
             return;
         }
