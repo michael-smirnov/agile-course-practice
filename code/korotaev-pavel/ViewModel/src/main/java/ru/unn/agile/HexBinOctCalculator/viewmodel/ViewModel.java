@@ -134,13 +134,7 @@ public class ViewModel {
 
         for (ValueCachingChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
-                StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
-                message.append("Entered numbers are: [")
-                        .append(value1.get()).append("; ")
-                        .append(system1.get()).append("; ")
-                        .append(value2.get()).append("; ")
-                        .append(system2.get()).append("]");
-                logger.log(message.toString());
+                logToString();
                 updateLogs();
 
                 listener.cache();
@@ -154,13 +148,7 @@ public class ViewModel {
             return;
         }
 
-        StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
-        message.append("Entered numbers are: [")
-                .append(value1.get()).append("; ")
-                .append(system1.get()).append("; ")
-                .append(value2.get()).append("; ")
-                .append(system2.get()).append("]");
-        logger.log(message.toString());
+        logToString();
         updateLogs();
     }
 
@@ -250,6 +238,16 @@ public class ViewModel {
             record += log + "\n";
         }
         logs.set(record);
+    }
+
+    private void logToString() {
+        StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
+        message.append("Entered numbers are: [")
+                .append(value1.get()).append("; ")
+                .append(system1.get()).append("; ")
+                .append(value2.get()).append("; ")
+                .append(system2.get()).append("]");
+        logger.log(message.toString());
     }
 
     private class ValueCachingChangeListener implements ChangeListener<String> {
