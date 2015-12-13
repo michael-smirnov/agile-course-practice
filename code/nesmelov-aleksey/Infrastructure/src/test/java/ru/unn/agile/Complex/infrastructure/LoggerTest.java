@@ -36,11 +36,11 @@ public class LoggerTest {
 
     @Test
     public void canWriteSeveralLogs() {
-        for (int i = 0; i < 10; i ++) {
+        for (int i = 0; i < 10; i++) {
             logger.addToLog("Test message " + i);
         }
 
-        for (int i = 0; i < 10; i ++) {
+        for (int i = 0; i < 10; i++) {
             assertTrue(logger.getLog().get(i).matches(".* Test message " + i + ".*"));
         }
     }
