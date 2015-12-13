@@ -11,14 +11,15 @@
         <ViewModel fx:id="viewModel" />
     </fx:define>
     <children>
-      <TextField fx:id="txtValue1" layoutX="40.0" layoutY="163.0" prefHeight="25.0" prefWidth="149.0" />
-      <TextField fx:id="txtValue2" layoutX="411.0" layoutY="163.0" prefHeight="25.0" prefWidth="150.0" />
-      <Label fx:id="lbResult" layoutX="40.0" layoutY="279.0" prefHeight="17.0" prefWidth="150.0" text="${viewModel.calcResult}" />
-      <Label fx:id="lbStatus" layoutX="226.0" layoutY="239.0" prefHeight="25.0" prefWidth="331.0" text="${viewModel.calcStatus}" />
-      <Button fx:id="btnCalc" defaultButton="true" disable="${viewModel.calcDisabled}" layoutX="226.0" layoutY="203.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Calculate" />
-      <ComboBox fx:id="cbSystem1" items="${viewModel.systems}" layoutX="40.0" layoutY="125.0" prefWidth="150.0" />
-      <ComboBox fx:id="cbSystem2" items="${viewModel.systems}" layoutX="411.0" layoutY="125.0" prefWidth="150.0" />
-      <ComboBox fx:id="cbOperation" items="${viewModel.operations}" layoutX="226.0" layoutY="163.0" prefWidth="150.0" />
-      <ComboBox fx:id="cbSystemRes" items="${viewModel.systems}" layoutX="40.0" layoutY="239.0" prefWidth="150.0" />
+      <TextField fx:id="txtValue1" layoutX="40.0" layoutY="67.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="txtValue2" layoutX="411.0" layoutY="67.0" prefHeight="25.0" prefWidth="150.0" />
+      <Label fx:id="lbResult" layoutX="40.0" layoutY="183.0" prefHeight="17.0" prefWidth="150.0" text="${viewModel.calcResult}" />
+      <Label fx:id="lbStatus" layoutX="226.0" layoutY="143.0" prefHeight="25.0" prefWidth="331.0" text="${viewModel.calcStatus}" />
+      <Button fx:id="btnCalc" defaultButton="true" disable="${viewModel.calcDisabled}" layoutX="226.0" layoutY="107.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Calculate" />
+      <ComboBox fx:id="cbSystem1" items="${viewModel.systems}" layoutX="40.0" layoutY="29.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbSystem2" items="${viewModel.systems}" layoutX="411.0" layoutY="29.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbOperation" items="${viewModel.operations}" layoutX="226.0" layoutY="67.0" prefWidth="150.0" />
+      <ComboBox fx:id="cbSystemRes" items="${viewModel.systems}" layoutX="40.0" layoutY="143.0" prefWidth="150.0" />
+      <TextArea fx:id="areaLog" text="${viewModel.logs}" editable="false" layoutX="40.0" layoutY="212.0" prefHeight="171.0" prefWidth="524.0" />
    </children>
 </AnchorPane>
