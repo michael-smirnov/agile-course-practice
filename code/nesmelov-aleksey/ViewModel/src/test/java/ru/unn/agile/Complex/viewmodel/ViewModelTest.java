@@ -265,7 +265,7 @@ public class ViewModelTest {
     public void loggerIsNotEmptyAfterAddLog() {
         setPositiveData();
 
-        viewModel.getLog().add("Test log.");
+        viewModel.addToLog("Test log.");
 
         assertFalse(viewModel.getLog().isEmpty());
     }
@@ -347,7 +347,7 @@ public class ViewModelTest {
     @Test
     public void canPutSeveralMessagesInLog() {
         for (int i = 0; i < 10; i++) {
-            viewModel.getLog().add("Log message " + i);
+            viewModel.addToLog("Log message " + i);
         }
 
         assertEquals(10, viewModel.getLog().size());
@@ -356,7 +356,8 @@ public class ViewModelTest {
     @Test
     public void logCanShowThatOperationIsChanged() {
         viewModel.onOperationChanged(Operation.ADD, Operation.DIVIDE);
-        message = LogMessage.CHANGE_OPERATION.toString() + ".*" + Operation.DIVIDE + ".*";
+        message = ".*" + LogMessage.CHANGE_OPERATION.toString() + ".*"
+                + viewModel.getOperationProperty().get();
 
         assertTrue(viewModel.getLog().get(0).matches(message));
     }

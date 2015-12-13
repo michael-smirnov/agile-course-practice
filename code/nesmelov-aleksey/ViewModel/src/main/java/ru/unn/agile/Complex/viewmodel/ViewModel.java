@@ -196,6 +196,10 @@ public class ViewModel {
         return logger.getLog();
     }
 
+    public void addToLog(final String message) {
+        logger.addToLog(message);
+    }
+
     private void refreshInputErrors() {
         errors.set(Errors.NOT_ERROR.toString());
         disabledCalculate.set(false);
