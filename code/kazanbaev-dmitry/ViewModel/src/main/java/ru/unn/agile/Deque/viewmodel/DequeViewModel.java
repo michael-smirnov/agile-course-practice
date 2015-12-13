@@ -132,7 +132,7 @@ public class DequeViewModel {
     }
 
     public enum LogMessages {
-        ACTION_PERFORMED("Occured following action: "),
+        ACTION_PERFORMED("Following action has occured: "),
         ACTION_CHANGED("Action has been changed to: ");
 
         private String description;
