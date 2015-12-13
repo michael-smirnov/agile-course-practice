@@ -12,7 +12,7 @@ import java.util.Locale;
 public class Logger implements ILogger {
     private final String fileName;
     private final BufferedWriter writer;
-    private final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private final String dateFormat = "yyyy-MM-dd HH:mm:ss";
 
     private String getCurrentTime() {
         Calendar calendar = Calendar.getInstance();
