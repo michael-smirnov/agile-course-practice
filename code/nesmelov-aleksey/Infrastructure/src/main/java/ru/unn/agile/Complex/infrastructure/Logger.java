@@ -16,7 +16,7 @@ public class Logger implements ILogger {
 
     private String getCurrentTime() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormat, Locale.ENGLISH);
         return dateFormat.format(calendar.getTime());
     }
 
