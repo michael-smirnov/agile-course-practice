@@ -177,7 +177,7 @@ public class ViewModel {
         }
 
         String message = LogMessage.PRESS_CALCULATE.toString();
-        message += "Arguments was:"
+        message += "Arguments were:"
                 + " Re1 = " + firstReal.get()
                 + " Im1 = " + firstImaginary.get()
                 + " Re2 = " + secondReal.get()

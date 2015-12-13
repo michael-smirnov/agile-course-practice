@@ -3,10 +3,14 @@ package ru.unn.agile.Complex.viewmodel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class ViewModelTest {
     private ViewModel viewModel;
+    private String message;
 
     public void setViewModel(final ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -258,10 +262,10 @@ public class ViewModelTest {
     }
 
     @Test
-    public void loggerIsNotEmptyAfterCalculate() {
+    public void loggerIsNotEmptyAfterAddLog() {
         setPositiveData();
 
-        viewModel.calculate();
+        viewModel.getLog().add("Test log.");
 
         assertFalse(viewModel.getLog().isEmpty());
     }
@@ -269,10 +273,43 @@ public class ViewModelTest {
     @Test
     public void loggerHasCorrectLogMessageAfterCalculate() {
         setPositiveData();
+        message = ".*" + LogMessage.PRESS_CALCULATE + ".*";
 
         viewModel.calculate();
 
-        assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessage.PRESS_CALCULATE + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(message));
+    }
+
+    @Test
+    public void loggerHasRealPartsAfterCalculate() {
+        setPositiveData();
+        message = ".*" + viewModel.getFirstRealProperty().get() + ".*"
+                       + viewModel.getSecondRealProperty().get() + ".*";
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(message));
+    }
+
+    @Test
+    public void loggerHasImaginaryPartsAfterCalculate() {
+        setPositiveData();
+        message = ".*" + viewModel.getFirstImaginaryProperty().get() + ".*"
+                       + viewModel.getSecondImaginaryProperty().get() + ".*";
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(message));
+    }
+
+    @Test
+    public void loggerHasResultLogMessageAfterCalculate() {
+        setPositiveData();
+        message = ".*Result was: .*";
+
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().get(0).matches(message));
     }
 
     @Test
@@ -280,45 +317,48 @@ public class ViewModelTest {
         setPositiveData();
 
         viewModel.calculate();
+        String[] parts = viewModel.getResultProperty().get().split(new String("\\+"));
+        message = ".*" + parts[0] + ".*" + parts[1] + ".*";
 
-        assertTrue(viewModel.getLog().get(0).matches(".*Result was: .*"));
+        assertTrue(viewModel.getLog().get(0).matches(message));
     }
 
     @Test
     public void loggerHasOperationTypeAfterCalculate() {
         setPositiveData();
+        message = ".*" + viewModel.getOperationProperty().get() + ".*";
 
         viewModel.calculate();
 
-        assertTrue(viewModel.getLog().get(0).matches(".*"
-                   + viewModel.getOperationProperty().get() + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(message));
     }
 
     @Test
-    public void loggerHasCorrectResulltMessageAfterZeroDivider() {
+    public void loggerHasCorrectResultMessageAfterZeroDivider() {
         setComplexNumberAndZero();
         viewModel.getOperationProperty().set(Operation.DIVIDE);
+        message = ".*" + "There was not result because of zero divider" + ".*";
 
         viewModel.calculate();
 
-        assertTrue(viewModel.getLog().get(0).matches(".*"
-                   + "There was not result because of zero divider" + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(message));
     }
 
     @Test
     public void canPutSeveralMessagesInLog() {
         for (int i = 0; i < 10; i++) {
-            viewModel.calculate();
+            viewModel.getLog().add("Log message " + i);
         }
 
         assertEquals(10, viewModel.getLog().size());
     }
 
     @Test
-    public void logShowThatOperationIsChanged() {
+    public void logCanShowThatOperationIsChanged() {
         viewModel.onOperationChanged(Operation.ADD, Operation.DIVIDE);
+        message = LogMessage.CHANGE_OPERATION.toString() + ".*" + Operation.DIVIDE + ".*";
 
-        assertTrue(viewModel.getLog().get(0).matches(".*" + Operation.DIVIDE + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(message));
     }
 
     @Test
@@ -348,35 +388,48 @@ public class ViewModelTest {
 
     @Test
     public void logContainLogMessageWhenFocusChanged() {
+        message = ".*" + LogMessage.UPDATE_INPUT + ".*";
+
         viewModel.getFirstRealProperty().set("155");
         viewModel.onInputFocusChanged();
 
-        assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessage.UPDATE_INPUT + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(message));
     }
 
     @Test
-    public void logContainNumbersWhenInputFocusChanged() {
+    public void logContainRealPartsWhenInputFocusChanged() {
         viewModel.getFirstRealProperty().set("355");
         viewModel.onInputFocusChanged();
+        message = ".*" + viewModel.getFirstRealProperty().get() + ".*"
+                       + viewModel.getSecondRealProperty().get() + ".*";
 
-        assertTrue(viewModel.getLog().get(0).matches(".*" + viewModel.getFirstRealProperty().get()
-                   + ".*" + viewModel.getFirstImaginaryProperty().get()
-                   + ".*" + viewModel.getSecondRealProperty().get()
-                   + ".*" + viewModel.getSecondImaginaryProperty().get() + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(message));
+    }
+
+    @Test
+    public void logContainImaginaryPartsWhenInputFocusChanged() {
+        viewModel.getFirstRealProperty().set("355");
+        viewModel.onInputFocusChanged();
+        message = ".*" + viewModel.getFirstImaginaryProperty().get() + ".*"
+                       + viewModel.getSecondImaginaryProperty().get() + ".*";
+
+        assertTrue(viewModel.getLog().get(0).matches(message));
     }
 
     @Test
     public void logContainErrorMessageWhenFormatIsInvalid() {
+        message = ".*" + LogMessage.GET_ERROR
+                  + viewModel.getErrorsProperty().get().toString() + ".*";
+
         viewModel.getFirstImaginaryProperty().set("abc");
 
-        assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessage.GET_ERROR
-                 + viewModel.getErrorsProperty().get().toString() + ".*"));
+        assertTrue(viewModel.getLog().get(0).matches(message));
     }
 
     @Test
     public void doNotLogErrorTwiceWhenFormatIsInvalid() {
         viewModel.getFirstImaginaryProperty().set("abc");
-        viewModel.getFirstImaginaryProperty().set("abscsd");
+        viewModel.getFirstImaginaryProperty().set("cda");
 
         assertEquals(1, viewModel.getLog().size());
     }

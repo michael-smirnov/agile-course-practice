@@ -8,6 +8,7 @@ import static junit.framework.TestCase.assertTrue;
 public class LoggerTest {
     private Logger logger;
     private static final String FILE_NAME = "./LoggerTest.log";
+    private String message;
 
     @Before
     public void setUp() {
@@ -21,29 +22,35 @@ public class LoggerTest {
 
     @Test
     public void canWriteLog() {
+        message = ".* Test message..*";
+
         logger.addToLog("Test message.");
 
-        assertTrue(logger.getLog().get(0).matches(".* Test message..*"));
+        assertTrue(logger.getLog().get(0).matches(message));
     }
 
     @Test
-    public void logIsEmptyIfNotWrite() {
+    public void logIsEmptyIfDoNotAddMessages() {
         assertTrue(logger.getLog().isEmpty());
     }
 
     @Test
     public void canWriteSeveralLogs() {
-        logger.addToLog("Test message 1.");
-        logger.addToLog("Test message 2.");
+        for (int i = 0; i < 10; i ++) {
+            logger.addToLog("Test message " + i);
+        }
 
-        assertTrue(logger.getLog().get(0).matches(".* Test message 1..*"));
-        assertTrue(logger.getLog().get(1).matches(".* Test message 2..*"));
+        for (int i = 0; i < 10; i ++) {
+            assertTrue(logger.getLog().get(i).matches(".* Test message " + i + ".*"));
+        }
     }
 
     @Test
     public void logContainDataAndTime() {
+        message = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.*";
+
         logger.addToLog("Test message.");
 
-        assertTrue(logger.getLog().get(0).matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.*"));
+        assertTrue(logger.getLog().get(0).matches(message));
     }
 }
