@@ -334,7 +334,7 @@ public class ViewModelTest {
     public void loggerHasCorrectResultMessageAfterZeroDivider() {
         setComplexNumberAndZero();
         viewModel.getOperationProperty().set(Operation.DIVIDE);
-        message = ".*" + "There was not result because of zero divider" + ".*";
+        message = ".*" + "Result is unavailable due to the zero divider" + ".*";
 
         viewModel.calculate();
 

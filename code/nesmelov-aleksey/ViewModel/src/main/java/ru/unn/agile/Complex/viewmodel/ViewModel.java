@@ -136,8 +136,8 @@ public class ViewModel {
     private void updateLog() {
         List<String> allFromLog = logger.getLog();
         String record = new String();
-        for (String logSting : allFromLog) {
-            record += logSting + "\n";
+        for (String logString : allFromLog) {
+            record += logString + "\n";
         }
         log.set(record);
     }
@@ -184,7 +184,7 @@ public class ViewModel {
                 + " Im2 = " + secondImaginary.get() + "."
                 + " Operation was: " + operation.get().toString() + ". ";
         if (errors.get().toString() == Errors.ZERO_DIVIDER.toString()) {
-            message += "There was not result because of zero divider.";
+            message += "Result is unavailable due to the zero divider.";
         } else {
             message += "Result was: " + result.get() + ".";
         }
