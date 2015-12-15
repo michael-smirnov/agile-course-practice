@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class RealLogger implements ILogger {
-    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
     private final String filename;
     private final BufferedWriter buffWriter;
 
