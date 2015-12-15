@@ -234,9 +234,9 @@ public class ViewModel {
     }
 
     private void updateLogs() {
-        List<String> fullLog = logger.getLog();
+        List<String> totalLog = logger.getLog();
         String record = new String();
-        for (String log : fullLog) {
+        for (String log : totalLog) {
             record += log + "\n";
         }
         logs.set(record);
