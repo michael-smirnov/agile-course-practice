@@ -44,8 +44,7 @@ public final class HypothecCalculator {
     private static final int HEADERS_HEIGHT = 50;
 
     private HypothecCalculator() {
-        loadAllLists();
-        backBind();
+        initialize();
 
 
         KeyAdapter keyListener = new KeyAdapter() {
@@ -156,6 +155,21 @@ public final class HypothecCalculator {
     private void backBind() {
         status.setText(viewModel.getStatus());
         compute.setEnabled(viewModel.isButtonEnabled());
+
+        monthlyPayment.setText(viewModel.getMonthlyPayment());
+        overpaymentWithFees.setText(viewModel.getOverpaymentWithFees());
+        overpayment.setText(viewModel.getOverpayment());
+
+        DefaultTableModel model = viewModel.getGraphicOfPayments();
+        graphicOfPayments.setModel(model);
+        graphicOfPayments.setPreferredSize(new Dimension(graphicOfPayments.getWidth(),
+                graphicOfPayments.getRowHeight() * model.getRowCount()));
+    }
+
+    private void initialize() {
+        loadAllLists();
+        backBind();
+
         houseCost.setText(viewModel.getHouseCost());
         downPayment.setText(viewModel.getDownPayment());
         countOfPeriods.setText(viewModel.getCountOfPeriods());
@@ -172,15 +186,6 @@ public final class HypothecCalculator {
 
         month.setText(viewModel.getStartMonth());
         year.setText(viewModel.getStartYear());
-
-        monthlyPayment.setText(viewModel.getMonthlyPayment());
-        overpaymentWithFees.setText(viewModel.getOverpaymentWithFees());
-        overpayment.setText(viewModel.getOverpayment());
-
-        DefaultTableModel model = viewModel.getGraphicOfPayments();
-        graphicOfPayments.setModel(model);
-        graphicOfPayments.setPreferredSize(new Dimension(graphicOfPayments.getWidth(),
-                graphicOfPayments.getRowHeight() * model.getRowCount()));
     }
 
     private void loadAllLists() {

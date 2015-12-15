@@ -46,7 +46,8 @@ public class ViewModelTableTest {
     }
 
     private ViewModel getViewModel() {
-        ViewModel viewModel = new ViewModel();
+        FakeHypothecLogger fakeHypothecLogger = new FakeHypothecLogger();
+        ViewModel viewModel = new ViewModel(fakeHypothecLogger);
         viewModel.setHouseCost("3300");
         viewModel.setCountOfPeriods("3");
         viewModel.setDownPayment("300");
