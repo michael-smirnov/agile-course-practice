@@ -134,7 +134,6 @@ public final class HypothecCalculator {
     }
 
     private void bind() {
-        viewModel.setStatus(status.getText());
         viewModel.setHouseCost(houseCost.getText());
         viewModel.setDownPayment(downPayment.getText());
         viewModel.setCountOfPeriods(countOfPeriods.getText());
