@@ -62,6 +62,6 @@ public class RealLoggerTests {
         realLogger.log("Test message");
         String message = realLogger.getLog().get(0);
 
-        assertTrue(Pattern.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*", message));
+        assertTrue(Pattern.matches("^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} > .*", message));
     }
 }
