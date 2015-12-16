@@ -7,9 +7,8 @@ import ru.unn.agile.HypothecsCalculator.model.Hypothec;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.containsString;
 
 public class ViewModelLoggerTests {
     private ViewModel viewModel;
@@ -52,9 +51,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Стоимость недвижимости\": " + houseCost;
 
         viewModel.setHouseCost(houseCost);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -73,9 +72,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Первоначальный взнос\": " + downPayment;
 
         viewModel.setDownPayment(downPayment);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -94,9 +93,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Срок ипотеки\": " + countOfPeriods;
 
         viewModel.setCountOfPeriods(countOfPeriods);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -115,9 +114,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Процентная ставка\": " + interestRate;
 
         viewModel.setInterestRate(interestRate);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -136,9 +135,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Единовременные комиссии\": " + flatFee;
 
         viewModel.setFlatFee(flatFee);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -157,9 +156,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Ежемесячные комиссии\": " + monthlyFee;
 
         viewModel.setMonthlyFee(monthlyFee);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -178,9 +177,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Месяц начала выплат\": " + startMonth;
 
         viewModel.setStartMonth(startMonth);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -199,9 +198,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Год начала выплат\": " + startYear;
 
         viewModel.setStartYear(startYear);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -220,9 +219,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Тип валюты\": " + currencyType;
 
         viewModel.setCurrencyType(currencyType);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -241,9 +240,9 @@ public class ViewModelLoggerTests {
         String rightMessage = "Установлено новое значение параметра \"Тип периода времени\": " + periodType;
 
         viewModel.setPeriodType(periodType);
-        List<String> log = viewModel.getLog();
+        String message = viewModel.getLog().get(0);
 
-        assertEquals(rightMessage, log.get(0));
+        assertThat(rightMessage, containsString(message));
     }
 
     @Test
@@ -255,4 +254,93 @@ public class ViewModelLoggerTests {
 
         assertEquals(0, log.size());
     }
+
+    @Test
+    public void isMessageAddedWhenInterestRateTypeChanged() {
+        Hypothec.InterestRateType interestRateType = Hypothec.InterestRateType.YEARLY;
+        String rightMessage = "Установлено новое значение параметра \"Тип процентной ставки\": " + interestRateType;
+
+        viewModel.setInterestRateType(interestRateType);
+        String message = viewModel.getLog().get(0);
+
+        assertThat(rightMessage, containsString(message));
+    }
+
+    @Test
+    public void noMessagesWhenInterestRateTypeIsTheSame() {
+        Hypothec.InterestRateType defaultInterestRateType = viewModel.getInterestRateType();
+
+        viewModel.setInterestRateType(defaultInterestRateType);
+        List<String> log = viewModel.getLog();
+
+        assertEquals(0, log.size());
+    }
+
+    @Test
+    public void isMessageAddedWhenFlatFeeTypeChanged() {
+        Hypothec.FlatFeeType flatFeeType = Hypothec.FlatFeeType.PERCENT;
+        String rightMessage = "Установлено новое значение параметра \"Тип единовременной комиссии\": " + flatFeeType;
+
+        viewModel.setFlatFeeType(flatFeeType);
+        String message = viewModel.getLog().get(0);
+
+        assertThat(rightMessage, containsString(message));
+    }
+
+    @Test
+    public void noMessagesWhenFlatFeeTypeIsTheSame() {
+        Hypothec.FlatFeeType defaultFlatFeeType = viewModel.getFlatFeeType();
+
+        viewModel.setFlatFeeType(defaultFlatFeeType);
+        List<String> log = viewModel.getLog();
+
+        assertEquals(0, log.size());
+    }
+
+    @Test
+    public void isMessageAddedWhenMonthlyFeeTypeChanged() {
+        Hypothec.MonthlyFeeType monthlyFeeType = Hypothec.MonthlyFeeType.CONSTANT_SUM;
+        String rightMessage = "Установлено новое значение параметра \"Тип ежемесячной комиссии\": " + monthlyFeeType;
+
+        viewModel.setMonthlyFeeType(monthlyFeeType);
+        String message = viewModel.getLog().get(0);
+
+        assertThat(rightMessage, containsString(message));
+    }
+
+    @Test
+    public void noMessagesWhenMonthlyFeeTypeIsTheSame() {
+        Hypothec.MonthlyFeeType defaultMonthlyFeeType = viewModel.getMonthlyFeeType();
+
+        viewModel.setMonthlyFeeType(defaultMonthlyFeeType);
+        List<String> log = viewModel.getLog();
+
+        assertEquals(0, log.size());
+    }
+
+    @Test
+    public void isMessageAddedWhenCreditTypeChanged() {
+        Hypothec.CreditType creditType = Hypothec.CreditType.ANNUITY;
+        String rightMessage = "Установлено новое значение параметра \"Тип кредита\": " + creditType;
+
+        viewModel.setCreditType(creditType);
+        String message = viewModel.getLog().get(0);
+
+        assertThat(rightMessage, containsString(message));
+    }
+
+    @Test
+    public void noMessagesWhenCreditTypeIsTheSame() {
+        Hypothec.CreditType defaultCreditType = viewModel.getCreditType();
+
+        viewModel.setCreditType(defaultCreditType);
+        List<String> log = viewModel.getLog();
+
+        assertEquals(0, log.size());
+    }
+
+
+
+
+
 }

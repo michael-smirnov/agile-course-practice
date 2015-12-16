@@ -458,6 +458,9 @@ public class ViewModel {
     }
 
     public void setInterestRateType(final Hypothec.InterestRateType interestRateType) {
+        if (interestRateType != this.interestRateType) {
+            logParameterChange("\"Тип процентной ставки\": " + interestRateType);
+        }
         this.interestRateType = interestRateType;
     }
 
@@ -466,6 +469,9 @@ public class ViewModel {
     }
 
     public void setFlatFeeType(final Hypothec.FlatFeeType flatFeeType) {
+        if (flatFeeType != this.flatFeeType) {
+            logParameterChange("\"Тип единовременной комиссии\": " + flatFeeType);
+        }
         this.flatFeeType = flatFeeType;
     }
 
@@ -474,6 +480,9 @@ public class ViewModel {
     }
 
     public void setMonthlyFeeType(final Hypothec.MonthlyFeeType monthlyFeeType) {
+        if (monthlyFeeType != this.monthlyFeeType) {
+            logParameterChange("\"Тип ежемесячной комиссии\": " + monthlyFeeType);
+        }
         this.monthlyFeeType = monthlyFeeType;
     }
 
@@ -482,6 +491,9 @@ public class ViewModel {
     }
 
     public void setCreditType(final Hypothec.CreditType creditType) {
+        if (creditType != this.creditType) {
+            logParameterChange("\"Тип кредита\": " + creditType);
+        }
         this.creditType = creditType;
     }
 
