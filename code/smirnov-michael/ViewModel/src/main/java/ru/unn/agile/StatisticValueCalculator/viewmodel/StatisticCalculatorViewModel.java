@@ -72,7 +72,7 @@ public class StatisticCalculatorViewModel {
         setLogger(new DefaultLogger());
     }
 
-    public StatisticCalculatorViewModel(ILoggerOfStatisticCalculator logger) {
+    public StatisticCalculatorViewModel(final ILoggerOfStatisticCalculator logger) {
         this();
 
         if (logger == null) {
@@ -445,7 +445,8 @@ public class StatisticCalculatorViewModel {
 class DefaultLogger implements ILoggerOfStatisticCalculator {
 
     @Override
-    public void addMessage(String description) {
+    public void addMessage(final String description) {
+        final String message = "This method doesn't do anything";
     }
 
     @Override
