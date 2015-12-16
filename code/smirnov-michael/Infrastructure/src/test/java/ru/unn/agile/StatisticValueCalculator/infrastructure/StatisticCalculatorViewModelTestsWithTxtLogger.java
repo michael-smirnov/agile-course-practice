@@ -7,8 +7,8 @@ public class StatisticCalculatorViewModelTestsWithTxtLogger
         extends StatisticCalculatorViewModelTestsOnLogging {
     @Override
     public void setUp() {
-        StatisticCalculatorViewModel viewModel = new StatisticCalculatorViewModel();
-        viewModel.setLogger(new TxtLoggerOfStatisticCalculator("StatisticCalculatorLogger.log"));
+        StatisticCalculatorViewModel viewModel = new StatisticCalculatorViewModel(
+                new TxtLoggerOfStatisticCalculator("StatisticCalculatorLogger.log"));
         super.setViewModel(viewModel);
     }
 }

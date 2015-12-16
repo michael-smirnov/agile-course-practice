@@ -23,6 +23,7 @@ public class StatisticCalculatorViewModelTests {
 
     @Test
     public void checkSetDefaultValuesWhenJustStarted() {
+        assertEquals(viewModel.getLog().get(0), "Real logger is not set");
         assertEquals(viewModel.nameOfCalculatedStatisticProperty().get(), "");
         assertEquals(viewModel.valueOfCalculatedStatisticProperty().get(), "");
         assertEquals(viewModel.inputRowErrorProperty().get(), InputNote.VALID_INPUT);
@@ -34,11 +35,6 @@ public class StatisticCalculatorViewModelTests {
         ObservableList<StatisticValue> statisticsList =
                 FXCollections.observableArrayList(StatisticValue.values());
         assertEquals(viewModel.getListOfAvailableStatistics(), statisticsList);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void throwsWhenTryToGetLogAndLoggerIsNotSet() {
-        viewModel.getLog();
     }
 
     @Test

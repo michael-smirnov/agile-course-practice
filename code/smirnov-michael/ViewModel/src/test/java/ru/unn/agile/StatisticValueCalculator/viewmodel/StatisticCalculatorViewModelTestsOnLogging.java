@@ -15,8 +15,7 @@ public class StatisticCalculatorViewModelTestsOnLogging {
 
     @Before
     public void setUp() {
-        viewModel = new StatisticCalculatorViewModel();
-        viewModel.setLogger(new FakeLoggerOfStatisticCalculator());
+        viewModel = new StatisticCalculatorViewModel(new FakeLoggerOfStatisticCalculator());
     }
 
     @Test
