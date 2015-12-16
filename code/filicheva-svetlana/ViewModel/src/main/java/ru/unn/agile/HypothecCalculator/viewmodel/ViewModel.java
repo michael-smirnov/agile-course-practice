@@ -403,6 +403,9 @@ public class ViewModel {
     }
 
     public void setInterestRate(final String interestRate) {
+        if (interestRate != this.interestRate) {
+            logParameterChange("\"Процентная ставка\": " + interestRate);
+        }
         this.interestRate = interestRate;
     }
 
@@ -411,6 +414,9 @@ public class ViewModel {
     }
 
     public void setFlatFee(final String flatFee) {
+        if (flatFee != this.flatFee) {
+            logParameterChange("\"Единовременные комиссии\": " + flatFee);
+        }
         this.flatFee = flatFee;
     }
 
@@ -419,6 +425,9 @@ public class ViewModel {
     }
 
     public void setMonthlyFee(final String monthlyFee) {
+        if (monthlyFee != this.monthlyFee) {
+            logParameterChange("\"Ежемесячные комиссии\": " + monthlyFee);
+        }
         this.monthlyFee = monthlyFee;
     }
 
@@ -427,6 +436,9 @@ public class ViewModel {
     }
 
     public void setCurrencyType(final Hypothec.CurrencyType currencyType) {
+        if (currencyType != this.currencyType) {
+            logParameterChange("\"Тип валюты\": " + currencyType);
+        }
         this.currencyType = currencyType;
     }
 
@@ -435,6 +447,9 @@ public class ViewModel {
     }
 
     public void setPeriodType(final Hypothec.PeriodType periodType) {
+        if (periodType != this.periodType) {
+            logParameterChange("\"Тип периода времени\": " + periodType);
+        }
         this.periodType = periodType;
     }
 
@@ -475,6 +490,9 @@ public class ViewModel {
     }
 
     public void setStartMonth(final String startMonth) {
+        if (startMonth != this.startMonth) {
+            logParameterChange("\"Месяц начала выплат\": " + startMonth);
+        }
         this.startMonth = startMonth;
     }
 
@@ -483,6 +501,9 @@ public class ViewModel {
     }
 
     public void setStartYear(final String startYear) {
+        if (startYear != this.startYear) {
+            logParameterChange("\"Год начала выплат\": " + startYear);
+        }
         this.startYear = startYear;
     }
 
