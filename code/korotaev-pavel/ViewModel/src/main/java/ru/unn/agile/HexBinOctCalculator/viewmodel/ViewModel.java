@@ -96,7 +96,7 @@ public class ViewModel {
                 finalSystem.get()).getValue().toString());
         calcStatus.set(Status.SUCCESS.toString());
 
-        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
+        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_BUTTON_WAS_PRESSED);
         message.append("Entered numbers")
                 .append(": Value1 = ").append(value1.get())
                 .append("; System1 = ").append(system1.get())
@@ -122,7 +122,7 @@ public class ViewModel {
         if (previousValue.equals(replacedValue)) {
             return;
         }
-        StringBuilder message = new StringBuilder(LogMessages.RESULT_SYSTEM_WAS_CHANGED);
+        StringBuilder message = new StringBuilder(LogMessages.RESULT_NUMERAL_SYSTEM_WAS_CHANGED);
         message.append(replacedValue.toString());
         logger.log(message.toString());
         updateLogs();
@@ -132,7 +132,6 @@ public class ViewModel {
         if (!previousValue && replacedValue) {
             return;
         }
-
         for (ValueCachingChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
                 logToString();
@@ -289,10 +288,11 @@ enum Status {
 }
 
 final class LogMessages {
-    public static final String CALCULATE_WAS_PRESSED = "Calculate. ";
+    public static final String CALCULATE_BUTTON_WAS_PRESSED = "Calculate. ";
     public static final String OPERATION_WAS_CHANGED = "Operation was changed to ";
-    public static final String RESULT_SYSTEM_WAS_CHANGED = "Result system was changed to ";
-    public static final String EDITING_FINISHED = "Updated input. ";
+    public static final String RESULT_NUMERAL_SYSTEM_WAS_CHANGED =
+            "Result numeral system was changed to ";
+    public static final String EDITING_FINISHED = "Input data were updated. ";
 
     private LogMessages() {
 

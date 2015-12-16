@@ -199,7 +199,7 @@ public class ViewModelTests {
         viewModel.calculate();
         String message = viewModel.getLog().get(0);
 
-        assertThat(message, containsString(LogMessages.CALCULATE_WAS_PRESSED));
+        assertThat(message, containsString(LogMessages.CALCULATE_BUTTON_WAS_PRESSED));
     }
 
     @Test
@@ -261,7 +261,7 @@ public class ViewModelTests {
         viewModel.resultSystemChanged(NumeralSystem.HEX, NumeralSystem.BIN);
         String message = viewModel.getLog().get(0);
 
-        assertThat(message, containsString(LogMessages.RESULT_SYSTEM_WAS_CHANGED));
+        assertThat(message, containsString(LogMessages.RESULT_NUMERAL_SYSTEM_WAS_CHANGED));
     }
 
     @Test
