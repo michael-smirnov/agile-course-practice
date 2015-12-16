@@ -34,7 +34,7 @@ public class ViewModelLoggerTests {
 
     @Test (expected = IllegalArgumentException.class)
     public void cantCreateViewModelWithoutLogger() {
-        ViewModel viewModel = new ViewModel(null);
+        new ViewModel(null);
     }
 
     @Test
@@ -55,10 +55,49 @@ public class ViewModelLoggerTests {
     }
 
     @Test
-    public void noMessagesWhenHouseCostIsSame() {
+    public void noMessagesWhenHouseCostIsTheSame() {
         viewModel.setHouseCost("");
         List<String> log = viewModel.getLog();
 
         assertEquals(0, log.size());
    }
+
+    @Test
+    public void isMessageAddedWhenDownPaymentChanged() {
+        String rightMessage = "Установлено новое значение параметра \"Первоначальный взнос\": 20";
+
+        viewModel.setDownPayment("20");
+        List<String> log = viewModel.getLog();
+
+        assertEquals(rightMessage, log.get(0));
+    }
+
+    @Test
+    public void noMessagesWhenDownPaymentIsTheSame() {
+        viewModel.setDownPayment("0");
+        List<String> log = viewModel.getLog();
+
+        assertEquals(0, log.size());
+    }
+
+    @Test
+    public void isMessageAddedWhenCountOfPeriodsChanged() {
+        String rightMessage = "Установлено новое значение параметра \"Срок ипотеки\": 12";
+
+        viewModel.setCountOfPeriods("12");
+        List<String> log = viewModel.getLog();
+
+        assertEquals(rightMessage, log.get(0));
+    }
+
+    @Test
+    public void noMessagesWhenCountOfPeriodsIsTheSame() {
+        viewModel.setCountOfPeriods("");
+        List<String> log = viewModel.getLog();
+
+        assertEquals(0, log.size());
+    }
+
+
+
 }

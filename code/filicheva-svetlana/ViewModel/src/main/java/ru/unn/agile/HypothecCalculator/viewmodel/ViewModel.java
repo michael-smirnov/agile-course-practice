@@ -381,6 +381,9 @@ public class ViewModel {
     }
 
     public void setDownPayment(final String downPayment) {
+        if (downPayment != this.downPayment) {
+            logParameterChange("\"Первоначальный взнос\": " + downPayment);
+        }
         this.downPayment = downPayment;
     }
 
@@ -389,6 +392,9 @@ public class ViewModel {
     }
 
     public void setCountOfPeriods(final String countOfPeriods) {
+        if (countOfPeriods != this.countOfPeriods) {
+            logParameterChange("\"Срок ипотеки\": " + countOfPeriods);
+        }
         this.countOfPeriods = countOfPeriods;
     }
 
