@@ -6,7 +6,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class TriangleExceptionsTests {
@@ -20,15 +19,6 @@ public class TriangleExceptionsTests {
     @Test
     public void canCreateNewTriangle() {
         assertNotNull(triangle);
-    }
-
-    @Test
-    public void canBuildNonDegenerateTriangle() throws Exception {
-        List<Double> coordinates1 = triangle.getCoordinatesOfPoint1();
-        List<Double> coordinates2 = triangle.getCoordinatesOfPoint2();
-        List<Double> coordinates3 = triangle.getCoordinatesOfPoint3();
-        assertEquals(triangle.isPossibleToBuildNondegenerateTriangle(coordinates1,
-                coordinates2, coordinates3), true);
     }
 
     @Test
@@ -67,6 +57,12 @@ public class TriangleExceptionsTests {
     public void canFindAngles() throws Exception {
         List<Double> angles = triangle.getAngles();
         assertNotNull(angles);
+    }
+
+    @Test(expected = TriangleExceptions.class)
+    public void canBuildNonDegenerateTriangle() throws Exception {
+        List<Double> coordinates1 = triangle.getCoordinatesOfPoint1();
+        Triangle triangleException = new Triangle(coordinates1, coordinates1, coordinates1, 3);
     }
 
     @Test(expected = Exception.class)

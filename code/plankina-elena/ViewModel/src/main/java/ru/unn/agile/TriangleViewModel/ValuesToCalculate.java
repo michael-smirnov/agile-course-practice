@@ -21,13 +21,4 @@ public enum ValuesToCalculate {
     public String toString() {
         return name;
     }
-
-/*    public static ValuesToCalculate getOption(final String valueToCalculate) {
-        for (ValuesToCalculate option: ValuesToCalculate.values()) {
-            if (option.toString().equals(valueToCalculate)) {
-                return option;
-            }
-        }
-        throw new RuntimeException("Unknown option");
-    }*/
 }

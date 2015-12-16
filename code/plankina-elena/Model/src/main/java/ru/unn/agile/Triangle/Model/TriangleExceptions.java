@@ -1,15 +1,20 @@
 package ru.unn.agile.Triangle.model;
 
-public enum TriangleExceptions {
-    DIFFERENT_DIMENSIONS("Points have different dimensions!"),
-    DEGENERATE_TRIANGLE("Triangle is degenerate!"),
-    LENGTH_OVERFLOW("Overflow when counting length!"),
-    PERIMETER_OVERFLOW("Overflow when counting perimeter!"),
-    SQUARE_OVERFLOW("Overflow when counting square!");
+public class TriangleExceptions extends Exception {
+    public static final String DIFFERENT_DIMENSIONS = "Points have different dimensions!";
+    public static final String DEGENERATE_TRIANGLE = "Triangle is degenerate!";
+    public static final String LENGTH_OVERFLOW = "Overflow when counting length!";
+    public static final String PERIMETER_OVERFLOW = "Overflow when counting perimeter!";
+    public static final String SQUARE_OVERFLOW = "Overflow when counting square!";
 
     private final String name;
 
-    TriangleExceptions(final String name) {
+
+    public TriangleExceptions() {
+        name = "";
+    }
+
+    public TriangleExceptions(final String name) {
         this.name = name;
     }
 

@@ -188,77 +188,78 @@ public class TriangleViewModel {
 
     public void compute() throws Exception {
         double resultDouble;
-        if (checkInput()) {
-            Triangle triangle = setTriangle();
-            cleanOutput();
-            switch (valueToCalculate) {
-                case PERIMETER:
-                    try {
-                        resultDouble = triangle.getPerimeter();
-                        result = String.format("%.3f", resultDouble);
-                    } catch (Exception e) {
-                        status = TriangleExceptions.PERIMETER_OVERFLOW.toString();
-                    }
-                    break;
-                case SQUARE:
-                    try {
-                        resultDouble = triangle.getSquare();
-                        result = String.format("%.3f", resultDouble);
-                    } catch (Exception e) {
-                        status = TriangleExceptions.SQUARE_OVERFLOW.toString();
-                    }
-                    break;
-                case LENGTH_1_2:
-                    try {
-                        resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint1(),
-                                triangle.getCoordinatesOfPoint2());
-                        result = String.format("%.3f", resultDouble);
-                    } catch (Exception e) {
-                        status = TriangleExceptions.LENGTH_OVERFLOW.toString();
-                    }
-                    break;
-                case LENGTH_2_3:
-                    try {
-                        resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint2(),
-                                triangle.getCoordinatesOfPoint3());
-                        result = String.format("%.3f", resultDouble);
-                    } catch (Exception e) {
-                        status = TriangleExceptions.LENGTH_OVERFLOW.toString();
-                    }
-                    break;
-                case LENGTH_1_3:
-                    try {
-                        resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint1(),
-                                triangle.getCoordinatesOfPoint3());
-                        result = String.format("%.3f", resultDouble);
-                    } catch (Exception e) {
-                        status = TriangleExceptions.LENGTH_OVERFLOW.toString();
-                    }
-                    break;
-                case MEDIANS:
-                    List<Double> medians = triangle.getMedians();
-                    result = medians.toString();
-                    break;
-                case ALTITUDES:
-                    List<Double> altitudes = triangle.getAltitudes();
-                    result = altitudes.toString();
-                    break;
-                case BISECTRIECES:
-                    List<Double> bisectrieces = triangle.getBisectrices();
-                    result = bisectrieces.toString();
-                    break;
-                case ANGLES:
-                    List<Double> angles = triangle.getAngles();
-                    result = angles.toString();
-                    break;
-                default:
-                        break;
-            }
-            status = Status.SUCCESS;
+        if (!checkInput()) {
+            return;
         }
+        Triangle triangle = setTriangle();
+        cleanOutput();
+        switch (valueToCalculate) {
+            case PERIMETER:
+                try {
+                    resultDouble = triangle.getPerimeter();
+                    result = String.format("%.3f", resultDouble);
+                } catch (Exception e) {
+                    status = TriangleExceptions.PERIMETER_OVERFLOW.toString();
+                }
+                break;
+            case SQUARE:
+                try {
+                    resultDouble = triangle.getSquare();
+                    result = String.format("%.3f", resultDouble);
+                } catch (Exception e) {
+                    status = TriangleExceptions.SQUARE_OVERFLOW.toString();
+                }
+                break;
+            case LENGTH_1_2:
+                try {
+                    resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint1(),
+                            triangle.getCoordinatesOfPoint2());
+                    result = String.format("%.3f", resultDouble);
+                } catch (Exception e) {
+                    status = TriangleExceptions.LENGTH_OVERFLOW.toString();
+                }
+                break;
+            case LENGTH_2_3:
+                try {
+                    resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint2(),
+                            triangle.getCoordinatesOfPoint3());
+                    result = String.format("%.3f", resultDouble);
+                } catch (Exception e) {
+                    status = TriangleExceptions.LENGTH_OVERFLOW.toString();
+                }
+                break;
+            case LENGTH_1_3:
+                try {
+                    resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint1(),
+                            triangle.getCoordinatesOfPoint3());
+                    result = String.format("%.3f", resultDouble);
+                } catch (Exception e) {
+                    status = TriangleExceptions.LENGTH_OVERFLOW.toString();
+                }
+                break;
+            case MEDIANS:
+                List<Double> medians = triangle.getMedians();
+                result = medians.toString();
+                break;
+            case ALTITUDES:
+                List<Double> altitudes = triangle.getAltitudes();
+                result = altitudes.toString();
+                break;
+            case BISECTRIECES:
+                List<Double> bisectrieces = triangle.getBisectrices();
+                result = bisectrieces.toString();
+                break;
+            case ANGLES:
+                List<Double> angles = triangle.getAngles();
+                result = angles.toString();
+                break;
+            default:
+                    break;
+        }
+        status = Status.SUCCESS;
     }
 
-    public Triangle setTriangle() throws Exception {
+    public Triangle setTriangle() {
         List<Double> coordinatesOfPoint1 = Arrays.asList(Double.parseDouble(point1X),
                 Double.parseDouble(point1Y), Double.parseDouble(point1Z));
         List<Double> coordinatesOfPoint2 = Arrays.asList(Double.parseDouble(point2X),
@@ -268,15 +269,8 @@ public class TriangleViewModel {
         try {
             return new Triangle(coordinatesOfPoint1,
                     coordinatesOfPoint2, coordinatesOfPoint3, DIMENSION);
-        } catch (Exception e) {
-            if (!Triangle.hasEqualDimensions(coordinatesOfPoint1, coordinatesOfPoint2,
-                    coordinatesOfPoint3, DIMENSION)) {
-                status = TriangleExceptions.DIFFERENT_DIMENSIONS.toString();
-            }
-            if (!Triangle.isPossibleToBuildNondegenerateTriangle(coordinatesOfPoint1,
-                    coordinatesOfPoint2, coordinatesOfPoint3)) {
-                status = TriangleExceptions.DEGENERATE_TRIANGLE.toString();
-            }
+        } catch (TriangleExceptions e) {
+            status = e.toString();
             return null;
         }
     }
