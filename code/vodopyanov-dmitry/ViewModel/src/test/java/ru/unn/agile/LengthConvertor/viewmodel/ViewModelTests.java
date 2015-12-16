@@ -10,9 +10,15 @@ import static org.junit.Assert.*;
 public class ViewModelTests {
     private ViewModel vModel;
 
+    public void setExternalViewModel(final ViewModel vModel) {
+        this.vModel = vModel;
+    }
+
     @Before
     public void setUp() {
-        vModel = new ViewModel();
+        if (vModel == null) {
+            vModel = new ViewModel(new FakeLogger());
+        }
     }
 
     @After
@@ -66,21 +72,21 @@ public class ViewModelTests {
 
     @Test
     public void calculateButtonIsDisabledWhenProgramStarts() {
-        assertTrue(vModel.calculationDisabledProperty().get());
+        assertTrue(vModel.convertingDisabledProperty().get());
     }
 
     @Test
     public void calculateButtonIsDisabledWhenFormatIsBad() {
         vModel.inputValueProperty().set("smth");
 
-        assertTrue(vModel.calculationDisabledProperty().get());
+        assertTrue(vModel.convertingDisabledProperty().get());
     }
 
     @Test
     public void calculateButtonIsEnabledWithValidInput() {
         vModel.inputValueProperty().set("1");
 
-        assertFalse(vModel.calculationDisabledProperty().get());
+        assertFalse(vModel.convertingDisabledProperty().get());
     }
 
     @Test
@@ -108,7 +114,7 @@ public class ViewModelTests {
     public void canSetSuccessMessage() {
         vModel.inputValueProperty().set("1");
 
-        vModel.calculate();
+        vModel.convert();
 
         assertEquals(Status.SUCCESS.toString(), vModel.hintMessageProperty().get());
     }
@@ -126,7 +132,7 @@ public class ViewModelTests {
         vModel.inputUnitProperty().set(LengthUnit.INCH);
         vModel.outputUnitProperty().set(LengthUnit.FOOT);
 
-        vModel.calculate();
+        vModel.convert();
 
         assertEquals("0.08333333267716535", vModel.getOutputValue());
     }
