@@ -36,13 +36,13 @@ public class StatisticCalculatorTxtLoggerTests {
     public void canWriteMessageIntoLog() {
         String message = "Just a test message";
 
-        logger.addMessage(message);
+        logger.set(message);
         assertTrue(logger.getLog().get(0).matches(".*" + message + "$"));
     }
 
     @Test
     public void doesLogMessageContainsDateAndTime() {
-        logger.addMessage("Test");
+        logger.set("Test");
         assertTrue(logger.getLog().get(0).
                 matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*"));
     }

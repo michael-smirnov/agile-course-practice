@@ -31,9 +31,9 @@ public class TxtLoggerOfStatisticCalculator implements ILoggerOfStatisticCalcula
     }
 
     @Override
-    public void addMessage(final String description) {
+    public void set(final String message) {
         try {
-            logWriter.write(getFormattedCurrentTime() + " > " + description);
+            logWriter.write(getFormattedCurrentTime() + " > " + message);
             logWriter.newLine();
             logWriter.flush();
         } catch (IOException e) {
@@ -53,9 +53,6 @@ public class TxtLoggerOfStatisticCalculator implements ILoggerOfStatisticCalcula
                 log.add(currentLine);
                 currentLine = reader.readLine();
             }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

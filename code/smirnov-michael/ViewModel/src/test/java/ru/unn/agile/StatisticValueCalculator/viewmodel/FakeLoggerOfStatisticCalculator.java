@@ -7,8 +7,8 @@ public class FakeLoggerOfStatisticCalculator implements ILoggerOfStatisticCalcul
     private ArrayList<String> log = new ArrayList<>();
 
     @Override
-    public void addMessage(final String description) {
-        log.add(description);
+    public void set(final String message) {
+        log.add(message);
     }
 
     @Override
