@@ -11,6 +11,16 @@ public class ArabicRomanConverterViewModel {
     private String errorMessage = "";
     private String inputNumberFormat = "Arabic Number";
     private String outputNumberFormat = "Roman Number";
+    private ILogger logger;
+
+    public ArabicRomanConverterViewModel() { /**/ };
+    public ArabicRomanConverterViewModel(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("ViewModel with null logger cannot be created");
+        }
+
+        this.logger = logger;
+    }
 
     public String getOutputNumber() {
         return outputNumber;
