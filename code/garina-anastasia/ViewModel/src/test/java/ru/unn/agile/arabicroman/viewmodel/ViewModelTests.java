@@ -10,7 +10,7 @@ public class ViewModelTests {
 
     @Before
     public void setUp() {
-        viewModel = new ArabicRomanConverterViewModel();
+        viewModel = new ArabicRomanConverterViewModel(new FakeLogger());
     }
 
     @Test

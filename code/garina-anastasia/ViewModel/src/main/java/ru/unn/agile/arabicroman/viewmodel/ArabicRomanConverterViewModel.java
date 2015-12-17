@@ -1,6 +1,8 @@
 package ru.unn.agile.arabicroman.viewmodel;
 
 import ru.unn.agile.arabicroman.model.NumeralConverter;
+import java.util.List;
+
 
 public class ArabicRomanConverterViewModel {
 
@@ -47,6 +49,7 @@ public class ArabicRomanConverterViewModel {
     }
 
     public void reverseConvertingDirection() {
+        logger.addLogMessage(reverseLogMessage());
         isConvertedNumberArabic = !isConvertedNumberArabic;
         exchangeTextForIONumbers();
     }
@@ -74,6 +77,7 @@ public class ArabicRomanConverterViewModel {
     }
 
     public void convert() {
+        logger.addLogMessage(convertLogMessage());
         try {
             if (isConvertedNumberArabic) {
                 outputNumber = NumeralConverter.convert(Integer.parseInt(inputNumber));
@@ -84,4 +88,24 @@ public class ArabicRomanConverterViewModel {
             errorMessage = "Illegal input number";
         }
     }
+
+    public List<String> getLogMessages() {
+        return logger.getLogMessages();
+    }
+
+    private String convertLogMessage() {
+        return LogMessages.CONVERT_WAS_PRESSED + "with argument: " + inputNumber + "as " + inputNumberFormat;
+    }
+
+    private String reverseLogMessage() {
+        return LogMessages.REVERSE_WAS_PRESSED + "Current cinverting direction is from "
+                + inputNumberFormat + "into  " + outputNumberFormat;
+    }
+}
+
+    final class LogMessages {
+    public static final String CONVERT_WAS_PRESSED = "Convert button was pressed ";
+    public static final String REVERSE_WAS_PRESSED = "Reverse button was pressed ";
+
+    private LogMessages() { }
 }

@@ -20,4 +20,46 @@ public class ViewModelWithLoggerTests {
     public void throwsOnNullLoggerAsArgumentInViewModelConstructor() {
         viewModelWithLogger = new ArabicRomanConverterViewModel(null);
     }
+
+    @Test
+    public void byDefaultLogIsEmpty() {
+        assertEquals(0, viewModelWithLogger.getLogMessages().size());
+    }
+
+    @Test
+    public void canConvertMethodAddSomeMessageInLogger() {
+        viewModelWithLogger.convert();
+
+        assertEquals(1, viewModelWithLogger.getLogMessages().size());
+    }
+
+    @Test
+    public void canLoggerContainSeveralMessages() {
+        viewModelWithLogger.convert();
+        viewModelWithLogger.convert();
+
+        assertEquals(2, viewModelWithLogger.getLogMessages().size());
+    }
+
+    @Test
+    public void canReverseConvertingDirectionMethodAddSomeMessageInLogger() {
+        viewModelWithLogger.reverseConvertingDirection();
+
+        assertEquals(1, viewModelWithLogger.getLogMessages().size());
+    }
+
+    @Test
+    public void canConvertMethodAddProperMessageIntoLogger() {
+        viewModelWithLogger.convert();
+        String message = viewModelWithLogger.getLogMessages().get(0);
+
+        assertTrue(message.matches(".*" + LogMessages.CONVERT_WAS_PRESSED + ".*"));
+    }
+
+    public void canReverseConvertingDirectionMethodAddProperMessageIntoLogger() {
+        viewModelWithLogger.convert();
+        String message = viewModelWithLogger.getLogMessages().get(0);
+
+        assertTrue(message.matches(".*" + LogMessages.REVERSE_WAS_PRESSED + ".*"));
+    }
 }
