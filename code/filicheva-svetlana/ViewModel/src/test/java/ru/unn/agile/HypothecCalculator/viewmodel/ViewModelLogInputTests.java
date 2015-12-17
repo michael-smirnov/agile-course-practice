@@ -1,6 +1,5 @@
 package ru.unn.agile.HypothecCalculator.viewmodel;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.unn.agile.HypothecsCalculator.model.Hypothec;
@@ -10,7 +9,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.containsString;
 
-public class ViewModelLoggerTests {
+public class ViewModelLogInputTests {
     private ViewModel viewModel;
     private FakeHypothecLogger fakeLogger;
 
@@ -18,11 +17,6 @@ public class ViewModelLoggerTests {
     public void setUp() {
         fakeLogger = new FakeHypothecLogger();
         viewModel = new ViewModel(fakeLogger);
-    }
-
-    @After
-    public void tearDown() {
-        viewModel = null;
     }
 
     @Test
@@ -53,7 +47,7 @@ public class ViewModelLoggerTests {
         viewModel.setHouseCost(houseCost);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -74,7 +68,7 @@ public class ViewModelLoggerTests {
         viewModel.setDownPayment(downPayment);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -95,7 +89,7 @@ public class ViewModelLoggerTests {
         viewModel.setCountOfPeriods(countOfPeriods);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -116,7 +110,7 @@ public class ViewModelLoggerTests {
         viewModel.setInterestRate(interestRate);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -137,7 +131,7 @@ public class ViewModelLoggerTests {
         viewModel.setFlatFee(flatFee);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -158,7 +152,7 @@ public class ViewModelLoggerTests {
         viewModel.setMonthlyFee(monthlyFee);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -179,7 +173,7 @@ public class ViewModelLoggerTests {
         viewModel.setStartMonth(startMonth);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -200,7 +194,7 @@ public class ViewModelLoggerTests {
         viewModel.setStartYear(startYear);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -221,7 +215,7 @@ public class ViewModelLoggerTests {
         viewModel.setCurrencyType(currencyType);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -242,7 +236,7 @@ public class ViewModelLoggerTests {
         viewModel.setPeriodType(periodType);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -263,7 +257,7 @@ public class ViewModelLoggerTests {
         viewModel.setInterestRateType(interestRateType);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -284,7 +278,7 @@ public class ViewModelLoggerTests {
         viewModel.setFlatFeeType(flatFeeType);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -305,7 +299,7 @@ public class ViewModelLoggerTests {
         viewModel.setMonthlyFeeType(monthlyFeeType);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -326,7 +320,7 @@ public class ViewModelLoggerTests {
         viewModel.setCreditType(creditType);
         String message = viewModel.getLog().get(0);
 
-        assertThat(rightMessage, containsString(message));
+        assertThat(message, containsString(rightMessage));
     }
 
     @Test
@@ -339,7 +333,70 @@ public class ViewModelLoggerTests {
         assertEquals(0, log.size());
     }
 
+    @Test
+    public void isMessageAddedWhenCalculate() {
+        String houseCost = "1000";
+        String countOfPeriods = "18";
+        String interestRate = "1.2";
 
+        viewModel.setHouseCost(houseCost);
+        viewModel.setCountOfPeriods(countOfPeriods);
+        viewModel.setInterestRate(interestRate);
+        viewModel.compute();
+        List<String> log = viewModel.getLog();
+
+        assertEquals(4, log.size());
+    }
+
+//
+//    @Test
+//    public void isCalculateMessageContainsHouseCost() {
+//        String houseCost = "1000";
+//        String countOfPeriods = "18";
+//        String interestRate = "1.2";
+//
+//        String message = "Произведены расчеты для кредита со следующими параметрами: \n " +
+//                "\"Стоимость недвижимости\": " + houseCost + " " + viewModel.getCurrencyType() + "\n" +
+//                "\"Первоначальный взнос\": " + viewModel.getDownPayment() + " " + viewModel.getCurrencyType() + "\n" +
+//                "\"Срок ипотеки\": " + countOfPeriods + " " + viewModel.getCountOfPeriods() + "\n"
+//                + "\"Процентная ставка\": " + interestRate + " " + viewModel.getInterestRateType() + "\n"
+//                + "\"Единовременные комиссии\": " + viewModel.getFlatFee() + " " + viewModel.getFlatFeeType() + "\n"
+//                + "\"Ежемесячные комиссии\": " + viewModel.getMonthlyFee() + " " + viewModel.getMonthlyFeeType() + "\n"
+//                + "\"Начало выплат\": " + viewModel.getStartMonth() + "." + viewModel.getStartYear() + "\n"
+//                + "\"Тип кредита\": " + viewModel.getCreditType() + "\n";
+//
+//        viewModel.setHouseCost(houseCost);
+//        viewModel.setCountOfPeriods(countOfPeriods);
+//        viewModel.setInterestRate(interestRate);
+//        viewModel.compute();
+//        List<String> log = viewModel.getLog();
+//
+//
+//        List<String> log = viewModel.getLog();
+//
+//        assertEquals(0, log.size());
+//    }
+//
+////    @Test
+////    public void isMessageAddedWhenCalculate() {
+////        String houseCost = "1000";
+////        String countOfPeriods = "18";
+////        String interestRate = "1.2";
+////
+////        String rightMessage = "Произведены расчеты для кредита со следующими параметрами: \n " +
+////                "\"Стоимость недвижимости\": " + houseCost + " " + viewModel.getCurrencyType() + "\n" +
+////                "\"Первоначальный взнос\": " + viewModel.getDownPayment() + " " + viewModel.getCurrencyType() + "\n" +
+////                "\"Срок ипотеки\": " + countOfPeriods + " " + viewModel.getCountOfPeriods() + "\n"
+////                + "\"Процентная ставка\": " + interestRate + " " + viewModel.getInterestRateType() + "\n"
+////                + "\"Единовременные комиссии\": " + viewModel.getFlatFee() + " " + viewModel.getFlatFeeType() + "\n"
+////                + "\"Ежемесячные комиссии\": " + viewModel.getMonthlyFee() + " " + viewModel.getMonthlyFeeType() + "\n"
+////                + "\"Начало выплат\": " + viewModel.getStartMonth() + "." + viewModel.getStartYear() + "\n"
+////                + "\"Тип кредита\": " + viewModel.getCreditType() + "\n";
+////
+////        List<String> log = viewModel.getLog();
+////
+////        assertEquals(0, log.size());
+////    }
 
 
 

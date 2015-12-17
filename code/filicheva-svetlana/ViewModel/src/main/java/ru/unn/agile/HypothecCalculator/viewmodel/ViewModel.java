@@ -130,6 +130,7 @@ public class ViewModel {
     public void compute() {
 
         if (checkInput()) {
+            logCompute();
             Hypothec hypothec = createHypothec();
 
             creditCalculator = new CreditCalculator(hypothec);
@@ -357,6 +358,15 @@ public class ViewModel {
         logger.addMessage(LogMessage.PARAMETER_WAS_CHANGED + parameter);
     }
 
+    private void logCompute() {
+        String message = LogMessage.COMPUTE
+                + "\"Стоимость недвижимости\": " + houseCost + " " + currencyType + "\n"
+                + "\"Первоначальный взнос\": " + downPayment + " " + currencyType + "\n";
+        logger.addMessage(message);
+    }
+
+
+
     public String getStatus() {
         return status;
     }
@@ -548,6 +558,7 @@ public class ViewModel {
 
     public final class LogMessage {
         public static final String PARAMETER_WAS_CHANGED = "Установлено новое значение параметра ";
+        public static final String COMPUTE = "Произведены расчеты для кредита со следующими параметрами: \n";
 
         private LogMessage() { }
     }
