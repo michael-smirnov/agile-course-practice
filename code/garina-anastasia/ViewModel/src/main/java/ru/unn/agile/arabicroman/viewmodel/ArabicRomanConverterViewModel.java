@@ -28,6 +28,10 @@ public class ArabicRomanConverterViewModel {
         return outputNumber;
     }
 
+    public String getInputNumber() {
+        return inputNumber;
+    }
+
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -49,9 +53,9 @@ public class ArabicRomanConverterViewModel {
     }
 
     public void reverseConvertingDirection() {
-        logger.addLogMessage(reverseLogMessage());
         isConvertedNumberArabic = !isConvertedNumberArabic;
         exchangeTextForIONumbers();
+        logger.addLogMessage(reverseLogMessage());
     }
 
     private void exchangeTextForIONumbers() {
@@ -84,8 +88,10 @@ public class ArabicRomanConverterViewModel {
             } else {
                 outputNumber = String.valueOf(NumeralConverter.convert(inputNumber));
             }
+            logger.addLogMessage(successfulConvertLogMessage());
         } catch (Exception e) {
             errorMessage = "Illegal input number";
+            logger.addLogMessage(failedConvertLogMessage());
         }
     }
 
@@ -94,18 +100,32 @@ public class ArabicRomanConverterViewModel {
     }
 
     private String convertLogMessage() {
-        return LogMessages.CONVERT_WAS_PRESSED + "with argument: " + inputNumber + "as " + inputNumberFormat;
+        return LogMessages.CONVERT_WAS_PRESSED + "with argument: " + inputNumber
+                + "as " + inputNumberFormat;
     }
 
     private String reverseLogMessage() {
         return LogMessages.REVERSE_WAS_PRESSED + "Current cinverting direction is from "
                 + inputNumberFormat + "into  " + outputNumberFormat;
     }
+
+    private String successfulConvertLogMessage() {
+        return LogMessages.SUCCESSFUL_CONVERT_OPERATION + "with result" + outputNumber
+                + "as" + outputNumberFormat;
+    }
+
+    private String failedConvertLogMessage() {
+        return LogMessages.FAILED_CONVERT_OPERATION;
+    }
+
 }
 
     final class LogMessages {
-    public static final String CONVERT_WAS_PRESSED = "Convert button was pressed ";
-    public static final String REVERSE_WAS_PRESSED = "Reverse button was pressed ";
+        public static final String CONVERT_WAS_PRESSED = "Convert button was pressed ";
+        public static final String REVERSE_WAS_PRESSED = "Reverse button was pressed ";
+        public static final String SUCCESSFUL_CONVERT_OPERATION = "Converted successfully ";
+        public static final String FAILED_CONVERT_OPERATION =
+                "Convert failed due to illegal argument ";
 
-    private LogMessages() { }
+        private LogMessages() { }
 }

@@ -30,7 +30,7 @@ public class ViewModelWithLoggerTests {
     public void canConvertMethodAddSomeMessageInLogger() {
         viewModelWithLogger.convert();
 
-        assertEquals(1, viewModelWithLogger.getLogMessages().size());
+        assertNotEquals(0, viewModelWithLogger.getLogMessages().size());
     }
 
     @Test
@@ -38,14 +38,14 @@ public class ViewModelWithLoggerTests {
         viewModelWithLogger.convert();
         viewModelWithLogger.convert();
 
-        assertEquals(2, viewModelWithLogger.getLogMessages().size());
+        assertEquals(4, viewModelWithLogger.getLogMessages().size());
     }
 
     @Test
     public void canReverseConvertingDirectionMethodAddSomeMessageInLogger() {
         viewModelWithLogger.reverseConvertingDirection();
 
-        assertEquals(1, viewModelWithLogger.getLogMessages().size());
+        assertNotEquals(0, viewModelWithLogger.getLogMessages().size());
     }
 
     @Test
@@ -56,10 +56,49 @@ public class ViewModelWithLoggerTests {
         assertTrue(message.matches(".*" + LogMessages.CONVERT_WAS_PRESSED + ".*"));
     }
 
+    @Test
     public void canReverseConvertingDirectionMethodAddProperMessageIntoLogger() {
-        viewModelWithLogger.convert();
+        viewModelWithLogger.reverseConvertingDirection();
         String message = viewModelWithLogger.getLogMessages().get(0);
 
         assertTrue(message.matches(".*" + LogMessages.REVERSE_WAS_PRESSED + ".*"));
+    }
+
+    @Test
+    public void canReverseConvertingDirectionMethodAddProperDataIntoLogMessage() {
+        viewModelWithLogger.reverseConvertingDirection();
+        String message = viewModelWithLogger.getLogMessages().get(0);
+
+        assertTrue(message.matches(".*" + viewModelWithLogger.getInputNumberFormat()
+                + ".*" + viewModelWithLogger.getOutputNumberFormat() + ".*"));
+    }
+
+    @Test
+    public void canConverMethodAddProperInputDataIntoLogMessage() {
+        viewModelWithLogger.setInputNumber("5");
+        viewModelWithLogger.convert();
+        String message = viewModelWithLogger.getLogMessages().get(0);
+
+        assertTrue(message.matches(".*" + viewModelWithLogger.getInputNumber()
+                + ".*" + viewModelWithLogger.getInputNumberFormat() + ".*"));
+    }
+
+    @Test
+    public void canConverMethodAddProperMessagewhenFinisedSuccessfully() {
+        viewModelWithLogger.setInputNumber("5");
+        viewModelWithLogger.convert();
+        String message = viewModelWithLogger.getLogMessages().get(1);
+
+        assertTrue(message.matches(".*" + viewModelWithLogger.getOutputNumber()
+                + ".*" + viewModelWithLogger.getOutputNumberFormat() + ".*"));
+    }
+
+    @Test
+    public void canConverMethodAddProperMessageWhenFailed() {
+        viewModelWithLogger.setInputNumber("5fd");
+        viewModelWithLogger.convert();
+        String message = viewModelWithLogger.getLogMessages().get(1);
+
+        assertTrue(message.matches(".*" + LogMessages.FAILED_CONVERT_OPERATION + ".*"));
     }
 }
