@@ -34,7 +34,7 @@ public class Logger implements ILogger {
     }
 
     @Override
-    public void addToLog(final String message) {
+    public void log(final String message) {
         try {
             writer.write(getCurrentTime() + " : " + message + "\n");
             writer.flush();

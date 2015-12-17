@@ -188,7 +188,7 @@ public class ViewModel {
         } else {
             message += "Result was: " + result.get() + ".";
         }
-        logger.addToLog(message);
+        logger.log(message);
         updateLog();
     }
 
@@ -196,8 +196,8 @@ public class ViewModel {
         return logger.getLog();
     }
 
-    public void addToLog(final String message) {
-        logger.addToLog(message);
+    public void log(final String message) {
+        logger.log(message);
     }
 
     private void refreshInputErrors() {
@@ -221,7 +221,7 @@ public class ViewModel {
 
         if (errors.get() != lastErrors.get()) {
             String message = LogMessage.GET_ERROR.toString() + errors.get();
-            logger.addToLog(message);
+            logger.log(message);
             updateLog();
             lastErrors.set(errors.get().toString());
         }
@@ -230,7 +230,7 @@ public class ViewModel {
     public void onOperationChanged(final Operation oldValue, final Operation newValue) {
         if (!oldValue.equals(newValue)) {
             String message = LogMessage.CHANGE_OPERATION.toString() + newValue.toString();
-            logger.addToLog(message);
+            logger.log(message);
             updateLog();
         }
     }
@@ -243,7 +243,7 @@ public class ViewModel {
                         + " Im1 = " + firstImaginary.get() + ","
                         + " Re2 = " + secondReal.get() + ","
                         + " Im2 = " + secondImaginary.get() + ".";
-                logger.addToLog(message);
+                logger.log(message);
                 updateLog();
                 listener.setDefault();
                 break;

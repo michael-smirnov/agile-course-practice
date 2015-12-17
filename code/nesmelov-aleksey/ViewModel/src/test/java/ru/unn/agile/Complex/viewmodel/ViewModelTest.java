@@ -262,7 +262,7 @@ public class ViewModelTest {
     public void loggerIsNotEmptyAfterAddLog() {
         setPositiveData();
 
-        viewModel.addToLog("Test log.");
+        viewModel.log("Test log.");
 
         assertFalse(viewModel.getLog().isEmpty());
     }
@@ -344,7 +344,7 @@ public class ViewModelTest {
     @Test
     public void canPutSeveralMessagesInLog() {
         for (int i = 0; i < 10; i++) {
-            viewModel.addToLog("Log message " + i);
+            viewModel.log("Log message " + i);
         }
 
         assertEquals(10, viewModel.getLog().size());

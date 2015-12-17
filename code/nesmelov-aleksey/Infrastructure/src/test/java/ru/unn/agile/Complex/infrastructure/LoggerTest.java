@@ -24,7 +24,7 @@ public class LoggerTest {
     public void canWriteLog() {
         message = ".* Test message..*";
 
-        logger.addToLog("Test message.");
+        logger.log("Test message.");
 
         assertTrue(logger.getLog().get(0).matches(message));
     }
@@ -37,7 +37,7 @@ public class LoggerTest {
     @Test
     public void canWriteSeveralLogs() {
         for (int i = 0; i < 10; i++) {
-            logger.addToLog("Test message " + i);
+            logger.log("Test message " + i);
         }
 
         for (int i = 0; i < 10; i++) {
@@ -49,7 +49,7 @@ public class LoggerTest {
     public void logContainDataAndTime() {
         message = "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.*";
 
-        logger.addToLog("Test message.");
+        logger.log("Test message.");
 
         assertTrue(logger.getLog().get(0).matches(message));
     }
