@@ -7,7 +7,7 @@ import static org.junit.Assert.fail;
 
 public class FakeNewtonMethodTests {
     @Ignore@Test
-    public void fakeNewthonMethodTest() {
+    public void fakeNewtonMethodTest() {
         fail("Fake test");
     }
 }
