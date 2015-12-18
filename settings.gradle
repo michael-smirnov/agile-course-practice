@@ -126,6 +126,8 @@ include "code/kochanova-ksenya/View"
 project(":code/kochanova-ksenya/View").name = "kochanova-ksenya-View"
 include "code/kochanova-ksenya/ViewModel"
 project(":code/kochanova-ksenya/ViewModel").name = "kochanova-ksenya-ViewModel"
+include "code/kochanova-ksenya/Infrastructure"
+project(":code/kochanova-ksenya/Infrastructure").name = "kochanova-ksenya-Infrastructure"
 // Korotaev Aleksej
 // Korotaev Pavel
 include "code/korotaev-pavel/Model"

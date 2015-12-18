@@ -2,6 +2,7 @@ apply from:   rootDir.getAbsolutePath() + '/code/config/scripts/javafx.plugin'
 
 dependencies {
     compile project(':kochanova-ksenya-ViewModel')
+    compile project(':kochanova-ksenya-Infrastructure')
 }
 
 sourceSets {
