@@ -60,6 +60,8 @@ include "code/filicheva-svetlana/View"
 project(":code/filicheva-svetlana/View").name = "filicheva-svetlana-View"
 include "code/filicheva-svetlana/ViewModel"
 project(":code/filicheva-svetlana/ViewModel").name = "filicheva-svetlana-ViewModel"
+include "code/filicheva-svetlana/Infrastructure"
+project(":code/filicheva-svetlana/Infrastructure").name = "filicheva-svetlana-Infrastructure"
 
 // Francuzova Natalya
 
