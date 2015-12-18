@@ -15,32 +15,31 @@ import java.util.Locale;
 public class RealLogger implements ILogger {
     private static final String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
     private final String filename;
-    private final BufferedWriter buffWriter;
+    private final BufferedWriter writer;
 
     private static String now() {
-        Calendar cal = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.ENGLISH);
-        return dateFormat.format(cal.getTime());
+        return dateFormat.format(calendar.getTime());
     }
 
     public RealLogger(final String filename) {
         this.filename = filename;
-
         BufferedWriter logWriter = null;
         try {
             logWriter = new BufferedWriter(new FileWriter(filename));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        buffWriter = logWriter;
+        writer = logWriter;
     }
 
     @Override
     public void log(final String s) {
         try {
-            buffWriter.write(now() + " > " + s);
-            buffWriter.newLine();
-            buffWriter.flush();
+            writer.write(now() + " > " + s);
+            writer.newLine();
+            writer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
