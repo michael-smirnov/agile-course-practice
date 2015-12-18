@@ -6,8 +6,9 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static com.jcabi.matchers.RegexMatchers.matchesPattern;
 import static org.junit.Assert.*;
-import static ru.unn.NewtonMethod.viewModel.NewtonMethodRegexMatcher.matchesPattern;
+//import static ru.unn.NewtonMethod.viewModel.NewtonMethodRegexMatcher.matchesPattern;
 import static ru.unn.NewtonMethod.viewModel.NewtonMethodViewModel.*;
 
 public class NewtonMethodViewModelTests {

@@ -15,7 +15,6 @@ public class NewtonMethodTxtLogger implements INewtonMethodLogger {
 
     public NewtonMethodTxtLogger(final String logFileName) {
         this.logFileName = logFileName;
-
         try {
             newtonMethodLogWriter = new BufferedWriter(new FileWriter(logFileName));
         } catch (IOException e) {

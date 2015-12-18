@@ -6,9 +6,10 @@ import ru.unn.agile.NewtonMethod.infrastructure.NewtonMethodTxtLogger;
 
 import java.io.File;
 
+import static com.jcabi.matchers.RegexMatchers.matchesPattern;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
-import static ru.unn.NewtonMethod.viewModel.NewtonMethodRegexMatcher.matchesPattern;
+//import static ru.unn.NewtonMethod.viewModel.NewtonMethodRegexMatcher.matchesPattern;
 
 public class NewtonMethodTxtLoggerTests {
     private static final String LOG_FILE_NAME = "./NewtonMethod-txtLogger-tests.log";

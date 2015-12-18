@@ -5,9 +5,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
-public class FakeNewthonMethodTests {
+public class FakeNewtonMethodTests {
     @Ignore@Test
-    public void fakeNewthonMethodTast() {
+    public void fakeNewthonMethodTest() {
         fail("Fake test");
     }
 }
