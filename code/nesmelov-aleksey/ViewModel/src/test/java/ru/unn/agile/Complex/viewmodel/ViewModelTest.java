@@ -432,6 +432,20 @@ public class ViewModelTest {
         assertEquals(1, viewModel.getLog().size());
     }
 
+    @Test
+    public void logIsCorrectWhenGetErrorAndPutCorrectData() {
+        viewModel.getFirstRealProperty().set("qqq");
+        viewModel.getFirstRealProperty().set("");
+        viewModel.getFirstRealProperty().set("123");
+
+        String firstMessage = ".*Invalid format!.*";
+        String secondMessage = ".*Empty line!.*";
+
+        assertEquals(2, viewModel.getLog().size());
+        assertTrue(viewModel.getLog().get(0).matches(firstMessage));
+        assertTrue(viewModel.getLog().get(1).matches(secondMessage));
+    }
+
     private void setPositiveData() {
         viewModel.getFirstRealProperty().set("2");
         viewModel.getFirstImaginaryProperty().set("3");
