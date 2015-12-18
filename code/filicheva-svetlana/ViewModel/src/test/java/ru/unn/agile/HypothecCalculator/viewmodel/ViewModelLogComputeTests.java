@@ -13,12 +13,36 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-
 @RunWith(Parameterized.class)
 public class ViewModelLogComputeTests {
     private String message;
-    private FakeHypothecLogger fakeLogger = new FakeHypothecLogger();
-    private ViewModel viewModel = new ViewModel(fakeLogger);
+    private FakeHypothecLogger fakeLogger;
+    private ViewModel viewModel;
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][]{ {
+                "Произведены расчеты для кредита со следующими параметрами:"
+        },
+                {
+                "Стоимость недвижимости: 1000 руб."
+        }, {
+                "Первоначальный взнос: 0 руб."
+        }, {
+                "Срок ипотеки: 18 месяцев"
+        }, {
+                "Процентная ставка: 1.2 % ежемесячно"
+        }, {
+                "Единовременные комиссии: 0 % от суммы кредита"
+        }, {
+                "Ежемесячные комиссии: 0 фиксированная сумма"
+        }, {
+                "Начало выплат: 12.2015"
+        }, {
+                "Тип кредита: аннуитетный"
+        }
+        });
+    }
 
     @Before
     public void setUp() {
@@ -41,31 +65,23 @@ public class ViewModelLogComputeTests {
         viewModel.setInterestRateType(Hypothec.InterestRateType.MONTHLY);
         viewModel.setMonthlyFeeType(Hypothec.MonthlyFeeType.CONSTANT_SUM);
         viewModel.setFlatFeeType(Hypothec.FlatFeeType.PERCENT);
-        viewModel.setCreditType(Hypothec.CreditType.DIFFERENTIATED);
-    }
-
-    @Parameterized.Parameters
-    public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{ {
-                "Произведены расчеты для кредита со следующими параметрами:"
-        }, {
-                "\"Стоимость недвижимости\": 1000 руб."
-        }, {
-                "\"Первоначальный взнос\": 0 руб."
-        }
-        });
+        viewModel.setCreditType(Hypothec.CreditType.ANNUITY);
     }
 
     public ViewModelLogComputeTests(final String message) {
         this.message = message;
     }
 
+    public void setViewModel(final ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Test
     public void isComputeMessageContainsParameter() {
         viewModel.compute();
+
         List<String> log = viewModel.getLog();
         String lastMessage = log.get(log.size() - 1);
-
         assertThat(lastMessage, containsString(message));
     }
 

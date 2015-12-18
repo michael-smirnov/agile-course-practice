@@ -360,12 +360,16 @@ public class ViewModel {
 
     private void logCompute() {
         String message = LogMessage.COMPUTE
-                + "\"Стоимость недвижимости\": " + houseCost + " " + currencyType + "\n"
-                + "\"Первоначальный взнос\": " + downPayment + " " + currencyType + "\n";
+                + "Стоимость недвижимости: " + houseCost + " " + currencyType + "\n"
+                + "Первоначальный взнос: " + downPayment + " " + currencyType + "\n"
+                + "Срок ипотеки: " + countOfPeriods + " " + periodType + "\n"
+                + "Процентная ставка: " + interestRate + " " + interestRateType + "\n"
+                + "Единовременные комиссии: " + flatFee + " " + flatFeeType + "\n"
+                + "Ежемесячные комиссии: " + monthlyFee + " " + monthlyFeeType + "\n"
+                + "Начало выплат: " + startMonth + "." + startYear + "\n"
+                + "Тип кредита: " + creditType + "\n";
         logger.addMessage(message);
     }
-
-
 
     public String getStatus() {
         return status;
@@ -547,18 +551,23 @@ public class ViewModel {
 
 
     public final class Status {
-        public static final String WAITING = "Введите параметры кредита";
-        public static final String READY = "Нажмите кнопку \"Рассчитать\"";
-        public static final String BAD_FORMAT = "Введены даннные "
-                + "неверного формата ";
-        public static final String SUCCESS = "Успех полностью достигнут";
+        public static final String WAITING
+                = "Введите параметры кредита";
+        public static final String READY
+                = "Нажмите кнопку \"Рассчитать\"";
+        public static final String BAD_FORMAT
+                = "Введены даннные неверного формата ";
+        public static final String SUCCESS
+                = "Успех полностью достигнут";
 
         private Status() { }
     }
 
     public final class LogMessage {
-        public static final String PARAMETER_WAS_CHANGED = "Установлено новое значение параметра ";
-        public static final String COMPUTE = "Произведены расчеты для кредита со следующими параметрами: \n";
+        public static final String PARAMETER_WAS_CHANGED
+                = "Установлено новое значение параметра ";
+        public static final String COMPUTE
+                = "Произведены расчеты для кредита со следующими параметрами: \n";
 
         private LogMessage() { }
     }

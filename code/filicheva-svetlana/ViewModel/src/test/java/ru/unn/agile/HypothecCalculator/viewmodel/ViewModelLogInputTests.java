@@ -35,7 +35,6 @@ public class ViewModelLogInputTests {
     @Test
     public void isLogEmptyAtTheStart() {
         List<String> log = viewModel.getLog();
-
         assertEquals(0, log.size());
     }
 
@@ -45,8 +44,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Стоимость недвижимости\": " + houseCost;
 
         viewModel.setHouseCost(houseCost);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -55,8 +54,8 @@ public class ViewModelLogInputTests {
         String defaultHouseCost = viewModel.getHouseCost();
 
         viewModel.setHouseCost(defaultHouseCost);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
    }
 
@@ -66,8 +65,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Первоначальный взнос\": " + downPayment;
 
         viewModel.setDownPayment(downPayment);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -76,8 +75,8 @@ public class ViewModelLogInputTests {
         String defaultDownPayment = viewModel.getDownPayment();
 
         viewModel.setDownPayment(defaultDownPayment);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -87,8 +86,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Срок ипотеки\": " + countOfPeriods;
 
         viewModel.setCountOfPeriods(countOfPeriods);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -97,8 +96,8 @@ public class ViewModelLogInputTests {
         String defaultCountOfPeriods = viewModel.getCountOfPeriods();
 
         viewModel.setCountOfPeriods(defaultCountOfPeriods);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -108,8 +107,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Процентная ставка\": " + interestRate;
 
         viewModel.setInterestRate(interestRate);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -118,8 +117,8 @@ public class ViewModelLogInputTests {
         String defaultInterestRate = viewModel.getInterestRate();
 
         viewModel.setInterestRate(defaultInterestRate);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -129,8 +128,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Единовременные комиссии\": " + flatFee;
 
         viewModel.setFlatFee(flatFee);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -139,8 +138,8 @@ public class ViewModelLogInputTests {
         String defaultFlatFee = viewModel.getFlatFee();
 
         viewModel.setFlatFee(defaultFlatFee);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -150,8 +149,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Ежемесячные комиссии\": " + monthlyFee;
 
         viewModel.setMonthlyFee(monthlyFee);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -160,8 +159,8 @@ public class ViewModelLogInputTests {
         String defaultMonthlyFee = viewModel.getMonthlyFee();
 
         viewModel.setMonthlyFee(defaultMonthlyFee);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -171,8 +170,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Месяц начала выплат\": " + startMonth;
 
         viewModel.setStartMonth(startMonth);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -181,8 +180,8 @@ public class ViewModelLogInputTests {
         String defaultStartMonth = viewModel.getStartMonth();
 
         viewModel.setStartMonth(defaultStartMonth);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -192,8 +191,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Год начала выплат\": " + startYear;
 
         viewModel.setStartYear(startYear);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -202,8 +201,8 @@ public class ViewModelLogInputTests {
         String defaultStartYear = viewModel.getStartYear();
 
         viewModel.setStartYear(defaultStartYear);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -213,8 +212,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Тип валюты\": " + currencyType;
 
         viewModel.setCurrencyType(currencyType);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -223,8 +222,8 @@ public class ViewModelLogInputTests {
         Hypothec.CurrencyType defaultCurrencyType = viewModel.getCurrencyType();
 
         viewModel.setCurrencyType(defaultCurrencyType);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -234,8 +233,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Тип периода времени\": " + periodType;
 
         viewModel.setPeriodType(periodType);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -244,8 +243,8 @@ public class ViewModelLogInputTests {
         Hypothec.PeriodType defaultPeriodType = viewModel.getPeriodType();
 
         viewModel.setPeriodType(defaultPeriodType);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -255,8 +254,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Тип процентной ставки\": " + interestRateType;
 
         viewModel.setInterestRateType(interestRateType);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -265,8 +264,8 @@ public class ViewModelLogInputTests {
         Hypothec.InterestRateType defaultInterestRateType = viewModel.getInterestRateType();
 
         viewModel.setInterestRateType(defaultInterestRateType);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -276,8 +275,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Тип единовременной комиссии\": " + flatFeeType;
 
         viewModel.setFlatFeeType(flatFeeType);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -286,8 +285,8 @@ public class ViewModelLogInputTests {
         Hypothec.FlatFeeType defaultFlatFeeType = viewModel.getFlatFeeType();
 
         viewModel.setFlatFeeType(defaultFlatFeeType);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -297,8 +296,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Тип ежемесячной комиссии\": " + monthlyFeeType;
 
         viewModel.setMonthlyFeeType(monthlyFeeType);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -307,8 +306,8 @@ public class ViewModelLogInputTests {
         Hypothec.MonthlyFeeType defaultMonthlyFeeType = viewModel.getMonthlyFeeType();
 
         viewModel.setMonthlyFeeType(defaultMonthlyFeeType);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
@@ -318,8 +317,8 @@ public class ViewModelLogInputTests {
         String rightMessage = "Установлено новое значение параметра \"Тип кредита\": " + creditType;
 
         viewModel.setCreditType(creditType);
-        String message = viewModel.getLog().get(0);
 
+        String message = viewModel.getLog().get(0);
         assertThat(message, containsString(rightMessage));
     }
 
@@ -328,76 +327,20 @@ public class ViewModelLogInputTests {
         Hypothec.CreditType defaultCreditType = viewModel.getCreditType();
 
         viewModel.setCreditType(defaultCreditType);
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(0, log.size());
     }
 
     @Test
     public void isMessageAddedWhenCalculate() {
-        String houseCost = "1000";
-        String countOfPeriods = "18";
-        String interestRate = "1.2";
-
-        viewModel.setHouseCost(houseCost);
-        viewModel.setCountOfPeriods(countOfPeriods);
-        viewModel.setInterestRate(interestRate);
+        viewModel.setHouseCost("1000");
+        viewModel.setCountOfPeriods("18");
+        viewModel.setInterestRate("1.2");
         viewModel.compute();
-        List<String> log = viewModel.getLog();
 
+        List<String> log = viewModel.getLog();
         assertEquals(4, log.size());
     }
-
-//
-//    @Test
-//    public void isCalculateMessageContainsHouseCost() {
-//        String houseCost = "1000";
-//        String countOfPeriods = "18";
-//        String interestRate = "1.2";
-//
-//        String message = "Произведены расчеты для кредита со следующими параметрами: \n " +
-//                "\"Стоимость недвижимости\": " + houseCost + " " + viewModel.getCurrencyType() + "\n" +
-//                "\"Первоначальный взнос\": " + viewModel.getDownPayment() + " " + viewModel.getCurrencyType() + "\n" +
-//                "\"Срок ипотеки\": " + countOfPeriods + " " + viewModel.getCountOfPeriods() + "\n"
-//                + "\"Процентная ставка\": " + interestRate + " " + viewModel.getInterestRateType() + "\n"
-//                + "\"Единовременные комиссии\": " + viewModel.getFlatFee() + " " + viewModel.getFlatFeeType() + "\n"
-//                + "\"Ежемесячные комиссии\": " + viewModel.getMonthlyFee() + " " + viewModel.getMonthlyFeeType() + "\n"
-//                + "\"Начало выплат\": " + viewModel.getStartMonth() + "." + viewModel.getStartYear() + "\n"
-//                + "\"Тип кредита\": " + viewModel.getCreditType() + "\n";
-//
-//        viewModel.setHouseCost(houseCost);
-//        viewModel.setCountOfPeriods(countOfPeriods);
-//        viewModel.setInterestRate(interestRate);
-//        viewModel.compute();
-//        List<String> log = viewModel.getLog();
-//
-//
-//        List<String> log = viewModel.getLog();
-//
-//        assertEquals(0, log.size());
-//    }
-//
-////    @Test
-////    public void isMessageAddedWhenCalculate() {
-////        String houseCost = "1000";
-////        String countOfPeriods = "18";
-////        String interestRate = "1.2";
-////
-////        String rightMessage = "Произведены расчеты для кредита со следующими параметрами: \n " +
-////                "\"Стоимость недвижимости\": " + houseCost + " " + viewModel.getCurrencyType() + "\n" +
-////                "\"Первоначальный взнос\": " + viewModel.getDownPayment() + " " + viewModel.getCurrencyType() + "\n" +
-////                "\"Срок ипотеки\": " + countOfPeriods + " " + viewModel.getCountOfPeriods() + "\n"
-////                + "\"Процентная ставка\": " + interestRate + " " + viewModel.getInterestRateType() + "\n"
-////                + "\"Единовременные комиссии\": " + viewModel.getFlatFee() + " " + viewModel.getFlatFeeType() + "\n"
-////                + "\"Ежемесячные комиссии\": " + viewModel.getMonthlyFee() + " " + viewModel.getMonthlyFeeType() + "\n"
-////                + "\"Начало выплат\": " + viewModel.getStartMonth() + "." + viewModel.getStartYear() + "\n"
-////                + "\"Тип кредита\": " + viewModel.getCreditType() + "\n";
-////
-////        List<String> log = viewModel.getLog();
-////
-////        assertEquals(0, log.size());
-////    }
-
-
 
 }
