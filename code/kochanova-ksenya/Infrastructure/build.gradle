@@ -1,0 +1,9 @@
+dependencies {
+    compile project(':kochanova-ksenya-ViewModel')
+    testCompile project(':kochanova-ksenya-ViewModel').sourceSets.test.output
+}
+
+sourceSets {
+    main.java.srcDir 'src/main/java'
+    test.java.srcDir 'src/test/java'
+}
