@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FakeLogger implements ILogger {
-    private final ArrayList<String> record = new ArrayList<>();
+    private final ArrayList<String> log = new ArrayList<>();
 
     @Override
-    public void record(final String str) {
-        record.add(str);
+    public void log(final String str) {
+        log.add(str);
     }
 
     @Override
-    public List<String> getRecord() {
-        return record;
+    public List<String> getLog() {
+        return log;
     }
 }

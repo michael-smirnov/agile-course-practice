@@ -26,17 +26,17 @@ public class CurrencyConverterLogger implements ILogger {
     public CurrencyConverterLogger(final String filename) {
         this.filename = filename;
 
-        BufferedWriter recordWriter = null;
+        BufferedWriter logWriter = null;
         try {
-            recordWriter = new BufferedWriter(new FileWriter(filename));
+            logWriter = new BufferedWriter(new FileWriter(filename));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        writer = recordWriter;
+        writer = logWriter;
     }
 
     @Override
-    public void record(final String str) {
+    public void log(final String str) {
         try {
             writer.write(now() + " > " + str);
             writer.newLine();
@@ -47,22 +47,22 @@ public class CurrencyConverterLogger implements ILogger {
     }
 
     @Override
-    public List<String> getRecord() {
+    public List<String> getLog() {
         BufferedReader reader;
-        ArrayList<String> record = new ArrayList<String>();
+        ArrayList<String> log = new ArrayList<String>();
         try {
             reader = new BufferedReader(new FileReader(filename));
             String line = reader.readLine();
 
             while (line != null) {
-                record.add(line);
+                log.add(line);
                 line = reader.readLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return record;
+        return log;
     }
 
 }

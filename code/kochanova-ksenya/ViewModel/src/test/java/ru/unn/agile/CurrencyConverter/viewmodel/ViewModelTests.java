@@ -28,7 +28,7 @@ public class ViewModelTests {
 
     @Test
         public void logIsEmptyByDefault() {
-        List<String> log = viewModel.getRecord();
+        List<String> log = viewModel.getLog();
         assertTrue(log.isEmpty());
     }
 
@@ -148,7 +148,7 @@ public class ViewModelTests {
 
     @Test
     public void logIsEmptyInTheBeginning() {
-        List<String> log = viewModel.getRecord();
+        List<String> log = viewModel.getLog();
 
         assertTrue(log.isEmpty());
     }
@@ -160,7 +160,7 @@ public class ViewModelTests {
         viewModel.outputUnitProperty().set(UnitCurrency.DOLLAR);
 
         viewModel.convert();
-        String message = viewModel.getRecord().get(0);
+        String message = viewModel.getLog().get(0);
 
         assertTrue(message.matches(".*" + LogMessages.CONVERT_WAS_PRESSED + ".*"));
     }
@@ -173,7 +173,7 @@ public class ViewModelTests {
 
         viewModel.convert();
 
-        String message = viewModel.getRecord().get(0);
+        String message = viewModel.getLog().get(0);
         assertTrue(message.matches(".*" + viewModel.inputValueProperty().get()
                 + ".*" + viewModel.inputUnitProperty().get()
                 + ".*" + viewModel.outputUnitProperty().get() + ".*"));
@@ -187,7 +187,7 @@ public class ViewModelTests {
 
         viewModel.convert();
 
-        String message = viewModel.getRecord().get(0);
+        String message = viewModel.getLog().get(0);
         assertTrue(message.matches(".*POUND.*EURO.*"));
     }
 
@@ -200,7 +200,7 @@ public class ViewModelTests {
         viewModel.convert();
         viewModel.convert();
 
-        assertEquals(2, viewModel.getRecord().size());
+        assertEquals(2, viewModel.getLog().size());
     }
 
     @Test
@@ -211,7 +211,7 @@ public class ViewModelTests {
 
         viewModel.onUnitChanged(UnitCurrency.RUBLE, UnitCurrency.POUND);
 
-        String message = viewModel.getRecord().get(0);
+        String message = viewModel.getLog().get(0);
         assertTrue(message.matches(".*" + LogMessages.CURRENCY_UNIT_WAS_CHANGED + "POUND.*"));
     }
 
@@ -220,7 +220,7 @@ public class ViewModelTests {
         viewModel.onUnitChanged(UnitCurrency.RUBLE, UnitCurrency.DOLLAR);
         viewModel.onUnitChanged(UnitCurrency.POUND, UnitCurrency.POUND);
 
-        assertEquals(1, viewModel.getRecord().size());
+        assertEquals(1, viewModel.getLog().size());
     }
 
     @Test
@@ -231,7 +231,7 @@ public class ViewModelTests {
 
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
-        String message = viewModel.getRecord().get(0);
+        String message = viewModel.getLog().get(0);
         assertTrue(message.matches(".*" + LogMessages.EDITING_WAS_FINISHED
                 + "Data: "
                 + " inputValue = " + viewModel.inputValueProperty().get()
@@ -243,7 +243,7 @@ public class ViewModelTests {
     public void noRecordIfConvertButtonIsNotEnable() {
         viewModel.convert();
 
-        assertTrue(viewModel.getRecord().isEmpty());
+        assertTrue(viewModel.getLog().isEmpty());
     }
 
 }

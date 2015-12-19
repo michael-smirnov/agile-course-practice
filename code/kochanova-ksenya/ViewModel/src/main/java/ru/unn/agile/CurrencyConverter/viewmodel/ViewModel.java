@@ -91,7 +91,7 @@ public class ViewModel {
                 + " inputValue = " + inputValue.get()
                 + " inputUnit: " + inputUnit.get().toString()
                 + " outputUnit: " + outputUnit.get().toString();
-        logger.record(message.toString());
+        logger.log(message.toString());
         updateLogs();
     }
 
@@ -101,7 +101,7 @@ public class ViewModel {
         }
         String message = LogMessages.CURRENCY_UNIT_WAS_CHANGED.toString();
         message += newUnit.toString();
-        logger.record(message.toString());
+        logger.log(message.toString());
         updateLogs();
     }
 
@@ -117,7 +117,7 @@ public class ViewModel {
                         + " inputValue = " + inputValue.get()
                         + " inputUnit: " + inputUnit.get().toString()
                         + " outputUnit: " + outputUnit.get().toString();
-                logger.record(message.toString());
+                logger.log(message.toString());
                 updateLogs();
                 listener.cache();
                 break;
@@ -125,8 +125,8 @@ public class ViewModel {
         }
     }
 
-    public final List<String> getRecord() {
-        return logger.getRecord();
+    public final List<String> getLog() {
+        return logger.getLog();
     }
 
     public StringProperty logsProperty() {
@@ -137,9 +137,9 @@ public class ViewModel {
     }
 
     private void updateLogs() {
-        List<String> record = logger.getRecord();
+        List<String> log = logger.getLog();
         String note = new String();
-        for (String line : record) {
+        for (String line : log) {
             note += line + "\n";
         }
         logs.set(note);

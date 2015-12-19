@@ -39,9 +39,9 @@ public class CurrencyConverterLoggerTests {
     public void canRecordMessage() {
         String testMess = "BLA BLA BLA";
 
-        logger.record(testMess);
+        logger.log(testMess);
 
-        String message = logger.getRecord().get(0);
+        String message = logger.getLog().get(0);
         assertTrue(message.contains(testMess));
     }
 
@@ -49,10 +49,10 @@ public class CurrencyConverterLoggerTests {
     public void canRecordSeveralMessage() {
         String[] messages = {"BLA BLA BLA1", "BLA BLA BLA2"};
 
-        logger.record(messages[0]);
-        logger.record(messages[1]);
+        logger.log(messages[0]);
+        logger.log(messages[1]);
 
-        List<String> actualMessages = logger.getRecord();
+        List<String> actualMessages = logger.getLog();
         for (int i = 0; i < actualMessages.size(); i++) {
             assertTrue(actualMessages.get(i).contains(messages[i]));
         }
@@ -62,9 +62,9 @@ public class CurrencyConverterLoggerTests {
     public void isLogContainsTimeAndDate() {
         String testMess = "mimimimimi";
 
-        logger.record(testMess);
+        logger.log(testMess);
 
-        String message = logger.getRecord().get(0);
+        String message = logger.getLog().get(0);
         assertTrue(message.matches("^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} > .*"));
     }
 }
