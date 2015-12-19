@@ -1,6 +1,6 @@
 package ru.unn.agile.BitArray.view;
 
-import ru.unn.agile.BitArray.Infrastructure.BitArrayLogger;
+import ru.unn.agile.BitArray.infrastructure.BitArrayLogger;
 import ru.unn.agile.BitArray.viewmodel.ViewModel;
 import ru.unn.agile.BitArray.model.BitArray;
 
