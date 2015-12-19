@@ -60,7 +60,7 @@ public class TriangleExceptionsTests {
     }
 
     @Test(expected = TriangleExceptions.class)
-    public void canBuildNonDegenerateTriangle() throws Exception {
+    public void cantBuildNonDegenerateTriangle() throws Exception {
         List<Double> coordinates1 = triangle.getCoordinatesOfPoint1();
         Triangle triangleException = new Triangle(coordinates1, coordinates1, coordinates1, 3);
     }

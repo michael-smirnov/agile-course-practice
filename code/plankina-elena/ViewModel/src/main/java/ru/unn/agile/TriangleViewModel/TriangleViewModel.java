@@ -37,6 +37,7 @@ public class TriangleViewModel {
         point3Z = "";
         valueToCalculate = ValuesToCalculate.MEDIANS;
         result = "0.0";
+
     }
 
     public boolean isCalculateButtonEnabled() {
@@ -131,13 +132,17 @@ public class TriangleViewModel {
         return result;
     }
 
-    public boolean checkInput() {
+    public boolean checkInputAndChangeStateIfOK() {
         if (areAllFieldsOK()) {
-            status = Status.READY;
-            isCalculateButtonEnabled = true;
+            changeState();
             return  true;
         }
         return false;
+    }
+
+    public void changeState() {
+        status = Status.READY;
+        isCalculateButtonEnabled = true;
     }
 
     private boolean areAllFieldsOK() {
@@ -188,58 +193,39 @@ public class TriangleViewModel {
 
     public void compute() throws Exception {
         double resultDouble;
-        if (!checkInput()) {
+        if (!checkInputAndChangeStateIfOK()) {
             return;
         }
         Triangle triangle = setTriangle();
         cleanOutput();
+        try {
         switch (valueToCalculate) {
             case PERIMETER:
-                try {
                     resultDouble = triangle.getPerimeter();
                     result = String.format("%.3f", resultDouble);
-                } catch (Exception e) {
-                    status = TriangleExceptions.PERIMETER_OVERFLOW.toString();
-                }
                 break;
             case SQUARE:
-                try {
                     resultDouble = triangle.getSquare();
                     result = String.format("%.3f", resultDouble);
-                } catch (Exception e) {
-                    status = TriangleExceptions.SQUARE_OVERFLOW.toString();
-                }
                 break;
             case LENGTH_1_2:
-                try {
                     resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint1(),
                             triangle.getCoordinatesOfPoint2());
                     result = String.format("%.3f", resultDouble);
-                } catch (Exception e) {
-                    status = TriangleExceptions.LENGTH_OVERFLOW.toString();
-                }
                 break;
             case LENGTH_2_3:
-                try {
                     resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint2(),
                             triangle.getCoordinatesOfPoint3());
                     result = String.format("%.3f", resultDouble);
-                } catch (Exception e) {
-                    status = TriangleExceptions.LENGTH_OVERFLOW.toString();
-                }
                 break;
             case LENGTH_1_3:
-                try {
-                    resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint1(),
-                            triangle.getCoordinatesOfPoint3());
-                    result = String.format("%.3f", resultDouble);
-                } catch (Exception e) {
-                    status = TriangleExceptions.LENGTH_OVERFLOW.toString();
-                }
+                resultDouble = triangle.getLength(triangle.getCoordinatesOfPoint1(),
+                        triangle.getCoordinatesOfPoint3());
+                result = String.format("%.3f", resultDouble);
                 break;
             case MEDIANS:
-                List<Double> medians = triangle.getMedians();
-                result = medians.toString();
+                    List<Double> medians = triangle.getMedians();
+                    result = medians.toString();
                 break;
             case ALTITUDES:
                 List<Double> altitudes = triangle.getAltitudes();
@@ -257,6 +243,11 @@ public class TriangleViewModel {
                     break;
         }
         status = Status.SUCCESS;
+        } catch (TriangleExceptions e) {
+            status = e.toString();
+        } catch (NullPointerException e) {
+            status = TriangleExceptions.DEGENERATE_TRIANGLE;
+        }
     }
 
     public Triangle setTriangle() {

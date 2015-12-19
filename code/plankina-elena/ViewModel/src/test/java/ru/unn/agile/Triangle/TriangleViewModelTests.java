@@ -2,13 +2,12 @@ package ru.unn.agile.Triangle;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.unn.agile.Triangle.model.TriangleExceptions;
 import ru.unn.agile.TriangleViewModel.Status;
 import ru.unn.agile.TriangleViewModel.TriangleViewModel;
 import ru.unn.agile.TriangleViewModel.ValuesToCalculate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TriangleViewModelTests {
     private TriangleViewModel viewModel;
@@ -97,7 +96,7 @@ public class TriangleViewModelTests {
     @Test
     public void enterExampleValuesIsFinishedWithRightStatus() throws Exception {
         setExampleValues();
-        viewModel.checkInput();
+        viewModel.checkInputAndChangeStateIfOK();
         assertEquals(Status.READY, viewModel.getStatus());
     }
 
@@ -111,14 +110,36 @@ public class TriangleViewModelTests {
     @Test
     public void whenAllFieldsAreCompletedCorrectlyButtonIsEnabled() {
         setExampleValues();
-        viewModel.checkInput();
+        viewModel.checkInputAndChangeStateIfOK();
         assertTrue(viewModel.isCalculateButtonEnabled());
     }
 
     @Test
     public void whenEnterStringStatusIsBadFormat() {
         viewModel.setCoordinate1X("Ooo");
-        viewModel.checkInput();
+        viewModel.checkInputAndChangeStateIfOK();
         assertEquals(Status.BAD_FORMAT, viewModel.getStatus());
+    }
+
+    @Test
+    public void whenTriangleIsDegenerateStatusIsCorrect() throws Exception {
+        viewModel.setCoordinate1X("1");
+        viewModel.setCoordinate1Y("1");
+        viewModel.setCoordinate1Z("1");
+        viewModel.setCoordinate2X("2");
+        viewModel.setCoordinate2Y("2");
+        viewModel.setCoordinate2Z("2");
+        viewModel.setCoordinate3X("3");
+        viewModel.setCoordinate3Y("3");
+        viewModel.setCoordinate3Z("3");
+        viewModel.setValueToCalculate(ValuesToCalculate.PERIMETER);
+        viewModel.compute();
+        assertEquals(viewModel.getStatus(), TriangleExceptions.DEGENERATE_TRIANGLE.toString());
+    }
+
+    @Test
+    public void buttonIsDisabledWhenNotFieldsAreFilled() {
+        viewModel.setCoordinate1X("1");
+        assertEquals(viewModel.isCalculateButtonEnabled(), false);
     }
 }

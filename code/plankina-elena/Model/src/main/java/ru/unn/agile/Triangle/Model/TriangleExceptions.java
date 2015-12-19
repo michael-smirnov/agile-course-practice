@@ -9,11 +9,6 @@ public class TriangleExceptions extends Exception {
 
     private final String name;
 
-
-    public TriangleExceptions() {
-        name = "";
-    }
-
     public TriangleExceptions(final String name) {
         this.name = name;
     }

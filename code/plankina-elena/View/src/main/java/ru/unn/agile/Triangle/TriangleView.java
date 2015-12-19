@@ -53,10 +53,11 @@ public final class TriangleView {
         KeyAdapter keyListener = new KeyAdapter() {
             public void keyReleased(final KeyEvent e) {
                 backBind();
-                viewModel.checkInput();
+                viewModel.checkInputAndChangeStateIfOK();
                 bind();
             }
         };
+
         point1X.addKeyListener(keyListener);
         point1Y.addKeyListener(keyListener);
         point1Z.addKeyListener(keyListener);
@@ -107,7 +108,6 @@ public final class TriangleView {
         point3Y.setText(viewModel.getCoordinate3Y());
         point3Z.setText(viewModel.getCoordinate3Z());
         calculate.setEnabled(viewModel.isCalculateButtonEnabled());
-        valueToCalculate.setSelectedItem(viewModel.getValueToCalculate());
         result.setText(viewModel.getResult());
     }
 }
