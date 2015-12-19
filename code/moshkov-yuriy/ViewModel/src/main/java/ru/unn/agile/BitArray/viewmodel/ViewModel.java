@@ -1,6 +1,7 @@
 package ru.unn.agile.BitArray.viewmodel;
 
 
+import ru.unn.agile.BitArray.Infrastructure.BitArrayLogger;
 import ru.unn.agile.BitArray.model.BitArray;
 
 public class ViewModel {
@@ -13,15 +14,16 @@ public class ViewModel {
     private boolean isInitializeArrayButtonEnabled;
     private Operation operation;
     private String notification;
+    private IBitArrayLogger logger;
 
     public ViewModel() {
-        isDoOperationButtonEnabled = false;
-        firstBitArray = new BitArray(0);
-        secondBitArray = new BitArray(0);
-        resultBitArray = new BitArray(0);
-        operation = Operation.OR;
-        operation.setViewModel(this);
-        notification = Notification.EMPTY_STRING;
+        init();
+    }
+
+    public ViewModel(final IBitArrayLogger logger) {
+        init();
+
+        setLogger(logger);
     }
 
 
@@ -96,6 +98,13 @@ public class ViewModel {
         return notification;
     }
 
+    public void setLogger(IBitArrayLogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger parameter can't be null");
+        }
+        this.logger = logger;
+    }
+
     public enum Operation {
         OR("OR") {
             @Override
@@ -148,5 +157,15 @@ public class ViewModel {
         public static final String EMPTY_STRING = "";
 
         private Notification() { }
+    }
+
+    private void init() {
+        isDoOperationButtonEnabled = false;
+        firstBitArray = new BitArray(0);
+        secondBitArray = new BitArray(0);
+        resultBitArray = new BitArray(0);
+        operation = Operation.OR;
+        operation.setViewModel(this);
+        notification = Notification.EMPTY_STRING;
     }
 }

@@ -12,6 +12,10 @@ public class ViewModelTests {
     private ViewModel viewModel;
     private BitArray testBitArray;
 
+    public void setViewModel(ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void initializeViewModel() {
         viewModel = new ViewModel();
