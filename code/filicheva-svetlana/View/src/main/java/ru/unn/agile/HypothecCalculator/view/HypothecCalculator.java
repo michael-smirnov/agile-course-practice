@@ -13,6 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.*;
 
 public final class HypothecCalculator {
 
@@ -38,10 +39,12 @@ public final class HypothecCalculator {
     private JLabel monthlyPayment;
     private JLabel overpaymentWithFees;
     private JLabel overpayment;
+    private JList<String> logList;
 
-    private final ViewModel viewModel = new ViewModel();
+    private final ViewModel viewModel = new ViewModel(new TxtHypothecLogger(FILE_NAME));
 
     private static final int HEADERS_HEIGHT = 50;
+    private static final String FILE_NAME = "./HypothecCalculator.log";
 
     private HypothecCalculator() {
         initialize();
@@ -164,6 +167,10 @@ public final class HypothecCalculator {
         graphicOfPayments.setModel(model);
         graphicOfPayments.setPreferredSize(new Dimension(graphicOfPayments.getWidth(),
                 graphicOfPayments.getRowHeight() * model.getRowCount()));
+
+        java.util.List<String> log = viewModel.getLog();
+        String[] items = log.toArray(new String[log.size()]);
+        logList.setListData(items);
     }
 
     private void initialize() {

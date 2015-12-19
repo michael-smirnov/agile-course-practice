@@ -15,7 +15,7 @@ import java.util.Locale;
 public class TxtHypothecLogger implements IHypothecLogger {
     private static final String DATE_FORMAT_NOW = "dd-MM-yyyy HH:mm:ss";
     private final BufferedWriter writer;
-    final String filename;
+    private final String filename;
 
     public TxtHypothecLogger(final String filename) {
         this.filename = filename;

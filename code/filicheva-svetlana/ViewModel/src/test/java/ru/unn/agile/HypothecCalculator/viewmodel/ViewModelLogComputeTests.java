@@ -21,27 +21,7 @@ public class ViewModelLogComputeTests {
 
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
-        return Arrays.asList(new Object[][]{ {
-                "Произведены расчеты для кредита со следующими параметрами:"
-        },
-                {
-                "Стоимость недвижимости: 1000 руб."
-        }, {
-                "Первоначальный взнос: 0 руб."
-        }, {
-                "Срок ипотеки: 18 месяцев"
-        }, {
-                "Процентная ставка: 1.2 % ежемесячно"
-        }, {
-                "Единовременные комиссии: 0 % от суммы кредита"
-        }, {
-                "Ежемесячные комиссии: 0 фиксированная сумма"
-        }, {
-                "Начало выплат: 12.2015"
-        }, {
-                "Тип кредита: аннуитетный"
-        }
-        });
+        return Arrays.asList(parametersOfTests);
     }
 
     @Before
@@ -51,17 +31,17 @@ public class ViewModelLogComputeTests {
         loadExample();
     }
 
-    private void loadExample() {
+    public void loadExample() {
         viewModel.setHouseCost("1000");
-        viewModel.setCountOfPeriods("18");
-        viewModel.setDownPayment("0");
+        viewModel.setCountOfPeriods("2");
+        viewModel.setDownPayment("100");
         viewModel.setInterestRate("1.2");
-        viewModel.setFlatFee("0");
-        viewModel.setMonthlyFee("0");
+        viewModel.setFlatFee("10");
+        viewModel.setMonthlyFee("10");
         viewModel.setStartMonth("12");
-        viewModel.setStartYear("2015");
+        viewModel.setStartYear("2012");
         viewModel.setCurrencyType(Hypothec.CurrencyType.RUBLE);
-        viewModel.setPeriodType(Hypothec.PeriodType.MONTH);
+        viewModel.setPeriodType(Hypothec.PeriodType.YEAR);
         viewModel.setInterestRateType(Hypothec.InterestRateType.MONTHLY);
         viewModel.setMonthlyFeeType(Hypothec.MonthlyFeeType.CONSTANT_SUM);
         viewModel.setFlatFeeType(Hypothec.FlatFeeType.PERCENT);
@@ -84,6 +64,29 @@ public class ViewModelLogComputeTests {
         String lastMessage = log.get(log.size() - 1);
         assertThat(lastMessage, containsString(message));
     }
+
+    private static Object[][] parametersOfTests = new Object[][]{
+            {
+                    "Произведены расчеты для кредита со следующими параметрами:"
+            },
+            {
+                    "Стоимость недвижимости: 1000 руб."
+            }, {
+                    "Первоначальный взнос: 0 руб."
+            }, {
+                    "Срок ипотеки: 18 месяцев"
+            }, {
+                    "Процентная ставка: 1.2 % ежемесячно"
+            }, {
+                    "Единовременные комиссии: 0 % от суммы кредита"
+            }, {
+                    "Ежемесячные комиссии: 0 фиксированная сумма"
+            }, {
+                    "Начало выплат: 12.2015"
+            }, {
+                    "Тип кредита: аннуитетный"
+            }
+    };
 
 }
 

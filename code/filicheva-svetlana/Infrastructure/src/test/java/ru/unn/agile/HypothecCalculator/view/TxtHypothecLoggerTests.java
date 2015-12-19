@@ -79,6 +79,8 @@ public class TxtHypothecLoggerTests {
         txtHypothecLogger.addMessage(rightMessage);
 
         String actualMessage = txtHypothecLogger.getLog().get(0);
-        assertTrue(Pattern.matches("^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} > .*", actualMessage));
+        assertTrue(Pattern.matches(
+                "^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} > .*", actualMessage
+        ));
     }
 }

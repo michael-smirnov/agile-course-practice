@@ -35,41 +35,15 @@ public class ViewModel {
     private Hypothec.Builder hypothecForParsing;
     private CreditCalculator creditCalculator;
     private GraphicOfPaymentsMaker graphicOfPaymentsMaker;
-    private IHypothecLogger logger;
+    private final IHypothecLogger logger;
 
     private static final double DOUBLE_DELTA = 0.001;
 
-    public ViewModel(IHypothecLogger logger) {
+    public ViewModel(final IHypothecLogger logger) {
         if (logger == null) {
             throw new IllegalArgumentException("Logger is null");
         }
         this.logger = logger;
-
-        status = Status.WAITING;
-        isButtonEnabled = false;
-
-        houseCost = "";
-        downPayment = "0";
-        countOfPeriods = "";
-        interestRate = "";
-        flatFee = "0";
-        monthlyFee = "0";
-
-        currencyType = Hypothec.CurrencyType.DOLLAR;
-        periodType = Hypothec.PeriodType.MONTH;
-        interestRateType = Hypothec.InterestRateType.MONTHLY;
-        flatFeeType = Hypothec.FlatFeeType.CONSTANT_SUM;
-        monthlyFeeType = Hypothec.MonthlyFeeType.CREDIT_SUM_PERCENT;
-        creditType = Hypothec.CreditType.DIFFERENTIATED;
-
-        startMonth = "11";
-        startYear = "2015";
-
-        graphicOfPayments = new DefaultTableModel();
-    }
-
-    public ViewModel() {
-
 
         status = Status.WAITING;
         isButtonEnabled = false;
@@ -148,7 +122,6 @@ public class ViewModel {
     public List<String> getLog() {
         return logger.getLog();
     }
-
 
     private boolean houseCostAndCountOfPeriodsIsOK() {
         double houseCostDouble;
