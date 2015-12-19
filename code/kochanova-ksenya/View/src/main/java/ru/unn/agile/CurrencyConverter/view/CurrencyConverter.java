@@ -40,7 +40,7 @@ public class CurrencyConverter {
         inputValue.focusedProperty().addListener(focusChangeListener);
 
         inputCurrency.valueProperty().bindBidirectional(viewModel.inputUnitProperty());
-        
+
         outputCurrency.valueProperty().bindBidirectional(viewModel.outputUnitProperty());
         btnConvert.setOnAction(new EventHandler<ActionEvent>() {
             @Override
