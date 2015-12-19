@@ -54,4 +54,15 @@ public class LengthConvertorLoggerTests {
 
         assertEquals(3, lengthConvertorLogger.getLog().size());
     }
+
+    @Test
+    public void isLogContainsDateAndTime() {
+        String testMessage = "Some test log message";
+
+        lengthConvertorLogger.addLogLine(testMessage);
+
+        String logLine = lengthConvertorLogger.getLog().get(0);
+
+        assertTrue(logLine.matches("^\\[\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2}\\] .*"));
+    }
 }
