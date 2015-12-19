@@ -57,7 +57,6 @@ public final class TriangleView {
                 bind();
             }
         };
-
         point1X.addKeyListener(keyListener);
         point1Y.addKeyListener(keyListener);
         point1Z.addKeyListener(keyListener);
