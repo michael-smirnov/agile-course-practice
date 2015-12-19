@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -31,7 +30,7 @@ public final class BitArrayForm {
     private JScrollPane resultBitArrayScrollPane;
     private JTextPane infoTextPane;
     private JLabel notificationLabel;
-    private JList logList;
+    private JList<String> logList;
 
     private BitArrayForm(final ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -87,7 +86,8 @@ public final class BitArrayForm {
 
     public static void main(final String[] args) {
         JFrame frame = new JFrame("BitArrayForm");
-        frame.setContentPane(new BitArrayForm(new ViewModel(new BitArrayLogger("./BitArray.log"))).mainPanel);
+        BitArrayLogger logger = new BitArrayLogger("./BitArray.log");
+        frame.setContentPane(new BitArrayForm(new ViewModel(logger)).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

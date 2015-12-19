@@ -2,7 +2,6 @@ package ru.unn.agile.BitArray.viewmodel;
 
 import ru.unn.agile.BitArray.model.BitArray;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewModel {
@@ -64,8 +63,9 @@ public class ViewModel {
     }
 
     public void setOperation(final Operation operation) {
-        if (!this.operation.toString().equals(operation.toString()))
+        if (!this.operation.toString().equals(operation.toString())) {
             logger.log(LogMessages.OPERATION_CHANGED + operation.toString());
+        }
 
         this.operation = operation;
         operation.setViewModel(this);
@@ -105,7 +105,7 @@ public class ViewModel {
         return notification;
     }
 
-    public void setLogger(IBitArrayLogger logger) {
+    public void setLogger(final IBitArrayLogger logger) {
         if (logger == null) {
             throw new IllegalArgumentException("Logger parameter can't be null");
         }
@@ -166,12 +166,16 @@ public class ViewModel {
     public final class Notification {
         public static final String INVALID_NUMBER = "Please input number > 0";
         public static final String EMPTY_STRING = "";
+
+        private Notification() { }
     }
 
     final class LogMessages {
         public static final String OPERATION_DID = "Operation did ";
         public static final String OPERATION_CHANGED = "Operation changed to ";
         public static final String INIT_ARRAY_WITH_SIZE = "Init arrays with size ";
+
+        private LogMessages() { }
     }
 
     private void init() {

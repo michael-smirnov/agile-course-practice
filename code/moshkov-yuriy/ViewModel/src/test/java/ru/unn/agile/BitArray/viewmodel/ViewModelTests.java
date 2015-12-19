@@ -12,7 +12,7 @@ public class ViewModelTests {
     private ViewModel viewModel;
     private BitArray testBitArray;
 
-    public void setViewModel(ViewModel viewModel) {
+    public void setViewModel(final ViewModel viewModel) {
         this.viewModel = viewModel;
     }
 

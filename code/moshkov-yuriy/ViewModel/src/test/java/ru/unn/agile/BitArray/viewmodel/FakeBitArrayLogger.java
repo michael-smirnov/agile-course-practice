@@ -8,7 +8,7 @@ public class FakeBitArrayLogger implements IBitArrayLogger {
     private final ArrayList<String> log = new ArrayList<>();
 
     @Override
-    public void log(String message) {
+    public void log(final String message) {
         log.add(message);
     }
 

@@ -1,5 +1,6 @@
 dependencies {
     compile project(':moshkov-yuriy-ViewModel')
+    compile project(':moshkov-yuriy-Infrastructure')
 }
 
 sourceSets {
