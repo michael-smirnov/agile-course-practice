@@ -26,15 +26,31 @@ public class ViewModel {
             new SimpleObjectProperty<>(FXCollections.observableArrayList(UnitCurrency.values()));
 
     private final StringProperty status = new SimpleStringProperty();
+    private final StringProperty logs = new SimpleStringProperty();
 
-    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
-
+    private ILogger logger;
+    private List<ValueCachingChangeListener> valueChangedListeners;
+    public void setLogger(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger parameter can't be null");
+        }
+        this.logger = logger;
+    }
     public ViewModel() {
+        init();
+    }
+
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+        init();
+    }
+
+    private void init() {
         inputValue.set("");
         outputValue.set("");
         status.set(Status.WAITING.toString());
-        inputUnit.set(UnitCurrency.RUBLE);
-        outputUnit.set(UnitCurrency.EURO);
+        inputUnit.set(UnitCurrency.DOLLAR);
+        outputUnit.set(UnitCurrency.RUBLE);
 
         BooleanBinding couldConvert = new BooleanBinding() {
             {
@@ -42,17 +58,21 @@ public class ViewModel {
             }
             @Override
             protected boolean computeValue() {
-                return getInputStatus() == Status.READY;
+                if (getInputStatus() == Status.READY) {
+                    return true;
+                }
+                return false;
             }
         };
         convertationDisable.bind(couldConvert.not());
-        final List<StringProperty> fields = new ArrayList<StringProperty>() { {
+
+        final List<StringProperty> data = new ArrayList<StringProperty>() { {
             add(inputValue);
         } };
-
-        for (StringProperty field : fields) {
-            final ValueChangeListener listener = new ValueChangeListener();
-            field.addListener(listener);
+        valueChangedListeners = new ArrayList<>();
+        for (StringProperty val : data) {
+            final ValueCachingChangeListener listener = new ValueCachingChangeListener();
+            val.addListener(listener);
             valueChangedListeners.add(listener);
         }
     }
@@ -66,6 +86,63 @@ public class ViewModel {
         outputValue.set(outputUnit.get().convertCurrency(inputCurrency,
                 outputUnit.get()).toString());
         status.set(Status.DONE.toString());
+        String message = new String(LogMessages.CONVERT_WAS_PRESSED);
+        message += "Data:"
+                + " inputValue = " + inputValue.get()
+                + " inputUnit: " + inputUnit.get().toString()
+                + " outputUnit: " + outputUnit.get().toString();
+        logger.record(message.toString());
+        updateLogs();
+    }
+
+    public void onUnitChanged(final UnitCurrency previousUnit, final UnitCurrency newUnit) {
+        if (previousUnit.equals(newUnit)) {
+            return;
+        }
+        String message = new String(LogMessages.CURRENCY_UNIT_WAS_CHANGED);
+        message += newUnit.toString();
+        logger.record(message.toString());
+        updateLogs();
+    }
+
+    public void onFocusChanged(final Boolean previousValue, final Boolean newValue) {
+        if (!previousValue && newValue) {
+            return;
+        }
+
+        for (ValueCachingChangeListener listener : valueChangedListeners) {
+            if (listener.isChanged()) {
+                String message = new String(LogMessages.EDIT_WAS_FINISHED);
+                message += "Data: "
+                        + " inputValue = " + inputValue.get()
+                        + " inputUnit: " + inputUnit.get().toString()
+                        + " outputUnit: " + outputUnit.get().toString();
+                logger.record(message.toString());
+                updateLogs();
+                listener.cache();
+                break;
+            }
+        }
+    }
+
+    public final List<String> getRecord() {
+        return logger.getRecord();
+    }
+
+    public StringProperty logsProperty() {
+        return logs;
+    }
+    public final String getLogs() {
+        return logs.get();
+    }
+
+    private void updateLogs() {
+        List<String> record = logger.getRecord();
+        String note = new String();
+        for (String line : record) {
+            note += line + "\n";
+        }
+        logs.set(note);
     }
 
     public StringProperty inputValueProperty() {
@@ -138,6 +215,26 @@ public class ViewModel {
             status.set(getInputStatus().toString());
         }
     }
+
+    private class ValueCachingChangeListener implements ChangeListener<String> {
+        private String previousValue = new String();
+        private String currentValue = new String();
+        @Override
+        public void changed(final ObservableValue<? extends String> observable,
+                            final String previousValue, final String newValue) {
+            if (previousValue.equals(newValue)) {
+                return;
+            }
+            status.set(getInputStatus().toString());
+            currentValue = newValue;
+        }
+        public boolean isChanged() {
+            return !previousValue.equals(currentValue);
+        }
+        public void cache() {
+            previousValue = currentValue;
+        }
+    }
 }
 
 enum Status {
@@ -153,4 +250,11 @@ enum Status {
     public String toString() {
         return name;
     }
+}
+final class LogMessages {
+    public static final String CONVERT_WAS_PRESSED = "Convertation. ";
+    public static final String CURRENCY_UNIT_WAS_CHANGED = "Currency unit was changed to ";
+    public static final String EDIT_WAS_FINISHED = "Input data was updated. ";
+
+    private LogMessages() { }
 }
