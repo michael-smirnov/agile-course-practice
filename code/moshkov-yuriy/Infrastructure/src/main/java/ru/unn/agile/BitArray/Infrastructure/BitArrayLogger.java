@@ -1,4 +1,4 @@
-package ru.unn.agile.BitArray.Infrastructure;
+package ru.unn.agile.BitArray.infrastructure;
 
 import ru.unn.agile.BitArray.viewmodel.IBitArrayLogger;
 
@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 public class BitArrayLogger implements IBitArrayLogger {
     private final BufferedWriter writer;

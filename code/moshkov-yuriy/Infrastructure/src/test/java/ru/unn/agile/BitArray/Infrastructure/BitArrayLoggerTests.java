@@ -1,9 +1,7 @@
-package ru.unn.agile.BitArray.Infrastructure;
+package ru.unn.agile.BitArray.infrastructure;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import ru.unn.agile.BitArray.Infrastructure.BitArrayLogger;
 
 import java.io.File;
 

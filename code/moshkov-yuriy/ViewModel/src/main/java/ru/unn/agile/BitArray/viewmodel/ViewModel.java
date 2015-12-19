@@ -1,7 +1,5 @@
 package ru.unn.agile.BitArray.viewmodel;
 
-
-import ru.unn.agile.BitArray.Infrastructure.BitArrayLogger;
 import ru.unn.agile.BitArray.model.BitArray;
 
 import java.util.ArrayList;
