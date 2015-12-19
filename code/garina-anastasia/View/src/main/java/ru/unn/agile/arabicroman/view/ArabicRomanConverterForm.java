@@ -75,7 +75,6 @@ public final class ArabicRomanConverterForm {
         outputNumberFormat.setText(viewModel.getOutputNumberFormat());
 
         List<String> log = viewModel.getLogMessages();
-        //String[] messages = log.toArray(new String[log.size()]);
         logMessages.setListData(log.toArray(new String[log.size()]));
     }
 
