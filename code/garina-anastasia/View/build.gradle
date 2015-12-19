@@ -1,5 +1,6 @@
 dependencies {
     compile project(':garina-anastasia-ViewModel')
+    compile project(':garina-anastasia-Infrastructure')
 }
 
 sourceSets {
