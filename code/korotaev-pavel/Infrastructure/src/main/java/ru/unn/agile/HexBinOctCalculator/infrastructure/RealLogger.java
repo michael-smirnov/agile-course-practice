@@ -47,15 +47,15 @@ public class RealLogger implements ILogger {
 
     @Override
     public List<String> getLog() {
-        BufferedReader buffReader;
+        BufferedReader reader;
         ArrayList<String> log = new ArrayList<String>();
         try {
-            buffReader = new BufferedReader(new FileReader(filename));
-            String line = buffReader.readLine();
+            reader = new BufferedReader(new FileReader(filename));
+            String receivedLine = reader.readLine();
 
-            while (line != null) {
-                log.add(line);
-                line = buffReader.readLine();
+            while (receivedLine != null) {
+                log.add(receivedLine);
+                receivedLine = reader.readLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
