@@ -38,10 +38,10 @@ public class CurrencyConverter {
         };
         inputValue.textProperty().bindBidirectional(viewModel.inputValueProperty());
         inputValue.focusedProperty().addListener(focusChangeListener);
+
         inputCurrency.valueProperty().bindBidirectional(viewModel.inputUnitProperty());
-        inputCurrency.focusedProperty().addListener(focusChangeListener);
+        
         outputCurrency.valueProperty().bindBidirectional(viewModel.outputUnitProperty());
-        inputCurrency.focusedProperty().addListener(focusChangeListener);
         btnConvert.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent event) {
@@ -55,13 +55,6 @@ public class CurrencyConverter {
                                 final UnitCurrency valueBefore,
                                 final UnitCurrency valueAfter) {
                 viewModel.onUnitChanged(valueBefore, valueAfter);
-            }
-        });
-
-        btnConvert.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(final ActionEvent event) {
-                viewModel.convert();
             }
         });
     }

@@ -12,7 +12,7 @@
     <children>
          <Pane prefHeight="444.0" prefWidth="440.0">
             <children>
-               <Button fx:id="btnConvert" defaultButton="true" disable="${viewModel.convertationDisable}" layoutX="16.0" layoutY="148.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="397.0" text="Convert" />
+               <Button fx:id="btnConvert" defaultButton="true" disable="${viewModel.convertingDisable}" layoutX="16.0" layoutY="148.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="397.0" text="Convert" />
                <Label layoutX="14.0" layoutY="21.0" text="Input currency" />
                <Label layoutX="262.0" layoutY="21.0" text="Ouput currency" />
                <TextField fx:id="inputValue" layoutX="16.0" layoutY="54.0" />

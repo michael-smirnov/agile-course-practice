@@ -177,7 +177,7 @@ public class ViewModel {
         return convertingDisable;
     }
 
-    public final boolean getConvertationDisable() {
+    public final boolean getConvertingDisable() {
         return convertingDisable.get();
     }
 
