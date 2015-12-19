@@ -49,19 +49,19 @@ public class LengthConvertorLogger implements ISimpleLogger {
     @Override
     public List<String> getLog() {
         BufferedReader reader;
-        ArrayList<String> log = new ArrayList<>();
+        ArrayList<String> logMessage = new ArrayList<>();
         try {
             reader = new BufferedReader(new FileReader(filename));
-            String line = reader.readLine();
+            String logLine = reader.readLine();
 
-            while (line != null) {
-                log.add(line);
-                line = reader.readLine();
+            while (logLine != null) {
+                logMessage.add(logLine);
+                logLine = reader.readLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return log;
+        return logMessage;
     }
 }
