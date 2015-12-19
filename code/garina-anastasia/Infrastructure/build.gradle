@@ -1,0 +1,9 @@
+dependencies {
+    compile project(':garina-anastasia-ViewModel')
+    testCompile project(':garina-anastasia-ViewModel').sourceSets.test.output
+}
+
+sourceSets {
+    main.java.srcDir 'src/main/java'
+    test.java.srcDir 'src/test/java'
+}

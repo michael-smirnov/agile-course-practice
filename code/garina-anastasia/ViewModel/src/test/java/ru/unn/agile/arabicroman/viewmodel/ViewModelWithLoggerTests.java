@@ -1,10 +1,15 @@
 package ru.unn.agile.arabicroman.viewmodel;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
 public class ViewModelWithLoggerTests {
     private ArabicRomanConverterViewModel viewModelWithLogger;
+
+    public void setViewModelWithLogger(ArabicRomanConverterViewModel viewModelWithLogger) {
+        this.viewModelWithLogger = viewModelWithLogger;
+    }
 
     @Before
     public void setUp() {
@@ -18,7 +23,7 @@ public class ViewModelWithLoggerTests {
 
     @Test (expected = IllegalArgumentException.class)
     public void throwsOnNullLoggerAsArgumentInViewModelConstructor() {
-        viewModelWithLogger = new ArabicRomanConverterViewModel(null);
+        new ArabicRomanConverterViewModel(null);
     }
 
     @Test
