@@ -13,9 +13,8 @@ public class ArabicRomanConverterViewModel {
     private String errorMessage = "";
     private String inputNumberFormat = "Arabic Number";
     private String outputNumberFormat = "Roman Number";
-    private ILogger logger;
+    private final ILogger logger;
 
-    public ArabicRomanConverterViewModel() { /**/ };
     public ArabicRomanConverterViewModel(final ILogger logger) {
         if (logger == null) {
             throw new IllegalArgumentException("ViewModel with null logger cannot be created");
@@ -101,17 +100,17 @@ public class ArabicRomanConverterViewModel {
 
     private String convertLogMessage() {
         return LogMessages.CONVERT_WAS_PRESSED + "with argument: " + inputNumber
-                + "as " + inputNumberFormat;
+                + " as " + inputNumberFormat;
     }
 
     private String reverseLogMessage() {
-        return LogMessages.REVERSE_WAS_PRESSED + "Current cinverting direction is from "
-                + inputNumberFormat + "into  " + outputNumberFormat;
+        return LogMessages.REVERSE_WAS_PRESSED + "Current converting direction is from "
+                + inputNumberFormat + " into  " + outputNumberFormat;
     }
 
     private String successfulConvertLogMessage() {
-        return LogMessages.SUCCESSFUL_CONVERT_OPERATION + "with result" + outputNumber
-                + "as" + outputNumberFormat;
+        return LogMessages.SUCCESSFUL_CONVERT_OPERATION + "with result " + outputNumber
+                + " as " + outputNumberFormat;
     }
 
     private String failedConvertLogMessage() {

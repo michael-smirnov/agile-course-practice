@@ -78,6 +78,8 @@ include "code/garina-anastasia/View"
 project(":code/garina-anastasia/View").name = "garina-anastasia-View"
 include "code/garina-anastasia/ViewModel"
 project(":code/garina-anastasia/ViewModel").name = "garina-anastasia-ViewModel"
+include "code/garina-anastasia/Infrastructure"
+project(":code/garina-anastasia/Infrastructure").name = "garina-anastasia-Infrastructure"
 
 // Gatchenko Viktor
 include "code/gatchenko-viktor"

@@ -18,7 +18,7 @@ public final class ArabicRomanConverterForm {
     private JLabel inputNumberFormat;
     private JLabel outputNumberFormat;
     private JLabel errorText;
-    private JList logMessages;
+    private JList<String> logMessages;
     private ArabicRomanConverterViewModel viewModel;
 
     private ArabicRomanConverterForm() { }
@@ -75,8 +75,8 @@ public final class ArabicRomanConverterForm {
         outputNumberFormat.setText(viewModel.getOutputNumberFormat());
 
         List<String> log = viewModel.getLogMessages();
-        String[] messages = log.toArray(new String[log.size()]);
-        logMessages.setListData(messages);
+        //String[] messages = log.toArray(new String[log.size()]);
+        logMessages.setListData(log.toArray(new String[log.size()]));
     }
 
     private void bindDataFromViewToViewModel() {

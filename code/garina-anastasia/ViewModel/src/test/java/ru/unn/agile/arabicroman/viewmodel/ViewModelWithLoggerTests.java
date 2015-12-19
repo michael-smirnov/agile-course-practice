@@ -7,7 +7,7 @@ import org.junit.Before;
 public class ViewModelWithLoggerTests {
     private ArabicRomanConverterViewModel viewModelWithLogger;
 
-    public void setViewModelWithLogger(ArabicRomanConverterViewModel viewModelWithLogger) {
+    public void setViewModelWithLogger(final ArabicRomanConverterViewModel viewModelWithLogger) {
         this.viewModelWithLogger = viewModelWithLogger;
     }
 
