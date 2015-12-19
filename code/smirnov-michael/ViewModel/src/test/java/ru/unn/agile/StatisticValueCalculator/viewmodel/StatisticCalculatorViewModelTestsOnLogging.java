@@ -19,7 +19,7 @@ public class StatisticCalculatorViewModelTestsOnLogging {
     }
 
     @Test
-    public void logContainsAddRowValueAfterItTyped() {
+    public void isLogContainsAddRowValueAfterItHadBeenTyped() {
         String rowValue = "abc";
         viewModel.inputRowProperty().set(rowValue);
 
@@ -30,7 +30,7 @@ public class StatisticCalculatorViewModelTestsOnLogging {
     }
 
     @Test
-    public void canLoggingChangeProbabilityEvent() {
+    public void onParameterValueChangedMessageIsAddToLogAfterProbabilitySetAndEventValueChanged() {
         viewModel.setSelectedStatistic(StatisticValue.PROBABILITY);
         String eventValue = "2.4";
         viewModel.inputStatisticParameterProperty().set(eventValue);
@@ -64,7 +64,7 @@ public class StatisticCalculatorViewModelTestsOnLogging {
     }
 
     @Test
-    public void lastMessageInLogIsAddRowToStatisticDataAfterItReallyCalled() {
+    public void lastMessageInLogIsAddRowToStatisticDataAfterNewAddingValueHadBeenAddedToTable() {
         String addingValue = "11";
         viewModel.inputRowProperty().set(addingValue);
 
@@ -75,7 +75,7 @@ public class StatisticCalculatorViewModelTestsOnLogging {
     }
 
     @Test
-    public void logIsUpdatedByStatisticSelectionMessageWhenVarianceHasSelected() {
+    public void logIsUpdatedByStatisticSelectionMessageWhenVarianceHadBeenSelected() {
         StatisticValue statistic = StatisticValue.VARIANCE;
         viewModel.selectedStatisticProperty().set(statistic);
 
@@ -84,7 +84,7 @@ public class StatisticCalculatorViewModelTestsOnLogging {
     }
 
     @Test
-    public void logContainsThatSecondRowInDataTableSelectedAfterItHasBeenSelected() {
+    public void rowInDataTableSelectedMessageIsAddToLogAfterSecondRowInDataTableHadBeenSelected() {
         int rowNumber = 2;
         String rowValue = viewModel.getStatisticData().get(rowNumber - 1).getValue();
 
@@ -103,7 +103,7 @@ public class StatisticCalculatorViewModelTestsOnLogging {
     }
 
     @Test
-    public void deletingRowInTableIsLogged() {
+    public void rowInDataTableDeletedMessageIsAddToLogAfterThirdRowInTableSelectedAndDeleted() {
         int rowNumber = 3;
         String rowValue = viewModel.getStatisticData().get(rowNumber - 1).getValue();
 
@@ -115,14 +115,14 @@ public class StatisticCalculatorViewModelTestsOnLogging {
     }
 
     @Test
-    public void clearingStatisticDataIsLogged() {
+    public void dataTableIsClearedMessageIsAddToLogAfterDataTableHadBeenCleared() {
         viewModel.clearStatisticData();
 
         assertTrue(viewModel.getLog().get(0).matches(".*" + LogMessages.dataTableIsCleared()));
     }
 
     @Test
-    public void canLogCalculatingStatisticValue() {
+    public void statisticValueCalculatedMessageIsAddToLogAfterSelectedStatisticCalculated() {
         viewModel.calculateSelectedStatistic();
 
         assertTrue(viewModel.getLog().get(0)
