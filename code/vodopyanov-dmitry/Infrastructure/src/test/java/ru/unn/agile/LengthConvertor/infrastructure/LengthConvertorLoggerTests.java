@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 
@@ -40,7 +41,9 @@ public class LengthConvertorLoggerTests {
 
         lengthConvertorLogger.addLogLine(testMessage);
 
-        assertFalse(lengthConvertorLogger.getLog().isEmpty());
+        String logLine = lengthConvertorLogger.getLog().get(0);
+
+        assertTrue(logLine.contains(testMessage));
     }
 
     @Test
@@ -52,7 +55,11 @@ public class LengthConvertorLoggerTests {
         lengthConvertorLogger.addLogLine(messages[1]);
         lengthConvertorLogger.addLogLine(messages[2]);
 
-        assertEquals(3, lengthConvertorLogger.getLog().size());
+        List<String> logLines = lengthConvertorLogger.getLog();
+
+        for (int i = 0; i < logLines.size(); i++) {
+            assertTrue(logLines.get(i).contains(messages[i]));
+        }
     }
 
     @Test

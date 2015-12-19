@@ -227,7 +227,7 @@ public class ViewModel {
 enum Status {
     WAITING("Enter value and choose units"),
     READY("Press \"Convert\""),
-    BAD_FORMAT("Error: Bad format"),
+    BAD_FORMAT("Error: Wrong format"),
     SUCCESS("Converted successfully");
 
     private final String name;
