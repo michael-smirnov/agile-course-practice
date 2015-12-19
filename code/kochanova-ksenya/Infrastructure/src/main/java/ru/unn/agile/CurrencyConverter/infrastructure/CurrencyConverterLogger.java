@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class CurrencyConverterLogger implements ILogger {
-    private static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE_FORMAT_NOW = "dd-MM-yyyy HH:mm:ss";
     private final BufferedWriter writer;
     private final String filename;
 

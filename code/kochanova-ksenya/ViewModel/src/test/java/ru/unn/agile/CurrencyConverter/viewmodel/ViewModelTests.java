@@ -85,14 +85,14 @@ public class ViewModelTests {
 
         viewModel.inputValueProperty().set("1,1");
 
-        assertTrue(viewModel.convertationDisableProperty().get());
+        assertTrue(viewModel.convertingDisableProperty().get());
     }
 
     @Test
     public void calculateButtonIsDisabledWithIncompleteInput() {
         viewModel.inputValueProperty().set(".");
 
-        assertTrue(viewModel.convertationDisableProperty().get());
+        assertTrue(viewModel.convertingDisableProperty().get());
     }
 
     @Test
@@ -232,7 +232,7 @@ public class ViewModelTests {
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
         String message = viewModel.getRecord().get(0);
-        assertTrue(message.matches(".*" + LogMessages.EDIT_WAS_FINISHED
+        assertTrue(message.matches(".*" + LogMessages.EDITING_WAS_FINISHED
                 + "Data: "
                 + " inputValue = " + viewModel.inputValueProperty().get()
                 + " inputUnit: " + viewModel.inputUnitProperty().get().toString()

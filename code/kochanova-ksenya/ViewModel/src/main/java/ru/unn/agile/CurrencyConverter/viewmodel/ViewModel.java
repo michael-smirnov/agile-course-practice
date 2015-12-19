@@ -20,7 +20,7 @@ public class ViewModel {
     private final ObjectProperty<UnitCurrency> inputUnit = new SimpleObjectProperty<>();
     private final ObjectProperty<UnitCurrency> outputUnit = new SimpleObjectProperty<>();
 
-    private final BooleanProperty convertationDisable = new SimpleBooleanProperty();
+    private final BooleanProperty convertingDisable = new SimpleBooleanProperty();
 
     private final ObjectProperty<ObservableList<UnitCurrency>> units =
             new SimpleObjectProperty<>(FXCollections.observableArrayList(UnitCurrency.values()));
@@ -64,13 +64,13 @@ public class ViewModel {
                 return false;
             }
         };
-        convertationDisable.bind(couldConvert.not());
+        convertingDisable.bind(couldConvert.not());
 
-        final List<StringProperty> data = new ArrayList<StringProperty>() { {
+        final List<StringProperty> value = new ArrayList<StringProperty>() { {
             add(inputValue);
         } };
         valueChangedListeners = new ArrayList<>();
-        for (StringProperty val : data) {
+        for (StringProperty val : value) {
             final ValueCachingChangeListener listener = new ValueCachingChangeListener();
             val.addListener(listener);
             valueChangedListeners.add(listener);
@@ -78,7 +78,7 @@ public class ViewModel {
     }
 
     public void convert() {
-        if (convertationDisable.get()) {
+        if (convertingDisable.get()) {
             return;
         }
 
@@ -86,7 +86,7 @@ public class ViewModel {
         outputValue.set(outputUnit.get().convertCurrency(inputCurrency,
                 outputUnit.get()).toString());
         status.set(Status.DONE.toString());
-        String message = new String(LogMessages.CONVERT_WAS_PRESSED);
+        String message = LogMessages.CONVERT_WAS_PRESSED.toString();
         message += "Data:"
                 + " inputValue = " + inputValue.get()
                 + " inputUnit: " + inputUnit.get().toString()
@@ -99,7 +99,7 @@ public class ViewModel {
         if (previousUnit.equals(newUnit)) {
             return;
         }
-        String message = new String(LogMessages.CURRENCY_UNIT_WAS_CHANGED);
+        String message = LogMessages.CURRENCY_UNIT_WAS_CHANGED.toString();
         message += newUnit.toString();
         logger.record(message.toString());
         updateLogs();
@@ -112,7 +112,7 @@ public class ViewModel {
 
         for (ValueCachingChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
-                String message = new String(LogMessages.EDIT_WAS_FINISHED);
+                String message = LogMessages.EDITING_WAS_FINISHED.toString();
                 message += "Data: "
                         + " inputValue = " + inputValue.get()
                         + " inputUnit: " + inputUnit.get().toString()
@@ -173,12 +173,12 @@ public class ViewModel {
         return units.get();
     }
 
-    public BooleanProperty convertationDisableProperty() {
-        return convertationDisable;
+    public BooleanProperty convertingDisableProperty() {
+        return convertingDisable;
     }
 
     public final boolean getConvertationDisable() {
-        return convertationDisable.get();
+        return convertingDisable.get();
     }
 
     public StringProperty statusProperty() {
@@ -251,10 +251,16 @@ enum Status {
         return name;
     }
 }
-final class LogMessages {
-    public static final String CONVERT_WAS_PRESSED = "Convertation. ";
-    public static final String CURRENCY_UNIT_WAS_CHANGED = "Currency unit was changed to ";
-    public static final String EDIT_WAS_FINISHED = "Input data was updated. ";
+enum LogMessages {
+    CONVERT_WAS_PRESSED("Converting. "),
+    CURRENCY_UNIT_WAS_CHANGED("Currency unit was changed to "),
+    EDITING_WAS_FINISHED("Input data was updated. ");
 
-    private LogMessages() { }
+    private final String message;
+    private LogMessages(final String message) {
+        this.message = message;
+    }
+    public String toString() {
+        return message;
+    }
 }

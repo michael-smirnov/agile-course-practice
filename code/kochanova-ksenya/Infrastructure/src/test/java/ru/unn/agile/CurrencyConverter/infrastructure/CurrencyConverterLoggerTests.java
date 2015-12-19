@@ -12,8 +12,6 @@ import static org.junit.Assert.*;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.fail;
 
-
-
 public class CurrencyConverterLoggerTests {
     private static final String FILENAME = "./Logger_Tests.log";
     private CurrencyConverterLogger logger;
@@ -67,6 +65,6 @@ public class CurrencyConverterLoggerTests {
         logger.record(testMess);
 
         String message = logger.getRecord().get(0);
-        assertTrue(message.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} > .*"));
+        assertTrue(message.matches("^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} > .*"));
     }
 }
