@@ -4,6 +4,9 @@ package ru.unn.agile.BitArray.viewmodel;
 import ru.unn.agile.BitArray.Infrastructure.BitArrayLogger;
 import ru.unn.agile.BitArray.model.BitArray;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewModel {
     private BitArray firstBitArray;
     private BitArray secondBitArray;
@@ -59,9 +62,13 @@ public class ViewModel {
         resultBitArray = new BitArray(size);
 
         isDoOperationButtonEnabled = true;
+        logger.log(LogMessages.INIT_ARRAY_WITH_SIZE + size);
     }
 
     public void setOperation(final Operation operation) {
+        if (!this.operation.toString().equals(operation.toString()))
+            logger.log(LogMessages.OPERATION_CHANGED + operation.toString());
+
         this.operation = operation;
         operation.setViewModel(this);
     }
@@ -88,6 +95,8 @@ public class ViewModel {
 
     public void doOperation() {
         operation.doOperation();
+
+        logger.log(LogMessages.OPERATION_DID + operation.toString());
     }
 
     public void setSecondBitArray(final BitArray secondBitArray) {
@@ -103,6 +112,10 @@ public class ViewModel {
             throw new IllegalArgumentException("Logger parameter can't be null");
         }
         this.logger = logger;
+    }
+
+    public List<String> getLog() {
+        return logger.getLog();
     }
 
     public enum Operation {
@@ -155,8 +168,12 @@ public class ViewModel {
     public final class Notification {
         public static final String INVALID_NUMBER = "Please input number > 0";
         public static final String EMPTY_STRING = "";
+    }
 
-        private Notification() { }
+    final class LogMessages {
+        public static final String OPERATION_DID = "Operation did ";
+        public static final String OPERATION_CHANGED = "Operation changed to ";
+        public static final String INIT_ARRAY_WITH_SIZE = "Init arrays with size ";
     }
 
     private void init() {

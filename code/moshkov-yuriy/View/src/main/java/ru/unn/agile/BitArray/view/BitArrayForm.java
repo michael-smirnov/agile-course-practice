@@ -1,5 +1,6 @@
 package ru.unn.agile.BitArray.view;
 
+import ru.unn.agile.BitArray.Infrastructure.BitArrayLogger;
 import ru.unn.agile.BitArray.viewmodel.ViewModel;
 import ru.unn.agile.BitArray.model.BitArray;
 
@@ -8,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -28,6 +31,7 @@ public final class BitArrayForm {
     private JScrollPane resultBitArrayScrollPane;
     private JTextPane infoTextPane;
     private JLabel notificationLabel;
+    private JList logList;
 
     private BitArrayForm(final ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -83,7 +87,7 @@ public final class BitArrayForm {
 
     public static void main(final String[] args) {
         JFrame frame = new JFrame("BitArrayForm");
-        frame.setContentPane(new BitArrayForm(new ViewModel()).mainPanel);
+        frame.setContentPane(new BitArrayForm(new ViewModel(new BitArrayLogger("./BitArray.log"))).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -125,6 +129,10 @@ public final class BitArrayForm {
         resultBitArrayTable = createTableFromBitArray(viewModel.getResultBitArray());
         resultBitArrayTable.setEnabled(false);
         resultBitArrayScrollPane.setViewportView(resultBitArrayTable);
+
+        List<String> log = viewModel.getLog();
+        String[] arrayOfMessages = log.toArray(new String[log.size()]);
+        logList.setListData(arrayOfMessages);
     }
 
     private JTable createTableFromBitArray(final BitArray bitArray) {

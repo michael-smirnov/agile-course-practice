@@ -18,8 +18,23 @@ public class ViewModelTests {
 
     @Before
     public void initializeViewModel() {
-        viewModel = new ViewModel();
+        setViewModel(new ViewModel(new FakeBitArrayLogger()));
         testBitArray = new BitArray(5);
+    }
+
+    @Test
+    public void canCreateViewModelWithFakeLogger() {
+        assertNotNull(viewModel);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void canNotCreateViewModelWithNullLogger() {
+        ViewModel viewModel = new ViewModel(null);
+    }
+
+    @Test
+    public void isEmptyLogByDefault() {
+        assertTrue(viewModel.getLog().isEmpty());
     }
 
     @Test
@@ -154,6 +169,59 @@ public class ViewModelTests {
         initArraysForOperations();
         viewModel.doOperation();
         assertNotNull(viewModel.getResultBitArray());
+    }
+
+    @Test
+    public void initArrayAddsMessageToLog() {
+        viewModel.setArraySize("5");
+        viewModel.initializeArray();
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void initArrayAddsMessageInitArrayWithSize() {
+        viewModel.setArraySize("5");
+        viewModel.initializeArray();
+        String message = viewModel.getLog().get(viewModel.getLog().size() - 1);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.INIT_ARRAY_WITH_SIZE + ".*"));
+    }
+
+    @Test
+    public void doOperationAddsMessageToLog() {
+        viewModel.setOperation(Operation.XOR);
+        initArraysForOperations();
+        viewModel.doOperation();
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void doOperationAddsMessageDidOperation() {
+        viewModel.setOperation(Operation.XOR);
+        initArraysForOperations();
+        viewModel.doOperation();
+        String message = viewModel.getLog().get(viewModel.getLog().size() - 1);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.OPERATION_DID + ".*"));
+    }
+
+    @Test
+    public void changeOperationAddsMessageToLog() {
+        viewModel.setOperation(Operation.XOR);
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void changeOperationNotAddsMessageToLogWithSameOperation() {
+        viewModel.setOperation(Operation.XOR);
+        int sizeFirst = viewModel.getLog().size();
+        viewModel.setOperation(Operation.XOR);
+        assertEquals(viewModel.getLog().size(), sizeFirst);
+    }
+
+    @Test
+    public void changeOperationAddsMessageChangeOperation() {
+        viewModel.setOperation(Operation.XOR);
+        String message = viewModel.getLog().get(viewModel.getLog().size() - 1);
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.OPERATION_CHANGED + ".*"));
     }
 
     private void initArraysForOperations() {

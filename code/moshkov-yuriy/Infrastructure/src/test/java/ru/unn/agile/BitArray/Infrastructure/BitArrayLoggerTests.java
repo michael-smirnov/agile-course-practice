@@ -35,4 +35,13 @@ public class BitArrayLoggerTests {
         logger.log(message);
         assertFalse(logger.getLog().isEmpty());
     }
+
+    @Test
+    public void canLoggerSaveMultipleMessages() {
+        String messageFirst = "Test 1";
+        String messageSecond = "Test 2";
+        logger.log(messageFirst);
+        logger.log(messageSecond);
+        assertEquals(2, logger.getLog().size());
+    }
 }
