@@ -52,11 +52,11 @@ public class CurrencyConverterLogger implements ILogger {
         ArrayList<String> log = new ArrayList<String>();
         try {
             reader = new BufferedReader(new FileReader(filename));
-            String line = reader.readLine();
+            String str = reader.readLine();
 
-            while (line != null) {
-                log.add(line);
-                line = reader.readLine();
+            while (str != null) {
+                log.add(str);
+                str = reader.readLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
