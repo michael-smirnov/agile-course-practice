@@ -27,7 +27,7 @@ public class Converter {
 
     @FXML
     void initialize() {
-        ComboBox<WeightUnit>[] combo_boxes = new ComboBox[2];
+        ComboBox[] combo_boxes = new ComboBox[2];
         combo_boxes[0] = cbInputUnit;
         combo_boxes[1] = cbOutputUnit;
 
