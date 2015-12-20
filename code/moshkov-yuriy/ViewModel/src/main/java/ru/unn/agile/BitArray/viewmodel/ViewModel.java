@@ -17,11 +17,17 @@ public class ViewModel {
     private IBitArrayLogger logger;
 
     public ViewModel() {
-        init();
+        isDoOperationButtonEnabled = false;
+        firstBitArray = new BitArray(0);
+        secondBitArray = new BitArray(0);
+        resultBitArray = new BitArray(0);
+        operation = Operation.OR;
+        operation.setViewModel(this);
+        notification = Notification.EMPTY_STRING;
     }
 
     public ViewModel(final IBitArrayLogger logger) {
-        init();
+        this();
 
         setLogger(logger);
     }
@@ -176,15 +182,5 @@ public class ViewModel {
         public static final String INIT_ARRAY_WITH_SIZE = "Init arrays with size ";
 
         private LogMessages() { }
-    }
-
-    private void init() {
-        isDoOperationButtonEnabled = false;
-        firstBitArray = new BitArray(0);
-        secondBitArray = new BitArray(0);
-        resultBitArray = new BitArray(0);
-        operation = Operation.OR;
-        operation.setViewModel(this);
-        notification = Notification.EMPTY_STRING;
     }
 }
