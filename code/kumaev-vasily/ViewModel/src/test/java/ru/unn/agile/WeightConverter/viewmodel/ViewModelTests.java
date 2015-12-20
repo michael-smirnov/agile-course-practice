@@ -6,7 +6,6 @@ import org.junit.Test;
 import ru.unn.agile.WeightConverter.Model.WeightUnit;
 
 import java.util.List;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.*;
 
 public class ViewModelTests {

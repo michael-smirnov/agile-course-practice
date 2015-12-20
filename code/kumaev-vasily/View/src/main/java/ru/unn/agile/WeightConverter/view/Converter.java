@@ -6,14 +6,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import ru.unn.agile.WeightConverter.Model.Weight;
 import ru.unn.agile.WeightConverter.Model.WeightUnit;
 import ru.unn.agile.WeightConverter.viewmodel.ViewModel;
 import ru.unn.agile.WeightConverter.infrastructure.WeightConverterTxtLogger;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 public class Converter {
     @FXML
