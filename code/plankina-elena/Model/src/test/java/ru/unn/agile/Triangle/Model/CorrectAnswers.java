@@ -1,4 +1,4 @@
-package ru.unn.agile.Triangle.model;
+package ru.unn.agile.Triangle.Model;
 
 public class CorrectAnswers {
     private final double perimeter;

@@ -1,4 +1,4 @@
-package ru.unn.agile.Triangle.model;
+package ru.unn.agile.Triangle.Model;
 
 import java.util.Arrays;
 import java.util.List;

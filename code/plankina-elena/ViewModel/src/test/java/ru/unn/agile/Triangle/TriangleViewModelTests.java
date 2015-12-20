@@ -2,7 +2,7 @@ package ru.unn.agile.Triangle;
 
 import org.junit.Before;
 import org.junit.Test;
-import ru.unn.agile.Triangle.model.TriangleExceptions;
+import ru.unn.agile.Triangle.Model.TriangleExceptions;
 import ru.unn.agile.TriangleViewModel.Status;
 import ru.unn.agile.TriangleViewModel.TriangleViewModel;
 import ru.unn.agile.TriangleViewModel.ValuesToCalculate;

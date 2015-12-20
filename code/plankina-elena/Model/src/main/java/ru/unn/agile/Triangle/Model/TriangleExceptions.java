@@ -1,4 +1,4 @@
-package ru.unn.agile.Triangle.model;
+package ru.unn.agile.Triangle.Model;
 
 public class TriangleExceptions extends Exception {
     public static final String DIFFERENT_DIMENSIONS = "Points have different dimensions!";

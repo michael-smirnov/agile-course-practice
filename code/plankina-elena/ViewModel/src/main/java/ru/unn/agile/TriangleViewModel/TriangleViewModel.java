@@ -1,7 +1,7 @@
 package ru.unn.agile.TriangleViewModel;
 
-import ru.unn.agile.Triangle.model.Triangle;
-import ru.unn.agile.Triangle.model.TriangleExceptions;
+import ru.unn.agile.Triangle.Model.Triangle;
+import ru.unn.agile.Triangle.Model.TriangleExceptions;
 
 import java.util.Arrays;
 import java.util.List;
