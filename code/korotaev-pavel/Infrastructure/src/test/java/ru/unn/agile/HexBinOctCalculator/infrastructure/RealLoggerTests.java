@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static junit.framework.TestCase.assertNotNull;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
