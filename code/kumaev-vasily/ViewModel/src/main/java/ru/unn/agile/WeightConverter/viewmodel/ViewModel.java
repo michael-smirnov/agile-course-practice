@@ -45,7 +45,7 @@ public class ViewModel {
         init();
     }
 
-    public void init() {
+    private void init() {
         outputUnit.set(WeightUnit.KILOGRAM);
         inputUnit.set(WeightUnit.GRAM);
         result.set("");
