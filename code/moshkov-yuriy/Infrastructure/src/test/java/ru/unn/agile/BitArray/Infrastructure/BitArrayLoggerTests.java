@@ -29,6 +29,7 @@ public class BitArrayLoggerTests {
     @Test
     public void canLoggerAddMessageToLog() {
         String message = "TEST";
+
         logger.log(message);
 
         assertFalse(logger.getLog().isEmpty());
@@ -38,6 +39,7 @@ public class BitArrayLoggerTests {
     public void canLoggerSaveMultipleMessages() {
         String messageFirst = "Test 1";
         String messageSecond = "Test 2";
+
         logger.log(messageFirst);
         logger.log(messageSecond);
 

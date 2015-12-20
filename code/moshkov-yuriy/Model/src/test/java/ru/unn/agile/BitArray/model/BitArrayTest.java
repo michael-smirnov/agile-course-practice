@@ -59,9 +59,10 @@ public class BitArrayTest {
     public void canSetAllValuesInArray() {
         Boolean[] allFalseArray = new Boolean[bitArray.getSize()];
         Arrays.fill(allFalseArray, false);
+
         bitArray.setAll(false);
 
-        assertTrue(Arrays.equals(bitArray.getBitArray(), allFalseArray));
+        assertArrayEquals(bitArray.getBitArray(), allFalseArray);
     }
 
     @Test
@@ -72,9 +73,10 @@ public class BitArrayTest {
         Arrays.fill(allFalseArray, false);
         bitArray.setAll(false);
         array2.setAll(true);
+
         resArray = bitArray.and(array2);
 
-        assertTrue(Arrays.equals(resArray.getBitArray(), allFalseArray));
+        assertArrayEquals(resArray.getBitArray(), allFalseArray);
     }
 
     @Test(expected = BitArrayDifferentSizeException.class)
@@ -92,9 +94,10 @@ public class BitArrayTest {
         Arrays.fill(allTrueArray, true);
         bitArray.setAll(false);
         array2.setAll(true);
+
         resArray = bitArray.or(array2);
 
-        assertTrue(Arrays.equals(resArray.getBitArray(), allTrueArray));
+        assertArrayEquals(resArray.getBitArray(), allTrueArray);
     }
 
     @Test(expected = BitArrayDifferentSizeException.class)
@@ -112,15 +115,17 @@ public class BitArrayTest {
         Arrays.fill(allFalseArray, false);
         bitArray.setAll(true);
         array2.setAll(true);
+
         resArray = bitArray.xor(array2);
 
-        assertTrue(Arrays.equals(resArray.getBitArray(), allFalseArray));
+        assertArrayEquals(resArray.getBitArray(), allFalseArray);
     }
 
     @Test(expected = BitArrayDifferentSizeException.class)
     public void failWhenXorArraysWithDifferentSize() {
         BitArray array2 = new BitArray(6);
         BitArray resArray;
+
         resArray = bitArray.xor(array2);
     }
 
@@ -130,8 +135,9 @@ public class BitArrayTest {
         Boolean[] allTrueArray = new Boolean[bitArray.getSize()];
         Arrays.fill(allTrueArray, true);
         bitArray.setAll(false);
+
         resArray = bitArray.not();
 
-        assertTrue(Arrays.equals(resArray.getBitArray(), allTrueArray));
+        assertArrayEquals(resArray.getBitArray(), allTrueArray);
     }
 }

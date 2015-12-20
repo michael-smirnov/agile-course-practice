@@ -90,6 +90,7 @@ public class ViewModelTests {
     @Test
     public void isFirstBitArrayNotNullWhenInitArray() {
         viewModel.setArraySize("5");
+
         viewModel.initializeArray();
 
         assertNotNull(viewModel.gitFirstBitArray());
@@ -98,30 +99,34 @@ public class ViewModelTests {
     @Test
     public void isFirstBitArraySizeEquals5WhenInputSize5() {
         viewModel.setArraySize("5");
+
         viewModel.initializeArray();
 
-        assertTrue(viewModel.gitFirstBitArray().getSize() == 5);
+        assertEquals(viewModel.gitFirstBitArray().getSize(), 5);
     }
 
     @Test
     public void isSecondBitArraySizeEquals5WhenInputSize5() {
         viewModel.setArraySize("5");
+
         viewModel.initializeArray();
 
-        assertTrue(viewModel.getSecondBitArray().getSize() == 5);
+        assertEquals(viewModel.getSecondBitArray().getSize(), 5);
     }
 
     @Test
     public void isResultBitArraySizeEquals5WhenInputSize5() {
         viewModel.setArraySize("5");
+
         viewModel.initializeArray();
 
-        assertTrue(viewModel.getResultBitArray().getSize() == 5);
+        assertEquals(viewModel.getResultBitArray().getSize(), 5);
     }
 
     @Test
     public void isDoOperationEnabledWhenInitArrays() {
         viewModel.setArraySize("5");
+
         viewModel.initializeArray();
 
         assertTrue(viewModel.isDoOperationEnabled());
@@ -156,6 +161,7 @@ public class ViewModelTests {
     @Test
     public void canDoOrOperation() {
         initArraysForOperations();
+
         viewModel.doOperation();
 
         assertNotNull(viewModel.getResultBitArray());
@@ -165,6 +171,7 @@ public class ViewModelTests {
     public void canDoAndOperation() {
         viewModel.setOperation(Operation.AND);
         initArraysForOperations();
+
         viewModel.doOperation();
 
         assertNotNull(viewModel.getResultBitArray());
@@ -174,6 +181,7 @@ public class ViewModelTests {
     public void canDoNotOperation() {
         viewModel.setOperation(Operation.NOT);
         initArraysForOperations();
+
         viewModel.doOperation();
 
         assertNotNull(viewModel.getResultBitArray());
@@ -183,6 +191,7 @@ public class ViewModelTests {
     public void canDoXorOperation() {
         viewModel.setOperation(Operation.XOR);
         initArraysForOperations();
+
         viewModel.doOperation();
 
         assertNotNull(viewModel.getResultBitArray());
@@ -191,6 +200,7 @@ public class ViewModelTests {
     @Test
     public void initArrayAddsMessageToLog() {
         viewModel.setArraySize("5");
+
         viewModel.initializeArray();
 
         assertFalse(viewModel.getLog().isEmpty());
@@ -199,6 +209,7 @@ public class ViewModelTests {
     @Test
     public void initArrayAddsMessageInitArrayWithSize() {
         viewModel.setArraySize("5");
+
         viewModel.initializeArray();
         String message = viewModel.getLog().get(viewModel.getLog().size() - 1);
 
@@ -209,6 +220,7 @@ public class ViewModelTests {
     public void doOperationAddsMessageToLog() {
         viewModel.setOperation(Operation.XOR);
         initArraysForOperations();
+
         viewModel.doOperation();
 
         assertFalse(viewModel.getLog().isEmpty());
@@ -218,6 +230,7 @@ public class ViewModelTests {
     public void doOperationAddsMessageDidOperation() {
         viewModel.setOperation(Operation.XOR);
         initArraysForOperations();
+
         viewModel.doOperation();
         String message = viewModel.getLog().get(viewModel.getLog().size() - 1);
 
@@ -235,6 +248,7 @@ public class ViewModelTests {
     public void changeOperationNotAddsMessageToLogWithSameOperation() {
         viewModel.setOperation(Operation.XOR);
         int sizeFirst = viewModel.getLog().size();
+
         viewModel.setOperation(Operation.XOR);
 
         assertEquals(viewModel.getLog().size(), sizeFirst);
