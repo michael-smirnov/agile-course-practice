@@ -6,10 +6,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import ru.unn.agile.WeightConverter.Model.Weight;
 import ru.unn.agile.WeightConverter.Model.WeightUnit;
 import ru.unn.agile.WeightConverter.viewmodel.ViewModel;
 import ru.unn.agile.WeightConverter.infrastructure.WeightConverterTxtLogger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,10 +29,6 @@ public class Converter {
 
     @FXML
     void initialize() {
-        ComboBox[] combo_boxes = new ComboBox[2];
-        combo_boxes[0] = cbInputUnit;
-        combo_boxes[1] = cbOutputUnit;
-
         viewModel.setLogger(new WeightConverterTxtLogger("./TxtLogger-lab3-weight-coverter.log"));
 
         final ChangeListener<Boolean> focusChangeListener = new ChangeListener<Boolean>() {
@@ -46,15 +44,21 @@ public class Converter {
         cbInputUnit.valueProperty().bindBidirectional(viewModel.inputUnitProperty());
         cbOutputUnit.valueProperty().bindBidirectional(viewModel.outputUnitProperty());
 
-        for(int i = 0; i < 2; i++) {
-            combo_boxes[i].valueProperty().addListener(new ChangeListener<WeightUnit>() {
+
+        cbInputUnit.valueProperty().addListener(new ChangeListener<WeightUnit>() {
                 @Override
                 public void changed(final ObservableValue<? extends WeightUnit> observable,
                                     final WeightUnit oldValue, final WeightUnit newValue) {
                     viewModel.unitsChanged(oldValue, newValue);
                 }
             });
-        }
+        cbOutputUnit.valueProperty().addListener(new ChangeListener<WeightUnit>() {
+            @Override
+            public void changed(final ObservableValue<? extends WeightUnit> observable,
+                                final WeightUnit previousValue, final WeightUnit actualValue) {
+                viewModel.unitsChanged(previousValue, actualValue);
+            }
+        });
 
         btnConv.setOnAction(new EventHandler<ActionEvent>() {
             @Override
