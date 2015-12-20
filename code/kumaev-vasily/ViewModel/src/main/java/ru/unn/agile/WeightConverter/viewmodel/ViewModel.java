@@ -44,10 +44,10 @@ public class ViewModel {
         setLogger(logger);
         init();
     }
-    
+
     public void init() {
-        inputUnit.set(WeightUnit.GRAM);
         outputUnit.set(WeightUnit.KILOGRAM);
+        inputUnit.set(WeightUnit.GRAM);
         result.set("");
         value.set("");
         status.set(Status.WAITING.toString());
