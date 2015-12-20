@@ -462,7 +462,8 @@ public class ViewModel {
     public final class Status {
         public static final String WAITING = "Введите параметры кредита";
         public static final String READY = "Нажмите кнопку \"Рассчитать\"";
-        public static final String BAD_FORMAT = "Введены даннные неверного формата ";
+        public static final String BAD_FORMAT = "Введены даннные "
+                + "неверного формата ";
         public static final String SUCCESS = "Успех полностью достигнут";
 
         private Status() { }

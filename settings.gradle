@@ -64,8 +64,12 @@ project(":code/filicheva-svetlana/ViewModel").name = "filicheva-svetlana-ViewMod
 // Francuzova Natalya
 
 // Ganin Aleksej
-include "code/ganin-aleksei"
-project(":code/ganin-aleksei").name = "ganin-aleksei-Model"
+include "code/ganin-aleksei/Model"
+project(":code/ganin-aleksei/Model").name = "ganin-aleksei-Model"
+include "code/ganin-aleksei/ViewModel"
+project(":code/ganin-aleksei/ViewModel").name = "ganin-aleksei-ViewModel"
+include "code/ganin-aleksei/View"
+project(":code/ganin-aleksei/View").name = "ganin-aleksei-View"
 
 // Garina Anastasia
 include "code/garina-anastasia/Model"
@@ -94,6 +98,8 @@ include "code/gorokhov-dmitriy/ViewModel"
 project(":code/gorokhov-dmitriy/ViewModel").name = "gorokhov-dmitriy-ViewModel"
 include "code/gorokhov-dmitriy/View"
 project(":code/gorokhov-dmitriy/View").name = "gorokhov-dmitriy-View"
+include "code/gorokhov-dmitriy/Infrastructure"
+project(":code/gorokhov-dmitriy/Infrastructure").name = "gorokhov-dmitriy-Infrastructure"
 
 // Kajnov Oleg
 
@@ -104,6 +110,8 @@ include "code/kalyakulina-alena/View"
 project(":code/kalyakulina-alena/View").name = "kalyakulina-alena-View"
 include "code/kalyakulina-alena/ViewModel"
 project(":code/kalyakulina-alena/ViewModel").name = "kalyakulina-alena-ViewModel"
+include "code/kalyakulina-alena/Infrastructure"
+project(":code/kalyakulina-alena/Infrastructure").name = "kalyakulina-alena-Infrastructure"
 
 // Karpunin Yaroslav
 // Kazanbaev Dmitry
@@ -162,8 +170,12 @@ include "code/molotkov-andrei/View"
 project(":code/molotkov-andrei/View").name = "molotkov-andrei-View"
 
 // Moshkov Yurij
-include "code/moshkov-yuriy"
-project(":code/moshkov-yuriy").name = "moshkov-yuriy-lab1-Model"
+include "code/moshkov-yuriy/Model"
+project(":code/moshkov-yuriy/Model").name = "moshkov-yuriy-Model"
+include "code/moshkov-yuriy/View"
+project(":code/moshkov-yuriy/View").name = "moshkov-yuriy-View"
+include "code/moshkov-yuriy/ViewModel"
+project(":code/moshkov-yuriy/ViewModel").name = "moshkov-yuriy-ViewModel"
 // Mozerov Ilya
 // Nesmelov Aleksej
 include "code/nesmelov-aleksey/Model"
@@ -190,6 +202,8 @@ include "code/paramuzov-vladimir/ViewModel"
 project(":code/paramuzov-vladimir/ViewModel").name = "paramuzov-vladimir-ViewModel"
 include "code/paramuzov-vladimir/View"
 project(":code/paramuzov-vladimir/View").name = "paramuzov-vladimir-View"
+include "code/paramuzov-vladimir/Infrastructure"
+project(":code/paramuzov-vladimir/Infrastructure").name = "paramuzov-vladimir-Infrastructure"
 // Plankina Elena
 
 // Plankina Elena
@@ -198,8 +212,12 @@ project(":code/plankina-elena").name = "plankina-elena-Model"
 
 // Pronina Anastasiya
 // Sabanov Denis
-include "code/sabanov-denis"
-project(":code/sabanov-denis").name = "sabanov-denis-Model"
+include "code/sabanov-denis/Model"
+project(":code/sabanov-denis/Model").name = "sabanov-denis-Model"
+include "code/sabanov-denis/ViewModel"
+project(":code/sabanov-denis/ViewModel").name = "sabanov-denis-ViewModel"
+include "code/sabanov-denis/View"
+project(":code/sabanov-denis/View").name = "sabanov-denis-View"
 // Sevrikov Ilya
 include "code/sevrikov-ilya/Model"
 project(":code/sevrikov-ilya/Model").name = "sevrikov-ilya-Model"
@@ -207,6 +225,8 @@ include "code/sevrikov-ilya/View"
 project(":code/sevrikov-ilya/View").name = "sevrikov-ilya-View"
 include "code/sevrikov-ilya/ViewModel"
 project(":code/sevrikov-ilya/ViewModel").name = "sevrikov-ilya-ViewModel"
+include "code/sevrikov-ilya/Infrastructure"
+project(":code/sevrikov-ilya/Infrastructure").name = "sevrikov-ilya-Infrastructure"
 
 // Shulgina Yana
 include "code/shulgina-yana/Model"
@@ -215,9 +235,16 @@ include "code/shulgina-yana/View"
 project(":code/shulgina-yana/View").name = "shulgina-yana-View"
 include "code/shulgina-yana/ViewModel"
 project(":code/shulgina-yana/ViewModel").name = "shulgina-yana-ViewModel"
-// Smirnov Aleksandr
-include "code/smirnov-alexandr"
-project(":code/smirnov-alexandr").name = "smirnov-alexandr-lab1-Model"
+
+
+// Smirnov Alexandr
+include "code/smirnov-alexandr/Model"
+project(":code/smirnov-alexandr/Model").name = "smirnov-alexandr-Model"
+include "code/smirnov-alexandr/View"
+project(":code/smirnov-alexandr/View").name = "smirnov-alexandr-View"
+include "code/smirnov-alexandr/ViewModel"
+project(":code/smirnov-alexandr/ViewModel").name = "smirnov-alexandr-ViewModel"
+
 // Smirnov Mixail
 include "code/smirnov-michael/Model"
 project(":code/smirnov-michael/Model").name = "smirnov-michael-Model"
@@ -227,11 +254,19 @@ include "code/smirnov-michael/View"
 project(":code/smirnov-michael/View").name = "smirnov-michael-View"
 
 // Smirnov Vyacheslav
-include "code/smirnov-vyacheslav"
-project(":code/smirnov-vyacheslav").name = "smirnov-vyacheslav-lab1-Model"
+include "code/smirnov-vyacheslav/Model"
+project(":code/smirnov-vyacheslav/Model").name = "smirnov-vyacheslav-Model"
+include "code/smirnov-vyacheslav/View"
+project(":code/smirnov-vyacheslav/View").name = "smirnov-vyacheslav-View"
+include "code/smirnov-vyacheslav/ViewModel"
+project(":code/smirnov-vyacheslav/ViewModel").name = "smirnov-vyacheslav-ViewModel"
 // Sulin Dmitrij
-include "code/sulin-dmitriy"
-project(":code/sulin-dmitriy").name = "sulin-dmitriy-Model"
+include "code/sulin-dmitriy/Model"
+project(":code/sulin-dmitriy/Model").name = "sulin-dmitriy-Model"
+include "code/sulin-dmitriy/View"
+project(":code/sulin-dmitriy/View").name = "sulin-dmitriy-View"
+include "code/sulin-dmitriy/ViewModel"
+project(":code/sulin-dmitriy/ViewModel").name = "sulin-dmitriy-ViewModel"
 // Timonova Anastasiya
 // Vinnickij Vladimir
 
@@ -246,8 +281,12 @@ project(":code/vodopyanov-dmitry/View").name = "vodopyanov-dmitry-View"
 // Volosenkov Evgenij
 
 // Voronkov Arsenij
-include "code/voronkov-arseny"
-project(":code/voronkov-arseny").name = "voronkov-arseny-lab1-Model"
+include "code/voronkov-arseny/Model"
+project(":code/voronkov-arseny/Model").name = "voronkov-arseny-lab1-Model"
+include "code/voronkov-arseny/View"
+project(":code/voronkov-arseny/View").name = "voronkov-arseny-lab2-View"
+include "code/voronkov-arseny/ViewModel"
+project(":code/voronkov-arseny/ViewModel").name = "voronkov-arseny-lab2-ViewModel"
 
 // Yusipov Igor
 include "code/yusipov-igor/Model"
@@ -256,6 +295,8 @@ include "code/yusipov-igor/View"
 project(":code/yusipov-igor/View").name = "yusipov-igor-View"
 include "code/yusipov-igor/ViewModel"
 project(":code/yusipov-igor/ViewModel").name = "yusipov-igor-ViewModel"
+include "code/yusipov-igor/Infrastructure"
+project(":code/yusipov-igor/Infrastructure").name = "yusipov-igor-Infrastructure"
 
 // Zajdullova Alina
 // Zhbanova Anna
@@ -265,6 +306,8 @@ include "code/zhbanova-anna/ViewModel"
 project(":code/zhbanova-anna/ViewModel").name = "zhbanova-anna-ViewModel"
 include "code/zhbanova-anna/View"
 project(":code/zhbanova-anna/View").name = "zhbanova-anna-View"
+include "code/zhbanova-anna/Infrastructure"
+project(":code/zhbanova-anna/Infrastructure").name = "zhbanova-anna-Infrastructure"
 
 // Zykov Ilya
 include "code/zykov-ilya"

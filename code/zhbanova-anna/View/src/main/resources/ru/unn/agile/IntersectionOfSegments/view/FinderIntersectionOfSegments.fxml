@@ -6,16 +6,16 @@
 <?import javafx.scene.text.*?>
 <?import ru.unn.agile.IntersectionOfSegments.viewmodel.*?>
 
-<AnchorPane prefHeight="430.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.IntersectionOfSegments.view.FinderIntersectionOfSegments">
+<AnchorPane prefHeight="700.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.IntersectionOfSegments.view.FinderIntersectionOfSegments">
     <fx:define>
         <ViewModel fx:id="viewModel" />
     </fx:define>
     <children>
-        <SplitPane dividerPositions="0.6635514018691588" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
+        <SplitPane dividerPositions="0.6635514018691588" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" snapToPixel="false" AnchorPane.bottomAnchor="250.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
             <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="311.0" prefWidth="542.0">
                     <children>
-                        <SplitPane dividerPositions="0.4966442953020134" orientation="VERTICAL" prefHeight="300.0" prefWidth="558.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <SplitPane dividerPositions="0.4897260273972603" orientation="VERTICAL" prefHeight="200.0" prefWidth="542.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                     <children>
@@ -87,7 +87,7 @@
                         </SplitPane>
                     </children>
                 </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="120.0" prefWidth="542.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="127.0" prefWidth="542.0">
                     <children>
                         <Separator layoutX="-4.0" layoutY="61.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="3.0" prefWidth="550.0" />
                         <Separator layoutX="-4.0" layoutY="40.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="3.0" prefWidth="550.0" />
@@ -106,11 +106,16 @@
                                 <Font size="15.0" />
                             </font>
                         </Label>
-                        <Label fx:id="lbStatus" text="${viewModel.status}" layoutX="58.0" layoutY="13.0" textFill="RED" />
-                        <Label fx:id="lbResult" text="${viewModel.result}" layoutX="8.0" layoutY="71.0" AnchorPane.leftAnchor="3.0" />
+                        <Label fx:id="lbStatus" layoutX="58.0" layoutY="13.0" text="${viewModel.status}" textFill="RED" />
+                        <Label fx:id="lbResult" layoutX="8.0" layoutY="71.0" text="${viewModel.result}" AnchorPane.leftAnchor="3.0" />
                     </children>
                 </AnchorPane>
             </items>
         </SplitPane>
+        <Pane layoutX="3.0" layoutY="450.0" prefHeight="241.0" prefWidth="544.0">
+            <children>
+                <TextArea fx:id="areaLog" text="${viewModel.logs}" layoutX="14.0" layoutY="17.0" prefHeight="200.0" prefWidth="519.0" editable="false"/>
+            </children>
+        </Pane>
     </children>
 </AnchorPane>

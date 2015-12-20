@@ -10,7 +10,8 @@ public class HypothecInputException extends Exception {
     public static final String NEGATIVE_DOWN_PAYMENT =
             "Ошибка: отрицательный первый взнос";
     public static final String DOWN_PAYMENT_IS_MORE_THAN_HOUSE_COST =
-            "Ошибка: первый взнос больше стоимости недвижимости";
+            "Ошибка: первый взнос больше "
+                    + "стоимости недвижимости";
     public static final String NEGATIVE_INTEREST_RATE =
             "Ошибка: процентная ставка отрицательна";
     public static final String NEGATIVE_MONTHLY_FEE =

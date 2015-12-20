@@ -3,6 +3,8 @@ package ru.unn.agile.AreaConverter.viewmodel;
 import ru.unn.agile.AreaConverter.model.AreaConverter;
 import ru.unn.agile.AreaConverter.model.AreaMeasure;
 
+import java.util.List;
+
 public class ViewModel {
     private String inputArea;
     private String resultArea;
@@ -10,14 +12,22 @@ public class ViewModel {
     private AreaMeasure from;
     private AreaMeasure to;
     private boolean isConvertButtonEnable;
+    private final AreaConverterLogger logger;
+    private boolean isInputChange;
 
-    public ViewModel() {
+    public ViewModel(final AreaConverterLogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger parameter can't be null");
+        }
+
+        this.logger = logger;
         inputArea = "";
         resultArea = "";
         status = Status.WAITING;
         from = AreaMeasure.SQUARE_METER;
-        to = AreaMeasure.SQUARE_KILOMETER;
+        to = AreaMeasure.SQUARE_METER;
         isConvertButtonEnable = false;
+        isInputChange = false;
     }
 
     public String getInputArea() {
@@ -46,19 +56,27 @@ public class ViewModel {
 
     public void setInputArea(final String inputArea) {
         this.inputArea = inputArea;
+        isInputChange = true;
     }
 
     public void setFrom(final AreaMeasure from) {
-        this.from = from;
+        if (this.from != from) {
+            this.from = from;
+            logger.logMessage(LogMessage.SCALE_FROM_CHANGED.toString() + from.toString());
+        }
     }
 
     public void setTo(final AreaMeasure to) {
-        this.to = to;
+        if (this.to != to) {
+            this.to = to;
+            logger.logMessage(LogMessage.SCALE_TO_CHANGED.toString() + to.toString());
+        }
     }
 
     public boolean parseInput() {
         if (inputArea.isEmpty()) {
             status = Status.WAITING;
+            resultArea = "";
             isConvertButtonEnable = false;
         } else {
             double parsedInputArea;
@@ -83,12 +101,42 @@ public class ViewModel {
         return isConvertButtonEnable;
     }
 
+    private String createLogMessageForConvert() {
+        String logMessage = LogMessage.CONVERTED.toString()
+                + inputArea
+                + LogMessage.FROM_MEASURE.toString()
+                + from.toString()
+                + LogMessage.TO_MEASURE.toString()
+                + to.toString()
+                + LogMessage.CONVERT_RESULT.toString()
+                + resultArea;
+
+        return logMessage;
+    }
+
     public void convert() {
         if (parseInput()) {
             AreaConverter converter = new AreaConverter(from, to);
             double convertedArea = converter.convert(Double.parseDouble(inputArea));
             resultArea = Double.toString(convertedArea);
             status = Status.SUCCESS;
+
+            logger.logMessage(createLogMessageForConvert());
         }
+    }
+
+    public List<String> getLog() {
+        return logger.getLog();
+    }
+
+    public void focusLost() {
+        if (isInputChange) {
+            logger.logMessage(LogMessage.INPUT_AREA_EDITED.toString() + inputArea.toString());
+            isInputChange = false;
+        }
+    }
+
+    public boolean isInputChanged() {
+        return isInputChange;
     }
 }

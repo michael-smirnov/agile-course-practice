@@ -126,7 +126,7 @@ public final class HypothecCalculator {
         }
 
     public static void main(final String[] args) {
-        JFrame frame = new JFrame("Ипотечный калькулятор");
+        JFrame frame = new JFrame("Credit calculator");
         frame.setContentPane(new HypothecCalculator().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

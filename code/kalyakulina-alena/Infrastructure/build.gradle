@@ -1,0 +1,9 @@
+dependencies {
+    compile project(':kalyakulina-alena-ViewModel')
+    testCompile project(':kalyakulina-alena-ViewModel').sourceSets.test.output
+}
+
+sourceSets {
+    main.java.srcDir 'src/main/java'
+    test.java.srcDir 'src/test/java'
+}

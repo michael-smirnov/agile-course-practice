@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':voronkov-arseny-lab1-Model')
+}
+
+sourceSets {
+    main.java.srcDir 'src/main/java'
+    test.java.srcDir 'src/test/java'
+}

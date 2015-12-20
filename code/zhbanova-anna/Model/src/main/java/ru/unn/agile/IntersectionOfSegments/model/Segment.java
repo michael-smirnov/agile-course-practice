@@ -37,6 +37,11 @@ public class Segment {
         return calculationLengthOfSegment();
     }
 
+    @Override
+    public String toString() {
+        return "[" + start.toString() + "; " + finish.toString() + "]";
+    }
+
     public Intersection isIntersectedWith(final Segment segment) {
         return findIntersection(this, segment);
     }

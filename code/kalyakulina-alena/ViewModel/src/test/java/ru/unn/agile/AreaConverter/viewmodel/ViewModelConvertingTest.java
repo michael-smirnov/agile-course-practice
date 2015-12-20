@@ -24,7 +24,8 @@ public class ViewModelConvertingTest {
 
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        AreaConverterFakeLogger logger = new AreaConverterFakeLogger();
+        viewModel = new ViewModel(logger);
     }
 
     @After

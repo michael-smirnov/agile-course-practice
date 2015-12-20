@@ -75,7 +75,9 @@ public class CreditCalculatorTableTest {
                                     "<html>Платеж по <br>основному долгу",
                                     "<html>Платеж по <br>процентам",
                                     "<html>Ежемесячная <br>комиссия",
-                                    "<html>Остаток <br>основной <br>задолженности"}),
+                                    "<html>Остаток"
+                                            + " <br>основной"
+                                            + " <br>задолженности"}),
                     Hypothec.CreditType.DIFFERENTIATED
             },
             {
@@ -91,7 +93,9 @@ public class CreditCalculatorTableTest {
                                     "<html>Платеж по <br>основному долгу",
                                     "<html>Платеж по <br>процентам",
                                     "<html>Ежемесячная <br>комиссия",
-                                    "<html>Остаток <br>основной <br>задолженности"}),
+                                    "<html>Остаток"
+                                            + " <br>основной"
+                                            + " <br>задолженности"}),
                     Hypothec.CreditType.ANNUITY
             }
     };
