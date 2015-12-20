@@ -7,7 +7,6 @@ import java.io.File;
 
 import static org.junit.Assert.*;
 
-
 public class BitArrayLoggerTests {
     private static final String FILENAME = "./BitArray_Tests.log";
     private BitArrayLogger logger;
@@ -31,6 +30,7 @@ public class BitArrayLoggerTests {
     public void canLoggerAddMessageToLog() {
         String message = "TEST";
         logger.log(message);
+
         assertFalse(logger.getLog().isEmpty());
     }
 
@@ -40,6 +40,7 @@ public class BitArrayLoggerTests {
         String messageSecond = "Test 2";
         logger.log(messageFirst);
         logger.log(messageSecond);
+
         assertEquals(2, logger.getLog().size());
     }
 }
