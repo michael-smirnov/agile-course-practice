@@ -18,9 +18,9 @@ public class CurrencyConverterLogger implements ILogger {
     private final String filename;
 
     private static String now() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.US);
-        return sdf.format(cal.getTime());
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat date = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.US);
+        return date.format(calendar.getTime());
     }
 
     public CurrencyConverterLogger(final String filename) {
