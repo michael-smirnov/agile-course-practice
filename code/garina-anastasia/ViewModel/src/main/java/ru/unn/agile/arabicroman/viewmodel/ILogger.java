@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface ILogger {
 
-    void addLogMessage(final String logMessage);
-    List<String> getLogMessages();
+    void add(final String logMessage);
+    List<String> getMessages();
 }

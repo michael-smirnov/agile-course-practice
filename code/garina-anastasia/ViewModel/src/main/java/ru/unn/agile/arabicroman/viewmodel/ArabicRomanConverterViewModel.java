@@ -54,7 +54,7 @@ public class ArabicRomanConverterViewModel {
     public void reverseConvertingDirection() {
         isConvertedNumberArabic = !isConvertedNumberArabic;
         exchangeTextForIONumbers();
-        logger.addLogMessage(reverseLogMessage());
+        logger.add(reverseLogMessage());
     }
 
     private void exchangeTextForIONumbers() {
@@ -80,22 +80,22 @@ public class ArabicRomanConverterViewModel {
     }
 
     public void convert() {
-        logger.addLogMessage(convertLogMessage());
+        logger.add(convertLogMessage());
         try {
             if (isConvertedNumberArabic) {
                 outputNumber = NumeralConverter.convert(Integer.parseInt(inputNumber));
             } else {
                 outputNumber = String.valueOf(NumeralConverter.convert(inputNumber));
             }
-            logger.addLogMessage(successfulConvertLogMessage());
+            logger.add(successfulConvertLogMessage());
         } catch (Exception e) {
             errorMessage = "Illegal input number";
-            logger.addLogMessage(failedConvertLogMessage());
+            logger.add(failedConvertLogMessage());
         }
     }
 
     public List<String> getLogMessages() {
-        return logger.getLogMessages();
+        return logger.getMessages();
     }
 
     private String convertLogMessage() {

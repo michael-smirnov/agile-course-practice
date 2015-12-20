@@ -33,19 +33,26 @@ public class TextLoggerTests {
 
     @Test
     public void canSomeMessageBeWrittenInLogFile() {
-        textLogger.addLogMessage(TESTING_MESSAGE);
+        textLogger.add(TESTING_MESSAGE);
 
-        String messageInLog = textLogger.getLogMessages().get(0);
+        assertFalse(textLogger.getMessages().isEmpty());
+    }
+
+    @Test
+    public void canDefiniteMessageBeWrittenInLogFile() {
+        textLogger.add(TESTING_MESSAGE);
+
+        String messageInLog = textLogger.getMessages().get(0);
 
         assertTrue(messageInLog.matches(".*" + TESTING_MESSAGE + "$"));
     }
 
     @Test
-    public void canSeveralMessagesBeWrittenInLogFile() {
-        textLogger.addLogMessage(TESTING_MESSAGE + "0");
-        textLogger.addLogMessage(TESTING_MESSAGE + "1");
+    public void canSeveralDefiniteMessagesBeWrittenInLogFile() {
+        textLogger.add(TESTING_MESSAGE + "0");
+        textLogger.add(TESTING_MESSAGE + "1");
 
-        List<String> messagesInLog = textLogger.getLogMessages();
+        List<String> messagesInLog = textLogger.getMessages();
 
         for (int i = 0; i < messagesInLog.size(); i++) {
             assertTrue(messagesInLog.get(i).matches(".*" + TESTING_MESSAGE + i + "$"));
@@ -54,9 +61,9 @@ public class TextLoggerTests {
 
     @Test
     public void doMessagesInLogContainDateAndTimeInCorrectFormat() {
-        textLogger.addLogMessage(TESTING_MESSAGE);
+        textLogger.add(TESTING_MESSAGE);
 
-        String messageInLog = textLogger.getLogMessages().get(0);
+        String messageInLog = textLogger.getMessages().get(0);
 
         assertTrue(messageInLog.matches("^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} > .*"));
     }

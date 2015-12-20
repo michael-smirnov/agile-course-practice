@@ -26,7 +26,7 @@ public class TextLogger implements ILogger {
     }
 
     @Override
-    public void addLogMessage(final String logMessage) {
+    public void add(final String logMessage) {
         try {
             loggerWriter.write(currentDateAndTime() + " > " + logMessage);
             loggerWriter.newLine();
@@ -37,7 +37,7 @@ public class TextLogger implements ILogger {
     }
 
     @Override
-    public List<String> getLogMessages() {
+    public List<String> getMessages() {
         BufferedReader loggerReader;
         ArrayList<String> logMessages = new ArrayList<String>();
         try {
