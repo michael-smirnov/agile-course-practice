@@ -86,12 +86,12 @@ public class ViewModel {
         result.set(weightConverter.convert(value.get(), inputUnit.get(), outputUnit.get()));
         status.set(Status.SUCCESS.toString());
 
-        StringBuilder log_message = new StringBuilder(LogMessages.CONVERT_BUTTON_WAS_PRESSED);
-        log_message.append("Entered parametrs")
+        StringBuilder message = new StringBuilder(LogMessages.CONVERT_BUTTON_WAS_PRESSED);
+        message.append("Entered parametrs")
                 .append(": value = ").append(value.get())
                 .append("; input unit = ").append(inputUnit.get())
                 .append("; output unit = ").append(outputUnit.get());
-        logger.log(log_message.toString());
+        logger.log(message.toString());
         updateLogs();
     }
 
