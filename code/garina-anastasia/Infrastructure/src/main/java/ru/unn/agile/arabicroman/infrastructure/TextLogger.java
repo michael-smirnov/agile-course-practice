@@ -38,14 +38,14 @@ public class TextLogger implements ILogger {
 
     @Override
     public List<String> getLogMessages() {
-        BufferedReader readerForLogger;
+        BufferedReader loggerReader;
         ArrayList<String> logMessages = new ArrayList<String>();
         try {
-            readerForLogger = new BufferedReader(new FileReader(fileName));
-            String message = readerForLogger.readLine();
+            loggerReader = new BufferedReader(new FileReader(fileName));
+            String message = loggerReader.readLine();
             while (message != null) {
                 logMessages.add(message);
-                message = readerForLogger.readLine();
+                message = loggerReader.readLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -7,6 +7,6 @@ public class TextLoggerTestsForViewModel extends ViewModelWithLoggerTests {
     @Override
     public void setUp() {
         TextLogger actualTextLogger = new TextLogger("./TextLoggerTestsForViewModel.log");
-        super.setViewModelWithLogger(new ArabicRomanConverterViewModel(actualTextLogger));
+        setViewModelWithLogger(new ArabicRomanConverterViewModel(actualTextLogger));
     }
 }

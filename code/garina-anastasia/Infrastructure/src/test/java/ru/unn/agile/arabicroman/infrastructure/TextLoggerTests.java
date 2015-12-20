@@ -36,25 +36,28 @@ public class TextLoggerTests {
         textLogger.addLogMessage(TESTING_MESSAGE);
 
         String messageInLog = textLogger.getLogMessages().get(0);
+
         assertTrue(messageInLog.matches(".*" + TESTING_MESSAGE + "$"));
     }
 
     @Test
-    public void canSeveralMessageBeWrittenInLogFile() {
+    public void canSeveralMessagesBeWrittenInLogFile() {
         textLogger.addLogMessage(TESTING_MESSAGE + "0");
         textLogger.addLogMessage(TESTING_MESSAGE + "1");
 
         List<String> messagesInLog = textLogger.getLogMessages();
+
         for (int i = 0; i < messagesInLog.size(); i++) {
             assertTrue(messagesInLog.get(i).matches(".*" + TESTING_MESSAGE + i + "$"));
         }
     }
 
     @Test
-    public void doesMessagesInLogContainDateAndTimeInCorrectFormat() {
+    public void doMessagesInLogContainDateAndTimeInCorrectFormat() {
         textLogger.addLogMessage(TESTING_MESSAGE);
 
         String messageInLog = textLogger.getLogMessages().get(0);
+
         assertTrue(messageInLog.matches("^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} > .*"));
     }
 }

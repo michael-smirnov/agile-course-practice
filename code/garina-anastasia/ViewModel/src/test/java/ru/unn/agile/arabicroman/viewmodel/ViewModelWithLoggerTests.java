@@ -56,6 +56,7 @@ public class ViewModelWithLoggerTests {
     @Test
     public void canConvertMethodAddProperMessageIntoLogger() {
         viewModelWithLogger.convert();
+
         String message = viewModelWithLogger.getLogMessages().get(0);
 
         assertTrue(message.matches(".*" + LogMessages.CONVERT_WAS_PRESSED + ".*"));
@@ -64,6 +65,7 @@ public class ViewModelWithLoggerTests {
     @Test
     public void canReverseConvertingDirectionMethodAddProperMessageIntoLogger() {
         viewModelWithLogger.reverseConvertingDirection();
+
         String message = viewModelWithLogger.getLogMessages().get(0);
 
         assertTrue(message.matches(".*" + LogMessages.REVERSE_WAS_PRESSED + ".*"));
@@ -72,6 +74,7 @@ public class ViewModelWithLoggerTests {
     @Test
     public void canReverseConvertingDirectionMethodAddProperDataIntoLogMessage() {
         viewModelWithLogger.reverseConvertingDirection();
+
         String message = viewModelWithLogger.getLogMessages().get(0);
 
         assertTrue(message.matches(".*" + viewModelWithLogger.getInputNumberFormat()
@@ -82,6 +85,7 @@ public class ViewModelWithLoggerTests {
     public void canConverMethodAddProperInputDataIntoLogMessage() {
         viewModelWithLogger.setInputNumber("5");
         viewModelWithLogger.convert();
+
         String message = viewModelWithLogger.getLogMessages().get(0);
 
         assertTrue(message.matches(".*" + viewModelWithLogger.getInputNumber()
@@ -92,6 +96,7 @@ public class ViewModelWithLoggerTests {
     public void canConverMethodAddProperMessagewhenFinisedSuccessfully() {
         viewModelWithLogger.setInputNumber("5");
         viewModelWithLogger.convert();
+
         String message = viewModelWithLogger.getLogMessages().get(1);
 
         assertTrue(message.matches(".*" + viewModelWithLogger.getOutputNumber()
@@ -102,6 +107,7 @@ public class ViewModelWithLoggerTests {
     public void canConverMethodAddProperMessageWhenFailed() {
         viewModelWithLogger.setInputNumber("5fd");
         viewModelWithLogger.convert();
+
         String message = viewModelWithLogger.getLogMessages().get(1);
 
         assertTrue(message.matches(".*" + LogMessages.FAILED_CONVERT_OPERATION + ".*"));
