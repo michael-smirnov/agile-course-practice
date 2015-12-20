@@ -204,8 +204,8 @@ public class ViewModel {
     }
 
     private class InputValueChangeListener implements ChangeListener<String> {
-        private String prevValue = new String();
-        private String curValue = new String();
+        private String previousValue = new String();
+        private String currentValue = new String();
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
@@ -213,13 +213,13 @@ public class ViewModel {
                 return;
             }
             hintMessage.set(getHint().toString());
-            curValue = newValue;
+            currentValue = newValue;
         }
         public boolean isChanged() {
-            return !prevValue.equals(curValue);
+            return !previousValue.equals(currentValue);
         }
         public void cache() {
-            prevValue = curValue;
+            previousValue = currentValue;
         }
     }
 }

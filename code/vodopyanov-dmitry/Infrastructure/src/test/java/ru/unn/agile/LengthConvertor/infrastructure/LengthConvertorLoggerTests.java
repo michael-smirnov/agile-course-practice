@@ -13,12 +13,12 @@ import java.util.List;
 import static junit.framework.TestCase.assertNotNull;
 
 public class LengthConvertorLoggerTests {
-    private static final String LOG_NAME = "./LengthConvertorLoggerTests.log";
+    private static final String FILE_LOG_NAME = "./LengthConvertorLoggerTests.log";
     private LengthConvertorLogger lengthConvertorLogger;
 
     @Before
     public void setUp() {
-        lengthConvertorLogger = new LengthConvertorLogger(LOG_NAME);
+        lengthConvertorLogger = new LengthConvertorLogger(FILE_LOG_NAME);
     }
 
     @Test
@@ -29,9 +29,9 @@ public class LengthConvertorLoggerTests {
     @Test
     public void canWeCreateLogFileOnFileSystem() {
         try {
-            new BufferedReader(new FileReader(LOG_NAME));
+            new BufferedReader(new FileReader(FILE_LOG_NAME));
         } catch (FileNotFoundException e) {
-            fail("File " + LOG_NAME + " was not found!");
+            fail("File " + FILE_LOG_NAME + " was not found!");
         }
     }
 
