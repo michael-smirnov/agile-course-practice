@@ -99,12 +99,12 @@ public class ArabicRomanConverterViewModel {
     }
 
     private String convertLogMessage() {
-        return LogMessages.CONVERT_WAS_PRESSED + "with argument: " + inputNumber
+        return LogMessages.CONVERT_HAS_BEEN_PRESSED + "with argument: " + inputNumber
                 + " as " + inputNumberFormat;
     }
 
     private String reverseLogMessage() {
-        return LogMessages.REVERSE_WAS_PRESSED + "Current converting direction is from "
+        return LogMessages.REVERSE_HAS_BEEN_PRESSED + "Current converting direction is from "
                 + inputNumberFormat + " into  " + outputNumberFormat;
     }
 
@@ -120,8 +120,8 @@ public class ArabicRomanConverterViewModel {
 }
 
     final class LogMessages {
-        public static final String CONVERT_WAS_PRESSED = "Convert button was pressed ";
-        public static final String REVERSE_WAS_PRESSED = "Reverse button was pressed ";
+        public static final String CONVERT_HAS_BEEN_PRESSED = "Convert button has been pressed ";
+        public static final String REVERSE_HAS_BEEN_PRESSED = "Reverse button has been pressed ";
         public static final String SUCCESSFUL_CONVERT_OPERATION = "Converted successfully ";
         public static final String FAILED_CONVERT_OPERATION =
                 "Convert failed due to illegal argument ";

@@ -59,7 +59,7 @@ public class ViewModelWithLoggerTests {
 
         String message = viewModelWithLogger.getLogMessages().get(0);
 
-        assertTrue(message.matches(".*" + LogMessages.CONVERT_WAS_PRESSED + ".*"));
+        assertTrue(message.matches(".*" + LogMessages.CONVERT_HAS_BEEN_PRESSED + ".*"));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class ViewModelWithLoggerTests {
 
         String message = viewModelWithLogger.getLogMessages().get(0);
 
-        assertTrue(message.matches(".*" + LogMessages.REVERSE_WAS_PRESSED + ".*"));
+        assertTrue(message.matches(".*" + LogMessages.REVERSE_HAS_BEEN_PRESSED + ".*"));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ViewModelWithLoggerTests {
     }
 
     @Test
-    public void canConverMethodAddProperInputDataIntoLogMessage() {
+    public void canConvertMethodAddProperInputDataIntoLogMessage() {
         viewModelWithLogger.setInputNumber("5");
         viewModelWithLogger.convert();
 
@@ -93,7 +93,7 @@ public class ViewModelWithLoggerTests {
     }
 
     @Test
-    public void canConverMethodAddProperMessagewhenFinisedSuccessfully() {
+    public void canConvertMethodAddProperMessagewhenFinishedSuccessfully() {
         viewModelWithLogger.setInputNumber("5");
         viewModelWithLogger.convert();
 
@@ -104,7 +104,7 @@ public class ViewModelWithLoggerTests {
     }
 
     @Test
-    public void canConverMethodAddProperMessageWhenFailed() {
+    public void canConvertMethodAddProperMessageWhenFailed() {
         viewModelWithLogger.setInputNumber("5fd");
         viewModelWithLogger.convert();
 
