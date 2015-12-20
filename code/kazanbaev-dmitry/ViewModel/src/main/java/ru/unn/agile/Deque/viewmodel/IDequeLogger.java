@@ -1,9 +1,9 @@
 package ru.unn.agile.Deque.viewmodel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface IDequeLogger {
     void log(final String message);
 
-    ArrayList<String> getLog();
+    List<String> getLog();
 }

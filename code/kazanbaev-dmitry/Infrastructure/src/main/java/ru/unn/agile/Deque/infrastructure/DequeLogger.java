@@ -3,21 +3,21 @@ package ru.unn.agile.Deque.infrastructure;
 import ru.unn.agile.Deque.viewmodel.IDequeLogger;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DequeLogger implements IDequeLogger {
-    private BufferedWriter writer;
+    private FileWriter writer;
     private final String pathToFile;
 
     public DequeLogger(final String pathToFile) {
         this.pathToFile = pathToFile;
 
         try {
-            writer = new BufferedWriter(new FileWriter(pathToFile));
+            writer = new FileWriter(pathToFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -26,8 +26,7 @@ public class DequeLogger implements IDequeLogger {
     @Override
     public void log(final String message) {
         try {
-            writer.write(new Date() + " > " + message);
-            writer.newLine();
+            writer.write(new Date() + " > " + message + "\n");
             writer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -35,7 +34,7 @@ public class DequeLogger implements IDequeLogger {
     }
 
     @Override
-    public ArrayList<String> getLog() {
+    public List<String> getLog() {
         BufferedReader reader;
         ArrayList<String> log = new ArrayList<>();
         try {

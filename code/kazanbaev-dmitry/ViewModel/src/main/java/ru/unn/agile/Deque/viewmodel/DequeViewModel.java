@@ -2,7 +2,7 @@ package ru.unn.agile.Deque.viewmodel;
 
 import ru.unn.agile.Deque.model.Deque;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class DequeViewModel {
     private final Deque<Integer> deque;
@@ -161,7 +161,7 @@ public class DequeViewModel {
         this.logger = logger;
     }
 
-    public ArrayList<String> getLog() {
+    public List<String> getLog() {
         return logger.getLog();
     }
 

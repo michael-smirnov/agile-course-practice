@@ -1,6 +1,7 @@
 package ru.unn.agile.Deque.viewmodel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FakeDequeLogger implements IDequeLogger {
     private ArrayList<String> log;
@@ -15,7 +16,7 @@ public class FakeDequeLogger implements IDequeLogger {
     }
 
     @Override
-    public ArrayList<String> getLog() {
+    public List<String> getLog() {
         return log;
     }
 }

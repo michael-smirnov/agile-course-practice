@@ -8,7 +8,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 public final class DequeForm {
     private final DequeViewModel viewModel;
@@ -84,7 +84,7 @@ public final class DequeForm {
         dequeTable.setEnabled(false);
         mainScrollPane.setViewportView(dequeTable);
 
-        ArrayList<String> log = viewModel.getLog();
+        List<String> log = viewModel.getLog();
         String[] arrayOfMessages = log.toArray(new String[log.size()]);
         logList.setListData(arrayOfMessages);
     }

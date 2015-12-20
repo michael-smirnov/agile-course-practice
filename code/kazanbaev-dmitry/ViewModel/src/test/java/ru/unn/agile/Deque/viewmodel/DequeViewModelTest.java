@@ -5,7 +5,7 @@ import org.junit.Test;
 import ru.unn.agile.Deque.model.Deque;
 import ru.unn.agile.Deque.viewmodel.DequeViewModel.Action;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -54,7 +54,7 @@ public class DequeViewModelTest {
 
     @Test
     public void byDefaultLogIsEmpty() {
-        ArrayList<String> log = viewModel.getLog();
+        List<String> log = viewModel.getLog();
 
         assertTrue(log.isEmpty());
     }
