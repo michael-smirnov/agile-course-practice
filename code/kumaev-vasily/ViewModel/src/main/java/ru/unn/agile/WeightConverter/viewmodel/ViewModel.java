@@ -29,7 +29,6 @@ public class ViewModel {
     private ILogger logger;
     private List<ValueCachingChangeListener> valueChangedListeners;
 
-
     public void setLogger(final ILogger logger) {
         if (logger == null) {
             throw new IllegalArgumentException("Logger is null");
@@ -37,15 +36,15 @@ public class ViewModel {
         this.logger = logger;
     }
 
-    public ViewModel(final ILogger logger) {
-        setLogger(logger);
-        init();
-    }
-
     public ViewModel() {
         init();
     }
 
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+        init();
+    }
+    
     public void init() {
         inputUnit.set(WeightUnit.GRAM);
         outputUnit.set(WeightUnit.KILOGRAM);
