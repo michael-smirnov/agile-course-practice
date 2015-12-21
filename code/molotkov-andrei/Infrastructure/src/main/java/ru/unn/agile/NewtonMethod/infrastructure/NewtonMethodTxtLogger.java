@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Locale;
 
 public class NewtonMethodTxtLogger implements INewtonMethodLogger {
-    private BufferedWriter logWriter;
+    private BufferedWriter logFileWriter;
     private final String logFileName;
 
     public NewtonMethodTxtLogger(final String logFileName) {
         this.logFileName = logFileName;
         try {
-            logWriter = new BufferedWriter(new FileWriter(logFileName));
+            logFileWriter = new BufferedWriter(new FileWriter(logFileName));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -25,9 +25,9 @@ public class NewtonMethodTxtLogger implements INewtonMethodLogger {
     @Override
     public void log(final String message) {
         try {
-            logWriter.write("< " + getCurrentDateTime() + " > " + message);
-            logWriter.newLine();
-            logWriter.flush();
+            logFileWriter.write("< " + getCurrentDateTime() + " > " + message);
+            logFileWriter.newLine();
+            logFileWriter.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
