@@ -10,13 +10,13 @@
       <ViewModel fx:id="viewModel" />
    </fx:define>
    <children>
-      <Button fx:id="btnConv" defaultButton="true" disable="${viewModel.conversionDisabled}" layoutX="325.0" layoutY="144.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" text="Convert" />
+      <Button fx:id="buttonConvert" defaultButton="true" disable="${viewModel.conversionDisabled}" layoutX="325.0" layoutY="144.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" text="Convert" />
       <Label layoutX="266.0" layoutY="114.0" prefHeight="17.0" prefWidth="39.0" text="Result:" />
       <TextField fx:id="txtInputValue" layoutX="52.0" layoutY="110.0" prefHeight="25.0" prefWidth="182.0" />
       <Label fx:id="lbValue" layoutX="322.0" layoutY="114.0" prefHeight="17.0" prefWidth="182.0" text="${viewModel.result}" />
       <Label layoutX="52.0" layoutY="157.0" text="Status: " />
-      <ComboBox fx:id="cbInputUnit" items="${viewModel.units}" layoutX="50.0" layoutY="61.0" prefHeight="25.0" prefWidth="182.0" />
-      <ComboBox fx:id="cbOutputUnit" items="${viewModel.units}" layoutX="321.0" layoutY="61.0" prefHeight="25.0" prefWidth="182.0" />
+      <ComboBox fx:id="comboBoxInputUnit" items="${viewModel.units}" layoutX="50.0" layoutY="61.0" prefHeight="25.0" prefWidth="182.0" />
+      <ComboBox fx:id="comboBoxOutputUnit" items="${viewModel.units}" layoutX="321.0" layoutY="61.0" prefHeight="25.0" prefWidth="182.0" />
       <Label fx:id="lbStatus" layoutX="97.0" layoutY="156.0" prefHeight="17.0" prefWidth="206.0" text="${viewModel.status}" />
       <Label layoutX="125.0" layoutY="33.0" text="FROM" />
       <Label layoutX="404.0" layoutY="33.0" text="TO" />

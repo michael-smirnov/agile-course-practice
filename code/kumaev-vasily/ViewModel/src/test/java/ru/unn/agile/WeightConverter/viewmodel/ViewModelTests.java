@@ -81,7 +81,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void convertButtonIsDisableWhenWeChangeInputValueFromValidToBad() {
+    public void convertButtonIsDisableWhenChangeInputValueFromValidToBad() {
         viewModel.valueProperty().set("4");
         viewModel.valueProperty().set("a");
 
@@ -187,7 +187,7 @@ public class ViewModelTests {
 
     @Test
     public void logContainsProperMessageAfterConversion() {
-        setInputParametrs();
+        setInputParameters();
 
         viewModel.convert();
         String message = viewModel.getLog().get(0);
@@ -196,8 +196,8 @@ public class ViewModelTests {
     }
 
     @Test
-    public void logContainsInputParametrsAfterConversion() {
-        setInputParametrs();
+    public void logContainsInputParametersAfterConversion() {
+        setInputParameters();
 
         viewModel.convert();
 
@@ -208,13 +208,13 @@ public class ViewModelTests {
     }
 
     @Test
-    public void argumentsInfoIssProperlyFormatted() {
-        setInputParametrs();
+    public void argumentsInfoIsProperlyFormatted() {
+        setInputParameters();
 
         viewModel.convert();
 
         String message = viewModel.getLog().get(0);
-        assertTrue(message.matches(".*Entered parametrs"
+        assertTrue(message.matches(".*Entered parameters"
                 + ": value = " + viewModel.valueProperty().get()
                 + "; input unit = " + viewModel.inputUnitProperty().get()
                 + "; output unit = " + viewModel.outputUnitProperty().get() + ".*"));
@@ -222,7 +222,7 @@ public class ViewModelTests {
 
     @Test
     public void inputWeightUnitIsMentionedInTheLog() {
-        setInputParametrs();
+        setInputParameters();
 
         viewModel.convert();
 
@@ -232,7 +232,7 @@ public class ViewModelTests {
 
     @Test
     public void canPutSeveralLogMessages() {
-        setInputParametrs();
+        setInputParameters();
 
         viewModel.convert();
         viewModel.convert();
@@ -243,7 +243,7 @@ public class ViewModelTests {
     }
 
     @Test
-    public void canSeeChangesWeightUnitInLog() {
+    public void canWeightUnitUpdateInLog() {
         viewModel.unitsChanged(WeightUnit.POUND, WeightUnit.TON);
 
         String message = viewModel.getLog().get(0);
@@ -262,8 +262,8 @@ public class ViewModelTests {
     }
 
     @Test
-    public void patametrAreCorrectlyLogged() {
-        setInputParametrs();
+    public void parametersAreCorrectlyLogged() {
+        setInputParameters();
 
         viewModel.onFocusChanged(Boolean.TRUE, Boolean.FALSE);
 
@@ -283,13 +283,13 @@ public class ViewModelTests {
     }
 
     @Test
-    public void canverterIsNotCalledWhenButtonIsDisabled() {
+    public void converterIsNotCalledWhenButtonIsDisabled() {
         viewModel.convert();
 
         assertTrue(viewModel.getLog().isEmpty());
     }
 
-    private void setInputParametrs() {
+    private void setInputParameters() {
         viewModel.inputUnitProperty().set(WeightUnit.POUND);
         viewModel.outputUnitProperty().set(WeightUnit.KILOGRAM);
         viewModel.valueProperty().set("2.2");

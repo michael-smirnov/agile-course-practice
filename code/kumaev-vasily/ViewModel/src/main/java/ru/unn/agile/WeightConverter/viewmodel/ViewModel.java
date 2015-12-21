@@ -86,7 +86,7 @@ public class ViewModel {
         status.set(Status.SUCCESS.toString());
 
         StringBuilder message = new StringBuilder(LogMessages.CONVERT_BUTTON_WAS_PRESSED);
-        message.append("Entered parametrs")
+        message.append("Entered parameters")
                 .append(": value = ").append(value.get())
                 .append("; input unit = ").append(inputUnit.get())
                 .append("; output unit = ").append(outputUnit.get());
@@ -114,7 +114,7 @@ public class ViewModel {
         for (ValueCachingChangeListener listener : valueChangedListeners) {
             if (listener.isChanged()) {
                 StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
-                message.append("Input vaslue are: [")
+                message.append("Input value are: [")
                         .append(value.get()).append("]");
                 logger.log(message.toString());
                 updateLogs();

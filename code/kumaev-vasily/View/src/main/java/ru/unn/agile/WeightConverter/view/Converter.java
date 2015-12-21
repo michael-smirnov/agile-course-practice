@@ -16,16 +16,14 @@ public class Converter {
     @FXML
     private TextField txtInputValue;
     @FXML
-    private ComboBox<WeightUnit> cbInputUnit;
+    private ComboBox<WeightUnit> comboBoxInputUnit;
     @FXML
-    private ComboBox<WeightUnit> cbOutputUnit;
+    private ComboBox<WeightUnit> comboBoxOutputUnit;
     @FXML
-    private Button btnConv;
+    private Button buttonConvert;
 
     @FXML
     void initialize() {
-        viewModel.setLogger(new WeightConverterTxtLogger("./TxtLogger-lab3-weight-coverter.log"));
-
         final ChangeListener<Boolean> focusChangeListener = new ChangeListener<Boolean>() {
             @Override
             public void changed(final ObservableValue<? extends Boolean> observable,
@@ -33,29 +31,25 @@ public class Converter {
                 viewModel.onFocusChanged(oldValue, newValue);
             }
         };
+        final ChangeListener<WeightUnit> focusWeightUnitChangeListener =
+                new ChangeListener<WeightUnit>() {
+                    @Override
+                    public void changed(final ObservableValue<? extends WeightUnit> observable,
+                                        final WeightUnit oldValue, final WeightUnit newValue) {
+                        viewModel.unitsChanged(oldValue, newValue);
+                    }
+                };
+
+        viewModel.setLogger(new WeightConverterTxtLogger("./TxtLogger-lab3-weight-converter.log"));
+
         txtInputValue.textProperty().bindBidirectional(viewModel.valueProperty());
         txtInputValue.focusedProperty().addListener(focusChangeListener);
+        comboBoxInputUnit.valueProperty().bindBidirectional(viewModel.inputUnitProperty());
+        comboBoxOutputUnit.valueProperty().bindBidirectional(viewModel.outputUnitProperty());
+        comboBoxInputUnit.valueProperty().addListener(focusWeightUnitChangeListener);
+        comboBoxOutputUnit.valueProperty().addListener(focusWeightUnitChangeListener);
 
-        cbInputUnit.valueProperty().bindBidirectional(viewModel.inputUnitProperty());
-        cbOutputUnit.valueProperty().bindBidirectional(viewModel.outputUnitProperty());
-
-
-        cbInputUnit.valueProperty().addListener(new ChangeListener<WeightUnit>() {
-                @Override
-                public void changed(final ObservableValue<? extends WeightUnit> observable,
-                                    final WeightUnit oldValue, final WeightUnit newValue) {
-                    viewModel.unitsChanged(oldValue, newValue);
-                }
-            });
-        cbOutputUnit.valueProperty().addListener(new ChangeListener<WeightUnit>() {
-            @Override
-            public void changed(final ObservableValue<? extends WeightUnit> observable,
-                                final WeightUnit previousValue, final WeightUnit actualValue) {
-                viewModel.unitsChanged(previousValue, actualValue);
-            }
-        });
-
-        btnConv.setOnAction(new EventHandler<ActionEvent>() {
+        buttonConvert.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent event) {
                 viewModel.convert();

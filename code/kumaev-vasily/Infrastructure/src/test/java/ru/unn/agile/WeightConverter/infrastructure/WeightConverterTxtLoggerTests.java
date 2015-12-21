@@ -10,12 +10,12 @@ import static junit.framework.TestCase.assertNotNull;
 
 public class WeightConverterTxtLoggerTests {
     private WeightConverterTxtLogger weightConverterTxtLogger;
-    private static final String NAME_LOG_FILE = "./TxtLogger_Tests-lab3-weight-convertor.log";
+    private static final String LOG_FILE_NAME = "./TxtLogger_Tests-lab3-weight-converter.log";
     private static final String TEST_MESSAGE = "Test message";
 
     @Before
     public void setUp() {
-        weightConverterTxtLogger = new WeightConverterTxtLogger(NAME_LOG_FILE);
+        weightConverterTxtLogger = new WeightConverterTxtLogger(LOG_FILE_NAME);
     }
 
     @Test
@@ -25,7 +25,7 @@ public class WeightConverterTxtLoggerTests {
 
     @Test
     public void canCreateLogFileOnDisk() {
-        assertTrue(new File(NAME_LOG_FILE).isFile());
+        assertTrue(new File(LOG_FILE_NAME).isFile());
     }
 
     @Test
