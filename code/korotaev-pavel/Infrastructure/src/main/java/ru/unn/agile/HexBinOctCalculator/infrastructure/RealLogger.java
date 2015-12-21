@@ -4,7 +4,7 @@ import ru.unn.agile.HexBinOctCalculator.viewmodel.ILogger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,7 +14,7 @@ import java.util.Locale;
 public class RealLogger implements ILogger {
     private static final String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
     private final String filename;
-    private final FileWriter writer;
+    private final PrintWriter writer;
 
     private static String now() {
         Calendar calendar = Calendar.getInstance();
@@ -24,9 +24,9 @@ public class RealLogger implements ILogger {
 
     public RealLogger(final String filename) {
         this.filename = filename;
-        FileWriter logWriter = null;
+        PrintWriter logWriter = null;
         try {
-            logWriter = new FileWriter(filename);
+            logWriter = new PrintWriter(filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,8 +36,7 @@ public class RealLogger implements ILogger {
     @Override
     public void log(final String s) {
         try {
-            writer.write(now() + " > " + s);
-            writer.write("\r\n");
+            writer.println(now() + " > " + s);
             writer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
