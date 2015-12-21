@@ -15,7 +15,7 @@ import java.util.Locale;
 public class RealLogger implements ILogger {
     private static final String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
     private final String filename;
-    private final BufferedWriter writer;
+    private final FileWriter writer;
 
     private static String now() {
         Calendar calendar = Calendar.getInstance();
@@ -25,9 +25,9 @@ public class RealLogger implements ILogger {
 
     public RealLogger(final String filename) {
         this.filename = filename;
-        BufferedWriter logWriter = null;
+        FileWriter logWriter = null;
         try {
-            logWriter = new BufferedWriter(new FileWriter(filename));
+            logWriter = new FileWriter(filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class RealLogger implements ILogger {
     public void log(final String s) {
         try {
             writer.write(now() + " > " + s);
-            writer.newLine();
+            writer.write("\r\n");
             writer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
