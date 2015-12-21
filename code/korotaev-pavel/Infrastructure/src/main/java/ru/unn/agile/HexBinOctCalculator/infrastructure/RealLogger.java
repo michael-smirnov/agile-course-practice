@@ -3,7 +3,6 @@ package ru.unn.agile.HexBinOctCalculator.infrastructure;
 import ru.unn.agile.HexBinOctCalculator.viewmodel.ILogger;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
