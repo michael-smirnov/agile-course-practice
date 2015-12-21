@@ -446,6 +446,19 @@ public class ViewModelTest {
         assertTrue(viewModel.getLog().get(1).matches(secondMessage));
     }
 
+    @Test
+    public void logIsCorrectWhenGetSameErrorAfterOtherLogMessage() {
+        viewModel.getFirstRealProperty().set("qqq");
+        viewModel.getFirstRealProperty().set("123");
+        viewModel.calculate();
+        viewModel.getFirstRealProperty().set("qqq");
+
+        message = ".*Invalid format!.*";
+
+        assertTrue(viewModel.getLog().get(0).matches(message));
+        assertTrue(viewModel.getLog().get(2).matches(message));
+    }
+
     private void setPositiveData() {
         viewModel.getFirstRealProperty().set("2");
         viewModel.getFirstImaginaryProperty().set("3");

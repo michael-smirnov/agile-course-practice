@@ -217,16 +217,25 @@ public class ViewModel {
             errors.set(Errors.BAD_FORMAT.toString());
         }
 
-        List<String> logMessages = logger.getLog();
-        int lastIndex = logMessages.size() - 1;
         boolean isErrorMustLog = errors.get() != Errors.NOT_ERROR.toString()
-                && (logMessages.isEmpty() || !logMessages.isEmpty()
-                && !logMessages.get(lastIndex).matches(".*" + errors.get().toString() + ".*"));
+                && !isLastLogMessageContains(errors.get().toString());
+
         if (isErrorMustLog) {
             String message = LogMessage.GET_ERROR.toString() + errors.get();
             logger.log(message);
             updateLog();
         }
+    }
+
+    public boolean isLastLogMessageContains(final String text) {
+        List<String> logMessages = logger.getLog();
+        int lastIndex = logMessages.size() - 1;
+
+        if (logMessages.isEmpty()) {
+            return false;
+        }
+
+        return logMessages.get(lastIndex).matches(".*" + text + ".*");
     }
 
     public void onOperationChanged(final Operation oldValue, final Operation newValue) {
