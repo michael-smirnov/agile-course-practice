@@ -2,19 +2,13 @@ package ru.unn.agile.CurrencyConverter.infrastructure;
 
 import ru.unn.agile.CurrencyConverter.viewmodel.ILogger;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class CurrencyConverterLogger implements ILogger {
     private static final String DATE_FORMAT_NOW = "dd-MM-yyyy HH:mm:ss";
-    private final BufferedWriter writer;
+    private final PrintWriter writer;
     private final String filename;
 
     private static String now() {
@@ -26,9 +20,9 @@ public class CurrencyConverterLogger implements ILogger {
     public CurrencyConverterLogger(final String filename) {
         this.filename = filename;
 
-        BufferedWriter logWriter = null;
+        PrintWriter logWriter = null;
         try {
-            logWriter = new BufferedWriter(new FileWriter(filename));
+            logWriter = new PrintWriter(new FileWriter(filename));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,7 +33,7 @@ public class CurrencyConverterLogger implements ILogger {
     public void log(final String str) {
         try {
             writer.write(now() + " > " + str);
-            writer.newLine();
+            writer.println();
             writer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -49,14 +43,15 @@ public class CurrencyConverterLogger implements ILogger {
     @Override
     public List<String> getLog() {
         BufferedReader reader;
+        Scanner scan;
         ArrayList<String> log = new ArrayList<String>();
         try {
-            reader = new BufferedReader(new FileReader(filename));
-            String str = reader.readLine();
+            scan = new Scanner(new FileReader(filename));
+            String str = scan.nextLine();
 
             while (str != null) {
                 log.add(str);
-                str = reader.readLine();
+                str = scan.nextLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
