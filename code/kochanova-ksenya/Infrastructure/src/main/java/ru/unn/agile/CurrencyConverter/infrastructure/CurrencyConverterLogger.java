@@ -30,9 +30,9 @@ public class CurrencyConverterLogger implements ILogger {
     }
 
     @Override
-    public void log(final String str) {
+    public void log(final String s) {
         try {
-            writer.write(now() + " > " + str);
+            writer.print(now() + " > " + s);
             writer.println();
             writer.flush();
         } catch (Exception e) {
@@ -43,15 +43,15 @@ public class CurrencyConverterLogger implements ILogger {
     @Override
     public List<String> getLog() {
         BufferedReader reader;
-        Scanner scan;
+        Scanner scanner;
         ArrayList<String> log = new ArrayList<String>();
         try {
-            scan = new Scanner(new FileReader(filename));
-            String str = scan.nextLine();
+            scanner = new Scanner(new FileReader(filename));
+            String line = scanner.nextLine();
 
-            while (str != null) {
-                log.add(str);
-                str = scan.nextLine();
+            while (line != null) {
+                log.add(line);
+                line = scanner.nextLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
