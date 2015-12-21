@@ -207,8 +207,12 @@ project(":code/paramuzov-vladimir/Infrastructure").name = "paramuzov-vladimir-In
 // Plankina Elena
 
 // Plankina Elena
-include "code/plankina-elena"
-project(":code/plankina-elena").name = "plankina-elena-Model"
+include "code/plankina-elena/Model"
+project(":code/plankina-elena/Model").name = "plankina-elena-Model"
+include "code/plankina-elena/View"
+project(":code/plankina-elena/View").name = "plankina-elena-View"
+include "code/plankina-elena/ViewModel"
+project(":code/plankina-elena/ViewModel").name = "plankina-elena-ViewModel"
 
 // Pronina Anastasiya
 // Sabanov Denis
