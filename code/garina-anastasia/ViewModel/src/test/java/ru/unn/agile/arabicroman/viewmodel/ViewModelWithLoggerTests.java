@@ -4,6 +4,8 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
+import java.util.List;
+
 public class ViewModelWithLoggerTests {
     private ArabicRomanConverterViewModel viewModelWithLogger;
 
@@ -86,7 +88,7 @@ public class ViewModelWithLoggerTests {
         viewModelWithLogger.setInputNumber("5");
         viewModelWithLogger.convert();
 
-        String message = viewModelWithLogger.getLogMessages().get(0);
+        String message = viewModelWithLogger.getLogMessages().get(1);
 
         assertTrue(message.matches(".*" + viewModelWithLogger.getInputNumber()
                 + ".*" + viewModelWithLogger.getInputNumberFormat() + ".*"));
@@ -97,7 +99,7 @@ public class ViewModelWithLoggerTests {
         viewModelWithLogger.setInputNumber("5");
         viewModelWithLogger.convert();
 
-        String message = viewModelWithLogger.getLogMessages().get(1);
+        String message = viewModelWithLogger.getLogMessages().get(2);
 
         assertTrue(message.matches(".*" + viewModelWithLogger.getOutputNumber()
                 + ".*" + viewModelWithLogger.getOutputNumberFormat() + ".*"));
@@ -108,8 +110,29 @@ public class ViewModelWithLoggerTests {
         viewModelWithLogger.setInputNumber("5fd");
         viewModelWithLogger.convert();
 
-        String message = viewModelWithLogger.getLogMessages().get(1);
+        String message = viewModelWithLogger.getLogMessages().get(2);
 
         assertTrue(message.matches(".*" + LogMessages.FAILED_CONVERT_OPERATION + ".*"));
+    }
+    @Test
+    public void canAddMessageAboutEnteredNumber() {
+        viewModelWithLogger.setInputNumber("4");
+
+        String message = viewModelWithLogger.getLogMessages().get(0);
+
+        assertTrue(message.matches(".*" + LogMessages.ENTERED_NUMBER + ".*"));
+    }
+
+    @Test
+    public void canAddSeveralMessagesAboutEnteredNumbers() {
+        viewModelWithLogger.setInputNumber("0");
+        viewModelWithLogger.setInputNumber("1");
+        viewModelWithLogger.setInputNumber("2");
+
+        List<String> messagesInLog = viewModelWithLogger.getLogMessages();
+
+        for (int i = 0; i < messagesInLog.size(); i++) {
+            assertTrue(messagesInLog.get(i).matches(".*" + LogMessages.ENTERED_NUMBER + i + "$"));
+        }
     }
 }
