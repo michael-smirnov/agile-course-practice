@@ -25,7 +25,6 @@ public class TxtLoggerOfStatisticCalculator implements ILoggerOfStatisticCalcula
         try {
             logWriter = new BufferedWriter(new FileWriter(logPath));
         } catch (IOException e) {
-            logWriter = null;
             e.printStackTrace();
         }
     }
