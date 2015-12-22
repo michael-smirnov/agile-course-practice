@@ -13,7 +13,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
 
 public final class HypothecCalculator {
 
@@ -41,7 +40,7 @@ public final class HypothecCalculator {
     private JLabel overpayment;
     private JList<String> logList;
 
-    private final ViewModel viewModel = new ViewModel(new TxtHypothecLogger(FILE_NAME));
+    private final ViewModel viewModel = new ViewModel(new TxtLogger(FILE_NAME));
 
     private static final int HEADERS_HEIGHT = 50;
     private static final String FILE_NAME = "./HypothecCalculator.log";

@@ -16,7 +16,7 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class ViewModelLogComputeTests {
     private String message;
-    private FakeHypothecLogger fakeLogger;
+    private FakeLogger fakeLogger;
     private ViewModel viewModel;
 
     @Parameterized.Parameters
@@ -26,14 +26,14 @@ public class ViewModelLogComputeTests {
 
     @Before
     public void setUp() {
-        fakeLogger = new FakeHypothecLogger();
+        fakeLogger = new FakeLogger();
         viewModel = new ViewModel(fakeLogger);
         loadExample();
     }
 
     public void loadExample() {
         viewModel.setHouseCost("1000");
-        viewModel.setCountOfPeriods("2");
+        viewModel.setCountOfPeriods("5");
         viewModel.setDownPayment("100");
         viewModel.setInterestRate("1.2");
         viewModel.setFlatFee("10");
@@ -61,28 +61,31 @@ public class ViewModelLogComputeTests {
         viewModel.compute();
 
         List<String> log = viewModel.getLog();
-        String lastMessage = log.get(log.size() - 1);
+        String lastMessage = "";
+        int computeMessageSize = 9;
+        for (int i = 1; i <= computeMessageSize; i++) {
+            lastMessage = log.get(log.size() - i) + " " + lastMessage;
+        }
         assertThat(lastMessage, containsString(message));
     }
 
     private static Object[][] parametersOfTests = new Object[][]{
             {
                     "Произведены расчеты для кредита со следующими параметрами:"
-            },
-            {
+            }, {
                     "Стоимость недвижимости: 1000 руб."
             }, {
-                    "Первоначальный взнос: 0 руб."
+                    "Первоначальный взнос: 100 руб."
             }, {
-                    "Срок ипотеки: 18 месяцев"
+                    "Срок ипотеки: 5 лет"
             }, {
                     "Процентная ставка: 1.2 % ежемесячно"
             }, {
-                    "Единовременные комиссии: 0 % от суммы кредита"
+                    "Единовременные комиссии: 10 % от суммы кредита"
             }, {
-                    "Ежемесячные комиссии: 0 фиксированная сумма"
+                    "Ежемесячные комиссии: 10 фиксированная сумма"
             }, {
-                    "Начало выплат: 12.2015"
+                    "Начало выплат: 12.2012"
             }, {
                     "Тип кредита: аннуитетный"
             }

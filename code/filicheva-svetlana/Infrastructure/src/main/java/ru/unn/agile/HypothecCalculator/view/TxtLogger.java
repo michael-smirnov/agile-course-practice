@@ -1,9 +1,8 @@
 package ru.unn.agile.HypothecCalculator.view;
 
-import ru.unn.agile.HypothecCalculator.viewmodel.IHypothecLogger;
+import ru.unn.agile.HypothecCalculator.viewmodel.ILogger;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
@@ -12,17 +11,17 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class TxtHypothecLogger implements IHypothecLogger {
+public class TxtLogger implements ILogger {
     private static final String DATE_FORMAT_NOW = "dd-MM-yyyy HH:mm:ss";
-    private final BufferedWriter writer;
+    private final FileWriter writer;
     private final String filename;
 
-    public TxtHypothecLogger(final String filename) {
+    public TxtLogger(final String filename) {
         this.filename = filename;
 
-        BufferedWriter logWriter = null;
+        FileWriter logWriter = null;
         try {
-            logWriter = new BufferedWriter(new FileWriter(filename));
+            logWriter = new FileWriter(filename);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -32,7 +31,6 @@ public class TxtHypothecLogger implements IHypothecLogger {
     private static String currentTime() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.ENGLISH);
-        String time = simpleDateFormat.format(calendar.getTime());
         return simpleDateFormat.format(calendar.getTime());
     }
 
@@ -40,7 +38,7 @@ public class TxtHypothecLogger implements IHypothecLogger {
     public void addMessage(final String message) {
         try {
             writer.write(currentTime() + " > " + message);
-            writer.newLine();
+            writer.write("\n");
             writer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -65,4 +63,5 @@ public class TxtHypothecLogger implements IHypothecLogger {
 
         return log;
     }
+
 }

@@ -9,12 +9,12 @@ import static org.junit.Assert.assertEquals;
 
 public class ViewModelComputingTests {
     private ViewModel viewModel;
-    private FakeHypothecLogger fakeHypothecLogger;
+    private FakeLogger fakeLogger;
 
     @Before
     public void setUp() {
-        fakeHypothecLogger = new FakeHypothecLogger();
-        viewModel = new ViewModel(fakeHypothecLogger);
+        fakeLogger = new FakeLogger();
+        viewModel = new ViewModel(fakeLogger);
         loadExample();
     }
 

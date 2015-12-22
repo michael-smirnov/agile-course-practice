@@ -18,16 +18,16 @@ import java.util.List;
 public class TxtHypothecLoggerTests {
     private static final String FILENAME
             = "log/TxtHypothecLoggerTests.log";
-    private TxtHypothecLogger txtHypothecLogger;
+    private TxtLogger txtLogger;
 
     @Before
     public void setUp() {
-        txtHypothecLogger = new TxtHypothecLogger(FILENAME);
+        txtLogger = new TxtLogger(FILENAME);
     }
 
     @Test
     public void canCreateLogger() {
-        assertNotNull(txtHypothecLogger);
+        assertNotNull(txtLogger);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class TxtHypothecLoggerTests {
 
     @Test
     public void isLogEmptyAtTheStart() {
-        List<String> log = txtHypothecLogger.getLog();
+        List<String> log = txtLogger.getLog();
         assertEquals(0, log.size());
     }
 
@@ -49,9 +49,9 @@ public class TxtHypothecLoggerTests {
     public void canWriteLogMessage() {
         String rightMessage = "Some interesting message";
 
-        txtHypothecLogger.addMessage(rightMessage);
+        txtLogger.addMessage(rightMessage);
 
-        String actualMessage = txtHypothecLogger.getLog().get(0);
+        String actualMessage = txtLogger.getLog().get(0);
         assertThat(actualMessage, containsString(rightMessage));
     }
 
@@ -62,10 +62,10 @@ public class TxtHypothecLoggerTests {
 
         for (int i = 0; i < numberOfMessages; i++) {
             rightMessages[i] = "Message №" + i;
-            txtHypothecLogger.addMessage(rightMessages[i]);
+            txtLogger.addMessage(rightMessages[i]);
         }
 
-        List<String> actualMessages = txtHypothecLogger.getLog();
+        List<String> actualMessages = txtLogger.getLog();
         assertEquals(numberOfMessages, actualMessages.size());
         for (int i = 0; i < numberOfMessages; i++) {
             assertThat(actualMessages.get(i), containsString(rightMessages[i]));
@@ -76,11 +76,12 @@ public class TxtHypothecLoggerTests {
     public void canWriteTime() {
         String rightMessage = "Another interesting message";
 
-        txtHypothecLogger.addMessage(rightMessage);
+        txtLogger.addMessage(rightMessage);
 
-        String actualMessage = txtHypothecLogger.getLog().get(0);
+        String actualMessage = txtLogger.getLog().get(0);
         assertTrue(Pattern.matches(
                 "^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} > .*", actualMessage
         ));
     }
+
 }

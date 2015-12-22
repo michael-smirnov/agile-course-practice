@@ -35,11 +35,11 @@ public class ViewModel {
     private Hypothec.Builder hypothecForParsing;
     private CreditCalculator creditCalculator;
     private GraphicOfPaymentsMaker graphicOfPaymentsMaker;
-    private final IHypothecLogger logger;
+    private final ILogger logger;
 
     private static final double DOUBLE_DELTA = 0.001;
 
-    public ViewModel(final IHypothecLogger logger) {
+    public ViewModel(final ILogger logger) {
         if (logger == null) {
             throw new IllegalArgumentException("Logger is null");
         }
@@ -340,7 +340,7 @@ public class ViewModel {
                 + "Единовременные комиссии: " + flatFee + " " + flatFeeType + "\n"
                 + "Ежемесячные комиссии: " + monthlyFee + " " + monthlyFeeType + "\n"
                 + "Начало выплат: " + startMonth + "." + startYear + "\n"
-                + "Тип кредита: " + creditType + "\n";
+                + "Тип кредита: " + creditType;
         logger.addMessage(message);
     }
 
@@ -357,7 +357,7 @@ public class ViewModel {
     }
 
     public void setHouseCost(final String houseCost) {
-        if (houseCost != this.houseCost) {
+        if (!houseCost.equals(this.houseCost)) {
             logParameterChange("\"Стоимость недвижимости\": " + houseCost);
         }
         this.houseCost = houseCost;
@@ -368,7 +368,7 @@ public class ViewModel {
     }
 
     public void setDownPayment(final String downPayment) {
-        if (downPayment != this.downPayment) {
+        if (!downPayment.equals(this.downPayment)) {
             logParameterChange("\"Первоначальный взнос\": " + downPayment);
         }
         this.downPayment = downPayment;
@@ -379,7 +379,7 @@ public class ViewModel {
     }
 
     public void setCountOfPeriods(final String countOfPeriods) {
-        if (countOfPeriods != this.countOfPeriods) {
+        if (!countOfPeriods.equals(this.countOfPeriods)) {
             logParameterChange("\"Срок ипотеки\": " + countOfPeriods);
         }
         this.countOfPeriods = countOfPeriods;
@@ -390,7 +390,7 @@ public class ViewModel {
     }
 
     public void setInterestRate(final String interestRate) {
-        if (interestRate != this.interestRate) {
+        if (!interestRate.equals(this.interestRate)) {
             logParameterChange("\"Процентная ставка\": " + interestRate);
         }
         this.interestRate = interestRate;
@@ -401,7 +401,7 @@ public class ViewModel {
     }
 
     public void setFlatFee(final String flatFee) {
-        if (flatFee != this.flatFee) {
+        if (!flatFee.equals(this.flatFee)) {
             logParameterChange("\"Единовременные комиссии\": " + flatFee);
         }
         this.flatFee = flatFee;
@@ -412,7 +412,7 @@ public class ViewModel {
     }
 
     public void setMonthlyFee(final String monthlyFee) {
-        if (monthlyFee != this.monthlyFee) {
+        if (!monthlyFee.equals(this.monthlyFee)) {
             logParameterChange("\"Ежемесячные комиссии\": " + monthlyFee);
         }
         this.monthlyFee = monthlyFee;
@@ -489,7 +489,7 @@ public class ViewModel {
     }
 
     public void setStartMonth(final String startMonth) {
-        if (startMonth != this.startMonth) {
+        if (!startMonth.equals(this.startMonth)) {
             logParameterChange("\"Месяц начала выплат\": " + startMonth);
         }
         this.startMonth = startMonth;
@@ -500,7 +500,7 @@ public class ViewModel {
     }
 
     public void setStartYear(final String startYear) {
-        if (startYear != this.startYear) {
+        if (!startYear.equals(this.startYear)) {
             logParameterChange("\"Год начала выплат\": " + startYear);
         }
         this.startYear = startYear;
@@ -521,7 +521,6 @@ public class ViewModel {
     public DefaultTableModel getGraphicOfPayments() {
         return graphicOfPayments;
     }
-
 
     public final class Status {
         public static final String WAITING

@@ -11,7 +11,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 public class ViewModelLogInputTests {
     private ViewModel viewModel;
-    private FakeHypothecLogger fakeLogger;
+    private FakeLogger fakeLogger;
 
     public void setViewModel(final ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -19,13 +19,13 @@ public class ViewModelLogInputTests {
 
     @Before
     public void setUp() {
-        fakeLogger = new FakeHypothecLogger();
+        fakeLogger = new FakeLogger();
         viewModel = new ViewModel(fakeLogger);
     }
 
     @Test
     public void canCreateViewModelWithLogger() {
-        FakeHypothecLogger fakeLogger = new FakeHypothecLogger();
+        FakeLogger fakeLogger = new FakeLogger();
         ViewModel viewModel = new ViewModel(fakeLogger);
 
         assertNotNull(viewModel);
