@@ -362,4 +362,26 @@ public class DequeViewModelTest {
         assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.ACTION_CHANGED
                 + viewModel.getAction().toString() + ".*"));
     }
+
+    @Test
+    public void settingNumberAddsCorrectMessageInLog() {
+        String testNumber = "8";
+        viewModel.setInputNumber(testNumber);
+
+        String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.NUMBER_ENTERED
+                + testNumber + ".*"));
+    }
+
+    @Test
+    public void settingNaNAddsCorrectMessageInLog() {
+        String testNaN = "asd";
+        viewModel.setInputNumber(testNaN);
+
+        String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.NAN_ENTERED
+                + testNaN + ".*"));
+    }
 }

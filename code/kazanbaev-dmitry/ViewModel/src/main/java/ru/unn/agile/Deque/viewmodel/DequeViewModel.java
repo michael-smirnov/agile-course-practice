@@ -132,8 +132,10 @@ public class DequeViewModel {
     }
 
     public enum LogMessages {
-        ACTION_PERFORMED("Following action has occured: "),
-        ACTION_CHANGED("Action has been changed to: ");
+        ACTION_PERFORMED("Following action has occurred: "),
+        ACTION_CHANGED("Action has been changed to: "),
+        NUMBER_ENTERED("Following number has been entered: "),
+        NAN_ENTERED("Following NaN has been entered: ");
 
         private String description;
 
@@ -185,9 +187,13 @@ public class DequeViewModel {
             if (!deque.isEmpty()) {
                 isContainsActionEnabled = true;
             }
+
+            logger.log(LogMessages.NUMBER_ENTERED + inputNumber);
         } catch (NumberFormatException e) {
             isPushActionEnabled = false;
             isContainsActionEnabled = false;
+
+            logger.log(LogMessages.NAN_ENTERED + inputNumber);
         }
         updateDoActionButtonEnabled();
     }
