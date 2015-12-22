@@ -10,13 +10,15 @@ import java.util.List;
 import java.util.Locale;
 
 public class NewtonMethodTxtLogger implements INewtonMethodLogger {
-    private BufferedWriter logFileWriter;
     private final String logFileName;
+    private OutputStreamWriter logStreamWriter;
 
     public NewtonMethodTxtLogger(final String logFileName) {
         this.logFileName = logFileName;
+        FileOutputStream logFileOutputStream;
         try {
-            logFileWriter = new BufferedWriter(new FileWriter(logFileName));
+            logFileOutputStream = new FileOutputStream(new File(logFileName));
+            logStreamWriter = new OutputStreamWriter(logFileOutputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -25,9 +27,8 @@ public class NewtonMethodTxtLogger implements INewtonMethodLogger {
     @Override
     public void log(final String message) {
         try {
-            logFileWriter.write("< " + getCurrentDateTime() + " > " + message);
-            logFileWriter.newLine();
-            logFileWriter.flush();
+            logStreamWriter.write("< " + getCurrentDateTime() + " > " + message + "\n");
+            logStreamWriter.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -35,15 +36,16 @@ public class NewtonMethodTxtLogger implements INewtonMethodLogger {
 
     @Override
     public List<String> getLog() {
+        FileInputStream logFileInputStream;
         BufferedReader newtonMethodLogReader;
         List<String> log = new ArrayList<>();
         try {
-            newtonMethodLogReader = new BufferedReader(new FileReader(logFileName));
-            String line = newtonMethodLogReader.readLine();
+            logFileInputStream = new FileInputStream(new File(logFileName));
+            newtonMethodLogReader = new BufferedReader(new InputStreamReader(logFileInputStream));
 
-            while (line != null) {
+            String line;
+            while ((line = newtonMethodLogReader.readLine()) != null) {
                 log.add(line);
-                line = newtonMethodLogReader.readLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

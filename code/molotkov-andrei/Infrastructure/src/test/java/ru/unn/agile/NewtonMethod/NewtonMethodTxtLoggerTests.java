@@ -4,9 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.unn.agile.NewtonMethod.infrastructure.NewtonMethodTxtLogger;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.File;
 
 import static com.jcabi.matchers.RegexMatchers.matchesPattern;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,11 +27,7 @@ public class NewtonMethodTxtLoggerTests {
 
     @Test
     public void canCreateLogFileOnDisk() {
-        try {
-            new BufferedReader(new FileReader(LOG_FILE_NAME));
-        } catch (FileNotFoundException e) {
-            fail("File " + LOG_FILE_NAME + " wasn't found!");
-        }
+        assertTrue(new File(LOG_FILE_NAME).exists());
     }
 
     @Test
