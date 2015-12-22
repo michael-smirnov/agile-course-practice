@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 
 import java.util.List;
 
-public class TxtHypothecLoggerTests {
+public class TxtLoggerTests {
     private static final String FILENAME
-            = "log/TxtHypothecLoggerTests.log";
+            = "log/TxtLoggerTests.log";
     private TxtLogger txtLogger;
 
     @Before
