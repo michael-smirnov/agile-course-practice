@@ -24,7 +24,7 @@ public class StatisticCalculatorTxtLoggerTests {
     }
 
     @Test
-    public void canCreateRealLogFile() {
+    public void isLogFileCreatedAfterLoggerHadBeenInstantiated() {
         try {
             new BufferedReader(new FileReader(LOG_PATH));
         } catch (FileNotFoundException e) {
