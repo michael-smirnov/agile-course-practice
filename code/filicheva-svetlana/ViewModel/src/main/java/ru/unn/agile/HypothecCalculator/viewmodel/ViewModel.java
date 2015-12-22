@@ -333,13 +333,20 @@ public class ViewModel {
 
     private void logCompute() {
         String message = LogMessage.COMPUTE
-                + "Стоимость недвижимости: " + houseCost + " " + currencyType + "\n"
-                + "Первоначальный взнос: " + downPayment + " " + currencyType + "\n"
-                + "Срок ипотеки: " + countOfPeriods + " " + periodType + "\n"
-                + "Процентная ставка: " + interestRate + " " + interestRateType + "\n"
-                + "Единовременные комиссии: " + flatFee + " " + flatFeeType + "\n"
-                + "Ежемесячные комиссии: " + monthlyFee + " " + monthlyFeeType + "\n"
-                + "Начало выплат: " + startMonth + "." + startYear + "\n"
+                + "Стоимость недвижимости: " + houseCost
+                + " " + currencyType + "\n"
+                + "Первоначальный взнос: " + downPayment
+                + " " + currencyType + "\n"
+                + "Срок ипотеки: " + countOfPeriods
+                + " " + periodType + "\n"
+                + "Процентная ставка: " + interestRate
+                + " " + interestRateType + "\n"
+                + "Единовременные комиссии: " + flatFee
+                + " " + flatFeeType + "\n"
+                + "Ежемесячные комиссии: " + monthlyFee
+                + " " + monthlyFeeType + "\n"
+                + "Начало выплат: " + startMonth
+                + "." + startYear + "\n"
                 + "Тип кредита: " + creditType;
         logger.addMessage(message);
     }
@@ -457,7 +464,8 @@ public class ViewModel {
 
     public void setFlatFeeType(final Hypothec.FlatFeeType flatFeeType) {
         if (flatFeeType != this.flatFeeType) {
-            logParameterChange("\"Тип единовременной комиссии\": " + flatFeeType);
+            logParameterChange("\"Тип единовременной комиссии\": "
+                    + flatFeeType);
         }
         this.flatFeeType = flatFeeType;
     }
@@ -468,7 +476,8 @@ public class ViewModel {
 
     public void setMonthlyFeeType(final Hypothec.MonthlyFeeType monthlyFeeType) {
         if (monthlyFeeType != this.monthlyFeeType) {
-            logParameterChange("\"Тип ежемесячной комиссии\": " + monthlyFeeType);
+            logParameterChange("\"Тип ежемесячной комиссии\": "
+                    + monthlyFeeType);
         }
         this.monthlyFeeType = monthlyFeeType;
     }
@@ -539,7 +548,8 @@ public class ViewModel {
         public static final String PARAMETER_WAS_CHANGED
                 = "Установлено новое значение параметра ";
         public static final String COMPUTE
-                = "Произведены расчеты для кредита со следующими параметрами: \n";
+                = "Произведены расчеты для кредита со "
+                + "следующими параметрами: \n";
 
         private LogMessage() { }
     }

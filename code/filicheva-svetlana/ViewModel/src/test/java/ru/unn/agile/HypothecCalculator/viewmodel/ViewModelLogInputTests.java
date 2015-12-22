@@ -46,7 +46,8 @@ public class ViewModelLogInputTests {
     public void isMessageAddedWhenHouseCostChanged() {
         String houseCost = "100";
         String rightMessage = "Установлено новое значение "
-                + "параметра \"Стоимость недвижимости\": " + houseCost;
+                + "параметра \"Стоимость недвижимости\": "
+                + houseCost;
 
         viewModel.setHouseCost(houseCost);
 
@@ -68,7 +69,8 @@ public class ViewModelLogInputTests {
     public void isMessageAddedWhenDownPaymentChanged() {
         String downPayment = "20";
         String rightMessage = "Установлено новое значение "
-                + "параметра \"Первоначальный взнос\": " + downPayment;
+                + "параметра \"Первоначальный взнос\": "
+                + downPayment;
 
         viewModel.setDownPayment(downPayment);
 
@@ -90,7 +92,8 @@ public class ViewModelLogInputTests {
     public void isMessageAddedWhenCountOfPeriodsChanged() {
         String countOfPeriods = "12";
         String rightMessage = "Установлено новое значение "
-                + "параметра \"Срок ипотеки\": " + countOfPeriods;
+                + "параметра \"Срок ипотеки\": "
+                + countOfPeriods;
 
         viewModel.setCountOfPeriods(countOfPeriods);
 
@@ -134,7 +137,8 @@ public class ViewModelLogInputTests {
     public void isMessageAddedWhenFlatFeeChanged() {
         String flatFee = "qwerty";
         String rightMessage = "Установлено новое значение "
-                + "параметра \"Единовременные комиссии\": " + flatFee;
+                + "параметра \"Единовременные комиссии\": "
+                + flatFee;
 
         viewModel.setFlatFee(flatFee);
 
@@ -266,7 +270,8 @@ public class ViewModelLogInputTests {
     public void isMessageAddedWhenInterestRateTypeChanged() {
         Hypothec.InterestRateType interestRateType = Hypothec.InterestRateType.YEARLY;
         String rightMessage = "Установлено новое значение "
-                + "параметра \"Тип процентной ставки\": " + interestRateType;
+                + "параметра \"Тип процентной ставки\": "
+                + interestRateType;
 
         viewModel.setInterestRateType(interestRateType);
 
@@ -288,7 +293,8 @@ public class ViewModelLogInputTests {
     public void isMessageAddedWhenFlatFeeTypeChanged() {
         Hypothec.FlatFeeType flatFeeType = Hypothec.FlatFeeType.PERCENT;
         String rightMessage = "Установлено новое значение "
-                + "параметра \"Тип единовременной комиссии\": " + flatFeeType;
+                + "параметра \"Тип единовременной комиссии\": "
+                + flatFeeType;
 
         viewModel.setFlatFeeType(flatFeeType);
 
@@ -310,7 +316,8 @@ public class ViewModelLogInputTests {
     public void isMessageAddedWhenMonthlyFeeTypeChanged() {
         Hypothec.MonthlyFeeType monthlyFeeType = Hypothec.MonthlyFeeType.CONSTANT_SUM;
         String rightMessage = "Установлено новое значение "
-                + "параметра \"Тип ежемесячной комиссии\": " + monthlyFeeType;
+                + "параметра \"Тип ежемесячной комиссии\": "
+                + monthlyFeeType;
 
         viewModel.setMonthlyFeeType(monthlyFeeType);
 
