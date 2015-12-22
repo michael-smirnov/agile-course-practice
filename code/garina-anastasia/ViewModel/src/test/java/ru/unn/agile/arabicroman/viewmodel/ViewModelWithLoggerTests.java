@@ -135,7 +135,6 @@ public class ViewModelWithLoggerTests {
             assertTrue(messagesInLog.get(i).matches(".*" + LogMessages.ENTERED_NUMBER + i + "$"));
         }
     }
-    
     @Test
     public void doesNotAddLogMessageIfInputNumberHasNotChanged() {
         viewModelWithLogger.setInputNumber("0");
