@@ -1,12 +1,11 @@
 package ru.unn.agile.IntegrationMethods.view;
 
+import ru.unn.agile.IntegrationMethods.infrastructure.TxtNumericalIntegrationLogger;
 import ru.unn.agile.IntegrationMethods.viewmodel.ViewModel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.util.List;
 
 public final class Integrator {
     private JComboBox<ViewModel.Function> cmbFunction;
@@ -17,6 +16,7 @@ public final class Integrator {
     private JTextField txtResult;
     private JPanel mainPanel;
     private JLabel lbStatus;
+    private JList<String> listForLogger;
     private ViewModel viewModel;
 
     private Integrator() { }
@@ -62,11 +62,31 @@ public final class Integrator {
         };
         txtLowerLimit.addKeyListener(keyListenerForLimits);
         txtUpperLimit.addKeyListener(keyListenerForLimits);
+
+        txtLowerLimit.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                backBindToViewModel();
+                viewModel.lowerLimitHasLostFocus();
+                bindFromViewModel();
+            }
+        });
+
+        txtUpperLimit.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                backBindToViewModel();
+                viewModel.upperLimitHasLostFocus();
+                bindFromViewModel();
+            }
+        });
     }
 
     public static void main(final String[] args) {
         JFrame frame = new JFrame("Integrator");
-        frame.setContentPane(new Integrator(new ViewModel()).mainPanel);
+        TxtNumericalIntegrationLogger logger =
+                new TxtNumericalIntegrationLogger("./Integrator-shulgina.log");
+        frame.setContentPane(new Integrator(new ViewModel(logger)).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -87,7 +107,8 @@ public final class Integrator {
         viewModel.setUpperLimit(txtUpperLimit.getText());
 
         viewModel.setFunction((ViewModel.Function) cmbFunction.getSelectedItem());
-        viewModel.setIntegrationMethod((ViewModel.IntegrationMethod) cmbMethod.getSelectedItem());
+        viewModel.setIntegrationMethod(
+                (ViewModel.IntegrationMethod) cmbMethod.getSelectedItem());
     }
 
     private void bindFromViewModel() {
@@ -95,5 +116,9 @@ public final class Integrator {
 
         txtResult.setText(viewModel.getResult());
         lbStatus.setText(viewModel.getStatus());
+
+        List<String> loggersRecords = viewModel.getLoggersRecords();
+        String[] records = loggersRecords.toArray(new String[loggersRecords.size()]);
+        listForLogger.setListData(records);
     }
 }
