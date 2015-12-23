@@ -1,24 +1,23 @@
 package ru.unn.agile.NewtonMethod.view;
 
 import ru.unn.NewtonMethod.viewModel.NewtonMethodViewModel;
+import ru.unn.agile.NewtonMethod.infrastructure.NewtonMethodTxtLogger;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.util.List;
 
 public final class NewtonMethod {
     private final NewtonMethodViewModel viewModel;
     private JPanel mainPanel;
-    private JTextField txtLeftPont;
+    private JTextField txtLeftPoint;
     private JTextField txtRightPoint;
     private JTextField txtFunction;
     private JButton calculateButton;
     private JTextField txtRoot;
     private JLabel labelStatus;
     private JTextField txtDerivative;
+    private JList<String> newtonMethodListLog;
 
     private NewtonMethod(final NewtonMethodViewModel viewModel) {
         this.viewModel = viewModel;
@@ -42,33 +41,52 @@ public final class NewtonMethod {
             }
         };
 
-        txtLeftPont.addKeyListener(keyListener);
+        txtLeftPoint.addKeyListener(keyListener);
         txtRightPoint.addKeyListener(keyListener);
         txtFunction.addKeyListener(keyListener);
         txtDerivative.addKeyListener(keyListener);
+
+        FocusAdapter focusListener = new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                newtonMethodBackBind();
+                viewModel.valueFieldFocusLost();
+                newtonMethodBind();
+            }
+        };
+
+        txtLeftPoint.addFocusListener(focusListener);
+        txtRightPoint.addFocusListener(focusListener);
+        txtFunction.addFocusListener(focusListener);
+        txtDerivative.addFocusListener(focusListener);
+    }
+
+    public static void main(final String[] args) {
+        JFrame frame = new JFrame("Newton method");
+        String newtonMethodLogFileName = "./NewtonMethod.log";
+        NewtonMethodTxtLogger txtLogger = new NewtonMethodTxtLogger(newtonMethodLogFileName);
+        frame.setContentPane(new NewtonMethod(new NewtonMethodViewModel(txtLogger)).mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     private void newtonMethodBind() {
         calculateButton.setEnabled(viewModel.isCalculateButtonEnabled());
         txtRoot.setText(viewModel.getRoot());
         labelStatus.setText(viewModel.getStatus());
-        txtLeftPont.setText(viewModel.getLeftPoint());
+        txtLeftPoint.setText(viewModel.getLeftPoint());
         txtRightPoint.setText(viewModel.getRightPoint());
+
+        List<String> newtonMethodLog = viewModel.getLog();
+        String[] items = newtonMethodLog.toArray(new String[newtonMethodLog.size()]);
+        newtonMethodListLog.setListData(items);
     }
 
     private void newtonMethodBackBind() {
         viewModel.setFunction(txtFunction.getText());
         viewModel.setDerivative(txtDerivative.getText());
-        viewModel.setLeftPointOfRange(txtLeftPont.getText());
+        viewModel.setLeftPointOfRange(txtLeftPoint.getText());
         viewModel.setRightPointOfRange(txtRightPoint.getText());
     }
-
-    public static void main(final String[] args) {
-        JFrame frame = new JFrame("Newton method");
-        frame.setContentPane(new NewtonMethod(new NewtonMethodViewModel()).mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
 }
