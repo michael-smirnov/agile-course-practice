@@ -32,8 +32,7 @@ public class CurrencyConverterLogger implements ILogger {
     @Override
     public void log(final String s) {
         try {
-            writer.print(now() + " > " + s);
-            writer.println();
+            writer.println(now() + " > " + s);
             writer.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
