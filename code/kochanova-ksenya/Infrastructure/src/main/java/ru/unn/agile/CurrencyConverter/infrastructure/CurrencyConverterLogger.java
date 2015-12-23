@@ -11,7 +11,7 @@ public class CurrencyConverterLogger implements ILogger {
     private final PrintWriter writer;
     private final String filename;
 
-    private static String timeAndDate () {
+    private static String timeAndDate() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat date = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.US);
         return date.format(calendar.getTime());
