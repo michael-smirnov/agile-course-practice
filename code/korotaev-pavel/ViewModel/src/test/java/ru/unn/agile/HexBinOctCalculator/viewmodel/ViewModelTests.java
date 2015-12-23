@@ -6,14 +6,23 @@ import org.junit.Test;
 import ru.unn.agile.HexBinOctCalculator.Model.NumeralSystem;
 import ru.unn.agile.HexBinOctCalculator.Model.HexBinOctCalculator.Operation;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.containsString;
 
 public class ViewModelTests {
     private ViewModel viewModel;
 
+    public void setViewModel(final ViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        if (viewModel == null) {
+            viewModel = new ViewModel(new FakeLogger());
+        }
     }
 
     @After
@@ -170,6 +179,128 @@ public class ViewModelTests {
         viewModel.calculate();
 
         assertEquals("37777777775", viewModel.calcResultProperty().get());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getExceptionWithNullLogger() {
+        ViewModel viewModelNull = new ViewModel(null);
+    }
+
+    @Test
+    public void logIsEmptyWhenCalculatorStarts() {
+        List<String> log = viewModel.getLog();
+
+        assertTrue(log.isEmpty());
+    }
+
+    @Test
+    public void logHasCorrectMessageAfterCalculation() {
+        setInputData();
+        viewModel.calculate();
+        String message = viewModel.getLog().get(0);
+
+        assertThat(message, containsString(LogMessages.CALCULATE_BUTTON_WAS_PRESSED));
+    }
+
+    @Test
+    public void logHasInputNumbersAfterCalculation() {
+        setInputData();
+        viewModel.calculate();
+        String message = viewModel.getLog().get(0);
+
+        assertTrue(message.matches(".*" + viewModel.value1Property().get()
+                + ".*" + viewModel.system1Property().get()
+                + ".*" + viewModel.value2Property().get()
+                + ".*" + viewModel.system2Property().get() + ".*"));
+    }
+
+    @Test
+    public void numbersAreCorrectlyFormatted() {
+        setInputData();
+        viewModel.calculate();
+        String message = viewModel.getLog().get(0);
+
+        assertTrue(message.matches(".*Entered numbers"
+                + ": Value1 = " + viewModel.value1Property().get()
+                + "; System1 = " + viewModel.system1Property().get()
+                + "; Value2 = " + viewModel.value2Property().get()
+                + "; System2 = " + viewModel.system2Property().get() + ".*"));
+    }
+
+    @Test
+    public void logHasOperation() {
+        setInputData();
+        viewModel.calculate();
+        String message = viewModel.getLog().get(0);
+
+        assertThat(message, containsString("+"));
+    }
+
+    @Test
+    public void logHasSeveralMessages() {
+        setInputData();
+        viewModel.calculate();
+        viewModel.calculate();
+        viewModel.calculate();
+
+        assertEquals(3, viewModel.getLog().size());
+    }
+
+    @Test
+    public void operationIsChangedInLog() {
+        setInputData();
+        viewModel.operationChanged(Operation.ADD, Operation.DIVIDE);
+        String message = viewModel.getLog().get(0);
+
+        assertThat(message, containsString(LogMessages.OPERATION_WAS_CHANGED));
+    }
+
+    @Test
+    public void resultSystemIsChangedInLog() {
+        setInputData();
+        viewModel.resultSystemChanged(NumeralSystem.HEX, NumeralSystem.BIN);
+        String message = viewModel.getLog().get(0);
+
+        assertThat(message, containsString(LogMessages.RESULT_NUMERAL_SYSTEM_WAS_CHANGED));
+    }
+
+    @Test
+    public void operationIsNotLoggedIfNotChanged() {
+        viewModel.operationChanged(Operation.ADD, Operation.SUBTRACT);
+        viewModel.operationChanged(Operation.SUBTRACT, Operation.SUBTRACT);
+
+        assertEquals(1, viewModel.getLog().size());
+    }
+
+    @Test
+    public void numbersAreCorrectlyLogged() {
+        setInputData();
+        viewModel.fieldChanged(Boolean.TRUE, Boolean.FALSE);
+        String message = viewModel.getLog().get(0);
+
+        assertTrue(message.matches(".*" + LogMessages.EDITING_FINISHED
+                + "Entered numbers are: \\["
+                + viewModel.value1Property().get() + "; "
+                + viewModel.system1Property().get() + "; "
+                + viewModel.value2Property().get() + "; "
+                + viewModel.system2Property().get() + "\\]"));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void logIsEmptyWhenButtonIsDisabled() {
+        viewModel.calculate();
+
+        assertTrue(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void doNotLogNumberTwiceInOneField() {
+        viewModel.value1Property().set("101");
+        viewModel.fieldChanged(Boolean.TRUE, Boolean.FALSE);
+        viewModel.value1Property().set("101");
+        viewModel.fieldChanged(Boolean.TRUE, Boolean.FALSE);
+
+        assertEquals(1, viewModel.getLog().size());
     }
 
     private void setInputData() {
