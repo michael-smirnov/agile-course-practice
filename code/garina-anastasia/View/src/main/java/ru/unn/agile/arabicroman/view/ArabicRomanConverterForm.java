@@ -25,7 +25,6 @@ public final class ArabicRomanConverterForm {
 
     private ArabicRomanConverterForm(final ArabicRomanConverterViewModel viewModel) {
         this.viewModel = viewModel;
-        bindDataFromViewToViewModel();
         bindDataFromViewModelToView();
 
         inputNumber.getDocument().addDocumentListener(new DocumentListener() {
