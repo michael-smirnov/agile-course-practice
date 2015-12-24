@@ -16,7 +16,7 @@ import ru.unn.agile.Complex.viewmodel.*;
 
 public class ComplexCalculator {
     @FXML
-    private ViewModel viewModel;
+    private ComplexViewModel viewModel;
     @FXML
     private TextField firstRealTextField;
     @FXML

@@ -8,7 +8,7 @@
 
 <AnchorPane prefHeight="428.0" prefWidth="531.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.Complex.view.ComplexCalculator">
    <fx:define>
-      <ViewModel fx:id="viewModel" />
+      <ComplexViewModel fx:id="viewModel" />
    </fx:define>
    <children>
       <TextField fx:id="firstRealTextField" layoutX="173.0" layoutY="41.0" prefHeight="25.0" prefWidth="132.0" />

@@ -9,7 +9,7 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewModel {
+public class ComplexViewModel {
     public enum Errors {
         ZERO_DIVIDER("Divider can't be zero!"),
         BAD_FORMAT("Invalid format!"),
@@ -51,12 +51,12 @@ public class ViewModel {
 
     private ILogger logger = null;
 
-    public ViewModel(final ILogger logger) {
+    public ComplexViewModel(final ILogger logger) {
         setDefaultParameters();
         setLogger(logger);
     }
 
-    public ViewModel() {
+    public ComplexViewModel() {
         setDefaultParameters();
     }
 

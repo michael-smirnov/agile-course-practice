@@ -6,17 +6,17 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class ViewModelTest {
-    private ViewModel viewModel;
+    private ComplexViewModel viewModel;
     private String message;
 
-    public void setViewModel(final ViewModel viewModel) {
+    public void setViewModel(final ComplexViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
     @Before
     public void setUp() {
         if (viewModel == null) {
-            viewModel = new ViewModel(new FakeLogger());
+            viewModel = new ComplexViewModel(new FakeLogger());
         }
     }
 
@@ -250,7 +250,7 @@ public class ViewModelTest {
 
     @Test(expected = Exception.class)
     public void exceptionIfLoggerInViewModelConstructorIsNull() {
-        new ViewModel(null);
+        new ComplexViewModel(null);
     }
 
     @Test
