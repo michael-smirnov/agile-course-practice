@@ -338,7 +338,7 @@ public class ViewModelTest {
 
         viewModel.calculate();
 
-        assertTrue(viewModel.getLog().get(0).matches(message));
+        assertTrue(viewModel.getLog().get(1).matches(message));
     }
 
     @Test

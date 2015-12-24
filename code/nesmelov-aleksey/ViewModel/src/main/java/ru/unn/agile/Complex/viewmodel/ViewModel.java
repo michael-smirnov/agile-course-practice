@@ -37,6 +37,7 @@ public class ViewModel {
     private final ObjectProperty<Operation> operation = new SimpleObjectProperty<Operation>();
     private final BooleanProperty disabledCalculate = new SimpleBooleanProperty();
     private final List<ChangedValueListener> changedValueListeners = new ArrayList<>();
+    private final ChangedErrorListener changedErrorListener = new ChangedErrorListener();
     private final ObjectProperty<ObservableList<Operation>> operations =
             new SimpleObjectProperty<>(FXCollections.observableArrayList(Operation.values()));
     private final List<StringProperty> fields = new ArrayList<StringProperty>() {
@@ -81,6 +82,8 @@ public class ViewModel {
             field.addListener(listener);
             changedValueListeners.add(listener);
         }
+
+        errors.addListener(changedErrorListener);
     }
 
     public StringProperty getFirstRealProperty() {
@@ -199,12 +202,14 @@ public class ViewModel {
     }
 
     private void refreshInputErrors() {
-        errors.set(Errors.NOT_ERROR.toString());
+        boolean isErrorChanged = false;
+
         disabledCalculate.set(false);
         if (firstReal.get().isEmpty() || firstImaginary.get().isEmpty()
                 || secondReal.get().isEmpty() || secondImaginary.get().isEmpty()) {
             disabledCalculate.set(true);
             errors.set(Errors.EMPTY_LINE.toString());
+            isErrorChanged = true;
         }
         try {
             for (StringProperty field : fields) {
@@ -215,15 +220,11 @@ public class ViewModel {
         } catch (NumberFormatException e) {
             disabledCalculate.set(true);
             errors.set(Errors.BAD_FORMAT.toString());
+            isErrorChanged = true;
         }
 
-        boolean isErrorMustLog = errors.get() != Errors.NOT_ERROR.toString()
-                && !isLastLogMessageContains(errors.get().toString());
-
-        if (isErrorMustLog) {
-            String message = LogMessage.GET_ERROR.toString() + errors.get();
-            logger.log(message);
-            updateLog();
+        if (!isErrorChanged) {
+            errors.set(Errors.NOT_ERROR.toString());
         }
     }
 
@@ -280,6 +281,18 @@ public class ViewModel {
 
         public void setDefault() {
             previousValue = currentValue;
+        }
+    }
+
+    private class ChangedErrorListener implements ChangeListener<String> {
+        @Override
+        public void changed(final ObservableValue<? extends String> observable,
+                            final String oldError, final String newError) {
+            if (!oldError.equals(newError) && newError != Errors.NOT_ERROR.toString()) {
+                String message = LogMessage.GET_ERROR.toString() + newError;
+                logger.log(message);
+                updateLog();
+            }
         }
     }
 }
