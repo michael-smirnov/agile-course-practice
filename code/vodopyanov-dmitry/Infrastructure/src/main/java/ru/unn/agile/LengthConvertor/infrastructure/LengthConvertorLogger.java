@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LengthConvertorLogger implements ISimpleLogger {
     private static final String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
@@ -29,6 +31,12 @@ public class LengthConvertorLogger implements ISimpleLogger {
         BufferedWriter logWriter = null;
         try {
             logWriter = new BufferedWriter(new FileWriter(filename));
+
+            logWriter.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+            logWriter.newLine();
+            logWriter.write("<logger>");
+            logWriter.newLine();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,7 +46,7 @@ public class LengthConvertorLogger implements ISimpleLogger {
     @Override
     public void addLogLine(final String s) {
         try {
-            writer.write("[" + now() + "] " + s);
+            writer.write("  <event time=\"" + "[" + now() + "]" + "\" message=\"" + s + "\" />");
             writer.newLine();
             writer.flush();
         } catch (Exception e) {
@@ -50,12 +58,17 @@ public class LengthConvertorLogger implements ISimpleLogger {
     public List<String> getLog() {
         BufferedReader reader;
         ArrayList<String> logMessage = new ArrayList<>();
+        Pattern pattern = Pattern.compile("^  <event time=\"(?<date>.*)"
+                                        + "\" message=\"(?<message>.*)\" />$");
         try {
             reader = new BufferedReader(new FileReader(filename));
             String logLine = reader.readLine();
 
             while (logLine != null) {
-                logMessage.add(logLine);
+                Matcher matcher = pattern.matcher(logLine);
+                if (matcher.matches()) {
+                    logMessage.add(matcher.group("date") + " " + matcher.group("message"));
+                }
                 logLine = reader.readLine();
             }
         } catch (Exception e) {

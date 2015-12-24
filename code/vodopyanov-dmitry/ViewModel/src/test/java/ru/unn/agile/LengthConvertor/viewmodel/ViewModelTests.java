@@ -8,137 +8,137 @@ import ru.unn.agile.LengthConvertor.Model.LengthUnit;
 import static org.junit.Assert.*;
 
 public class ViewModelTests {
-    private ViewModel vModel;
+    private ViewModel viewModel;
 
-    public void setExternalViewModel(final ViewModel vModel) {
-        this.vModel = vModel;
+    public void setExternalViewModel(final ViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 
     @Before
     public void setUp() {
-        if (vModel == null) {
-            vModel = new ViewModel(new FakeLogger());
+        if (viewModel == null) {
+            viewModel = new ViewModel(new FakeLogger());
         }
     }
 
     @After
     public void tearDown() {
-        vModel = null;
+        viewModel = null;
     }
 
     @Test
     public void canSetDefaultInputValue() {
-        assertEquals("", vModel.inputValueProperty().get());
+        assertEquals("", viewModel.inputValueProperty().get());
     }
 
     @Test
     public void canSetDefaultInputUnit() {
-        assertEquals(LengthUnit.INCH, vModel.inputUnitProperty().get());
+        assertEquals(LengthUnit.INCH, viewModel.inputUnitProperty().get());
     }
 
     @Test
     public void canSetDefaultOutputValue() {
-        assertEquals("", vModel.outputValueProperty().get());
+        assertEquals("", viewModel.outputValueProperty().get());
     }
 
     @Test
     public void canSetDefaultOutputUnit() {
-        assertEquals(LengthUnit.FOOT, vModel.outputUnitProperty().get());
+        assertEquals(LengthUnit.FOOT, viewModel.outputUnitProperty().get());
     }
 
     @Test
     public void canSetDefaultStatus() {
-        assertEquals(Status.WAITING.toString(), vModel.hintMessageProperty().get());
+        assertEquals(Status.WAITING.toString(), viewModel.hintMessageProperty().get());
     }
 
     @Test
     public void statusIsReadyWhenFieldIsFillByValidData() {
-        vModel.inputValueProperty().set("1");
+        viewModel.inputValueProperty().set("1");
 
-        assertEquals(Status.READY.toString(), vModel.hintMessageProperty().get());
+        assertEquals(Status.READY.toString(), viewModel.hintMessageProperty().get());
     }
 
     @Test
     public void canStatusReportsBadFormat() {
-        vModel.inputValueProperty().set("a");
+        viewModel.inputValueProperty().set("a");
 
-        assertEquals(Status.BAD_FORMAT.toString(), vModel.hintMessageProperty().get());
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.hintMessageProperty().get());
     }
 
     @Test
     public void statusIsWaitingIfNotEnoughCorrectData() {
-        assertEquals(Status.WAITING.toString(), vModel.hintMessageProperty().get());
+        assertEquals(Status.WAITING.toString(), viewModel.hintMessageProperty().get());
     }
 
     @Test
     public void calculateButtonIsDisabledWhenProgramStarts() {
-        assertTrue(vModel.convertingDisabledProperty().get());
+        assertTrue(viewModel.convertingDisabledProperty().get());
     }
 
     @Test
     public void calculateButtonIsDisabledWhenFormatIsBad() {
-        vModel.inputValueProperty().set("smth");
+        viewModel.inputValueProperty().set("smth");
 
-        assertTrue(vModel.convertingDisabledProperty().get());
+        assertTrue(viewModel.convertingDisabledProperty().get());
     }
 
     @Test
     public void calculateButtonIsEnabledWithValidInput() {
-        vModel.inputValueProperty().set("1");
+        viewModel.inputValueProperty().set("1");
 
-        assertFalse(vModel.convertingDisabledProperty().get());
+        assertFalse(viewModel.convertingDisabledProperty().get());
     }
 
     @Test
     public void canSetKMeterInputUnit() {
-        vModel.inputUnitProperty().set(LengthUnit.KMETER);
+        viewModel.inputUnitProperty().set(LengthUnit.KMETER);
 
-        assertEquals(LengthUnit.KMETER, vModel.inputUnitProperty().get());
+        assertEquals(LengthUnit.KMETER, viewModel.inputUnitProperty().get());
     }
 
     @Test
     public void canSetInchOutputUnit() {
-        vModel.outputUnitProperty().set(LengthUnit.INCH);
+        viewModel.outputUnitProperty().set(LengthUnit.INCH);
 
-        assertEquals(LengthUnit.INCH, vModel.outputUnitProperty().get());
+        assertEquals(LengthUnit.INCH, viewModel.outputUnitProperty().get());
     }
 
     @Test
     public void canSetBadFormatMessageWhenNumberIsNegative() {
-        vModel.inputValueProperty().set("-1");
+        viewModel.inputValueProperty().set("-1");
 
-        assertEquals(Status.BAD_FORMAT.toString(), vModel.hintMessageProperty().get());
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.hintMessageProperty().get());
     }
 
     @Test
     public void canSetSuccessMessage() {
-        vModel.inputValueProperty().set("1");
+        viewModel.inputValueProperty().set("1");
 
-        vModel.convert();
+        viewModel.convert();
 
-        assertEquals(Status.SUCCESS.toString(), vModel.hintMessageProperty().get());
+        assertEquals(Status.SUCCESS.toString(), viewModel.hintMessageProperty().get());
     }
 
     @Test
     public void isErrorMessegeEqualsErrorBadFormatWhenInputDataIncorrect() {
-        vModel.inputValueProperty().set("a");
+        viewModel.inputValueProperty().set("a");
 
-        assertEquals(Status.BAD_FORMAT.toString(), vModel.getHintMessage());
+        assertEquals(Status.BAD_FORMAT.toString(), viewModel.getHintMessage());
     }
 
     @Test
     public void canReturnRightOutputValueAsString() {
-        vModel.inputValueProperty().set("1");
-        vModel.inputUnitProperty().set(LengthUnit.INCH);
-        vModel.outputUnitProperty().set(LengthUnit.FOOT);
+        viewModel.inputValueProperty().set("1");
+        viewModel.inputUnitProperty().set(LengthUnit.INCH);
+        viewModel.outputUnitProperty().set(LengthUnit.FOOT);
 
-        vModel.convert();
+        viewModel.convert();
 
-        assertEquals("0.08333333267716535", vModel.getOutputValue());
+        assertEquals("0.08333333267716535", viewModel.getOutputValue());
     }
 
     @Test
     public void isGetUnitsEqualsToUnitsPropertyGet() {
-        assertEquals(vModel.unitsProperty().get(), vModel.getUnits());
+        assertEquals(viewModel.unitsProperty().get(), viewModel.getUnits());
     }
 }

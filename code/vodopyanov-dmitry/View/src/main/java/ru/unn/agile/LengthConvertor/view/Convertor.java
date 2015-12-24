@@ -26,7 +26,7 @@ public class Convertor {
 
     @FXML
     void initialize() {
-        viewModel.setLogger(new LengthConvertorLogger("./LengthConvertorLogger.log"));
+        viewModel.setLogger(new LengthConvertorLogger("./LengthConvertorLogger.xml"));
 
         final ChangeListener<Boolean> focusValueChangeListener = new ChangeListener<Boolean>() {
             @Override
