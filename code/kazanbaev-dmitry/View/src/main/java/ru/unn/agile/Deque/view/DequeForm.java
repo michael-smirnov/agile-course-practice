@@ -8,6 +8,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.util.List;
 
 public final class DequeForm {
@@ -41,6 +43,15 @@ public final class DequeForm {
             @Override
             public void changedUpdate(final DocumentEvent event) {
                 backBind();
+                bind();
+            }
+        });
+
+        inputNumber.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                backBind();
+                viewModel.logUpdatedInput();
                 bind();
             }
         });

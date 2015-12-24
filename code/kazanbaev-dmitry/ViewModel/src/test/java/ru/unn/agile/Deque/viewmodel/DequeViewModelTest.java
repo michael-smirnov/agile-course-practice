@@ -367,6 +367,7 @@ public class DequeViewModelTest {
     public void settingNumberAddsCorrectMessageInLog() {
         String testNumber = "8";
         viewModel.setInputNumber(testNumber);
+        viewModel.logUpdatedInput();
 
         String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
 
@@ -378,6 +379,7 @@ public class DequeViewModelTest {
     public void settingNaNAddsCorrectMessageInLog() {
         String testNaN = "asd";
         viewModel.setInputNumber(testNaN);
+        viewModel.logUpdatedInput();
 
         String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
 

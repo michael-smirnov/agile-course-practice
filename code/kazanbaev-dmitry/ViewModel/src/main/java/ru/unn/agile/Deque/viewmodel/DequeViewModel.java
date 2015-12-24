@@ -187,15 +187,20 @@ public class DequeViewModel {
             if (!deque.isEmpty()) {
                 isContainsActionEnabled = true;
             }
-
-            logger.log(LogMessages.NUMBER_ENTERED + inputNumber);
         } catch (NumberFormatException e) {
             isPushActionEnabled = false;
             isContainsActionEnabled = false;
-
-            logger.log(LogMessages.NAN_ENTERED + inputNumber);
         }
         updateDoActionButtonEnabled();
+    }
+
+    public void logUpdatedInput() {
+        try {
+            Integer.parseInt(inputNumber);
+            logger.log(LogMessages.NUMBER_ENTERED + inputNumber);
+        } catch (NumberFormatException e) {
+            logger.log(LogMessages.NAN_ENTERED + inputNumber);
+        }
     }
 
     public void setAction(final int actionIndex) {
