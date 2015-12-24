@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 public class BitArrayLogger implements IBitArrayLogger {
-    private final BufferedWriter writer;
+    private final BufferedWriter writerToLog;
     private final String fileName;
 
     public BitArrayLogger(final String fileName) {
@@ -23,15 +23,15 @@ public class BitArrayLogger implements IBitArrayLogger {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        writer = logWriter;
+        writerToLog = logWriter;
     }
 
     @Override
     public void log(final String message) {
         try {
-            writer.write(new Date() + ": " + message);
-            writer.newLine();
-            writer.flush();
+            writerToLog.write(new Date() + ": " + message);
+            writerToLog.newLine();
+            writerToLog.flush();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -39,15 +39,15 @@ public class BitArrayLogger implements IBitArrayLogger {
 
     @Override
     public List<String> getLog() {
-        BufferedReader reader;
+        BufferedReader readerFromLog;
         ArrayList<String> log = new ArrayList<String>();
         try {
-            reader = new BufferedReader(new FileReader(fileName));
-            String string = reader.readLine();
+            readerFromLog = new BufferedReader(new FileReader(fileName));
+            String string = readerFromLog.readLine();
 
             while (string != null) {
                 log.add(string);
-                string = reader.readLine();
+                string = readerFromLog.readLine();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
