@@ -29,19 +29,19 @@ public class ViewModel {
     private ILogger logger;
     private List<ValueCachingChangeListener> valueChangedListeners;
 
-    public void setLogger(final ILogger logger) {
-        if (logger == null) {
-            throw new IllegalArgumentException("Logger is null");
+    public void setLogger(final ILogger newLogger) {
+        if (newLogger == null) {
+            throw new IllegalArgumentException("Logger is NULL");
         }
-        this.logger = logger;
+        this.logger = newLogger;
     }
 
     public ViewModel() {
         init();
     }
 
-    public ViewModel(final ILogger logger) {
-        setLogger(logger);
+    public ViewModel(final ILogger newLogger) {
+        setLogger(newLogger);
         init();
     }
 
