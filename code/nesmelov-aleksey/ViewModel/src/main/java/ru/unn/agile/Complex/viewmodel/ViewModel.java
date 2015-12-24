@@ -228,17 +228,6 @@ public class ViewModel {
         }
     }
 
-    public boolean isLastLogMessageContains(final String text) {
-        List<String> logMessages = logger.getLog();
-        int lastIndex = logMessages.size() - 1;
-
-        if (logMessages.isEmpty()) {
-            return false;
-        }
-
-        return logMessages.get(lastIndex).matches(".*" + text + ".*");
-    }
-
     public void onOperationChanged(final Operation oldValue, final Operation newValue) {
         if (!oldValue.equals(newValue)) {
             String message = LogMessage.CHANGE_OPERATION.toString() + newValue.toString();
