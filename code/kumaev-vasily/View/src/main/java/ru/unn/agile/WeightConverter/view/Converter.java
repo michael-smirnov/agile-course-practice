@@ -8,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import ru.unn.agile.WeightConverter.Model.WeightUnit;
 import ru.unn.agile.WeightConverter.viewmodel.ViewModel;
-import ru.unn.agile.WeightConverter.infrastructure.WeightConverterTxtLogger;
+import ru.unn.agile.WeightConverter.infrastructure.WeightConverterCsvLogger;
 
 public class Converter {
     @FXML
@@ -40,7 +40,7 @@ public class Converter {
                     }
                 };
 
-        viewModel.setLogger(new WeightConverterTxtLogger("./TxtLogger-lab3-weight-converter.log"));
+        viewModel.setLogger(new WeightConverterCsvLogger("./TxtLogger-lab3-weight-converter.csv"));
 
         txtInputValue.textProperty().bindBidirectional(viewModel.valueProperty());
         txtInputValue.focusedProperty().addListener(focusChangeListener);
