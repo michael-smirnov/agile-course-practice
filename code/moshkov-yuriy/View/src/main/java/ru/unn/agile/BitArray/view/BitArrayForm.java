@@ -5,10 +5,7 @@ import ru.unn.agile.BitArray.viewmodel.ViewModel;
 import ru.unn.agile.BitArray.model.BitArray;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -82,6 +79,15 @@ public final class BitArrayForm {
                 backBind();
             }
         });
+
+        sizeArrayTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                bind();
+                viewModel.logUpdatedSize();
+                backBind();
+            }
+        });
     }
 
     public static void main(final String[] args) {
@@ -121,10 +127,26 @@ public final class BitArrayForm {
         firstBitArrayTable = createTableFromBitArray(viewModel.getFirstBitArray());
         firstBitArrayTable.addMouseListener(new BitArrayMouseAdapter());
         firstBitArrayScrollPane.setViewportView(firstBitArrayTable);
+        firstBitArrayTable.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                bind();
+                viewModel.logUpdatedFirstBitArray();
+                backBind();
+            }
+        });
 
         secondBitArrayTable = createTableFromBitArray(viewModel.getSecondBitArray());
         secondBitArrayTable.addMouseListener(new BitArrayMouseAdapter());
         secondBitArrayScrollPane.setViewportView(secondBitArrayTable);
+        secondBitArrayTable.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                bind();
+                viewModel.logUpdatedSecondBitArray();
+                backBind();
+            }
+        });
 
         resultBitArrayTable = createTableFromBitArray(viewModel.getResultBitArray());
         resultBitArrayTable.setEnabled(false);

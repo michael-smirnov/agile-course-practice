@@ -207,6 +207,16 @@ public class ViewModelTests {
     }
 
     @Test
+    public void setSizeArrayAddsMessageToLog() {
+        viewModel.setArraySize("5");
+        viewModel.logUpdatedSize();
+
+        String message = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.UPDATE_ARRAY_SIZE + ".*"));
+    }
+
+    @Test
     public void initArrayAddsMessageInitArrayWithSize() {
         viewModel.setArraySize("5");
 
@@ -260,6 +270,26 @@ public class ViewModelTests {
         String message = viewModel.getLog().get(viewModel.getLog().size() - 1);
 
         assertTrue(message.matches(".*" + ViewModel.LogMessages.OPERATION_CHANGED + ".*"));
+    }
+
+    @Test
+    public void updatedFirstBitArrayAddsMessageUpdatedFirstBitArray() {
+        initArraysForOperations();
+        viewModel.logUpdatedFirstBitArray();
+
+        String message = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.UPDATE_FIRST_BIT_ARRAY + ".*"));
+    }
+
+    @Test
+    public void updatedSecondBitArrayAddsMessageUpdatedSecondBitArray() {
+        initArraysForOperations();
+        viewModel.logUpdatedSecondBitArray();
+
+        String message = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(message.matches(".*" + ViewModel.LogMessages.UPDATE_SECOND_BIT_ARRAY + ".*"));
     }
 
     private void initArraysForOperations() {

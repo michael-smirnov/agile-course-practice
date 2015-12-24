@@ -58,6 +58,10 @@ public class ViewModel {
         return firstBitArray;
     }
 
+    public void logUpdatedSize() {
+        logger.log(LogMessages.UPDATE_ARRAY_SIZE + inputSizeArray);
+    }
+
     public void initializeArray() {
         int size = Integer.parseInt(inputSizeArray);
         firstBitArray = new BitArray(size);
@@ -122,6 +126,14 @@ public class ViewModel {
         return logger.getLog();
     }
 
+    public void logUpdatedFirstBitArray() {
+        logger.log(LogMessages.UPDATE_FIRST_BIT_ARRAY + firstBitArray.toString());
+    }
+
+    public void logUpdatedSecondBitArray() {
+        logger.log(LogMessages.UPDATE_SECOND_BIT_ARRAY + secondBitArray.toString());
+    }
+
     public enum Operation {
         OR("OR") {
             @Override
@@ -180,6 +192,9 @@ public class ViewModel {
         public static final String OPERATION_DID = "Operation did ";
         public static final String OPERATION_CHANGED = "Operation changed to ";
         public static final String INIT_ARRAY_WITH_SIZE = "Init arrays with size ";
+        public static final String UPDATE_ARRAY_SIZE = "Size of arrays updated to ";
+        public static final String UPDATE_FIRST_BIT_ARRAY = "First bit array updated to ";
+        public static final String UPDATE_SECOND_BIT_ARRAY = "Second bit array updated to ";
 
         private LogMessages() { }
     }
