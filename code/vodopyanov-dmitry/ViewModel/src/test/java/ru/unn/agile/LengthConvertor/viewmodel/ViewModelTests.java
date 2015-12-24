@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class ViewModelTests {
     private ViewModel viewModel;
 
-    public void setExternalViewModel(final ViewModel viewModel) {
+    public void setOuterViewModel(final ViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
@@ -24,6 +24,11 @@ public class ViewModelTests {
     @After
     public void tearDown() {
         viewModel = null;
+    }
+
+    @Test
+    public void canSetDefaultStatus() {
+        assertEquals(Status.WAITING.toString(), viewModel.hintMessageProperty().get());
     }
 
     @Test
@@ -44,11 +49,6 @@ public class ViewModelTests {
     @Test
     public void canSetDefaultOutputUnit() {
         assertEquals(LengthUnit.FOOT, viewModel.outputUnitProperty().get());
-    }
-
-    @Test
-    public void canSetDefaultStatus() {
-        assertEquals(Status.WAITING.toString(), viewModel.hintMessageProperty().get());
     }
 
     @Test

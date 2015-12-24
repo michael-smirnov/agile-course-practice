@@ -8,6 +8,6 @@ public class ViewModelWithLoggerTests extends ViewModelTests {
     public void setUp() {
         LengthConvertorLogger realLengthConvertorLogger =
             new LengthConvertorLogger("./ViewModelWithLoggerTests.xml");
-        super.setExternalViewModel(new ViewModel(realLengthConvertorLogger));
+        super.setOuterViewModel(new ViewModel(realLengthConvertorLogger));
     }
 }
