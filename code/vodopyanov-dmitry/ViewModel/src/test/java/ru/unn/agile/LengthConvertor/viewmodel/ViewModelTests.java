@@ -9,16 +9,13 @@ import static org.junit.Assert.*;
 
 public class ViewModelTests {
     private ViewModel viewModel;
-
     public void setOuterViewModel(final ViewModel viewModel) {
         this.viewModel = viewModel;
     }
 
     @Before
     public void setUp() {
-        if (viewModel == null) {
-            viewModel = new ViewModel(new FakeLogger());
-        }
+        viewModel = new ViewModel(new FakeLogger());
     }
 
     @After
