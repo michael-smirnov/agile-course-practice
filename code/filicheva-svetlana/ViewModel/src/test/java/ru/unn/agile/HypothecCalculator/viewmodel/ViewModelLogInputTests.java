@@ -11,7 +11,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 public class ViewModelLogInputTests {
     private ViewModel viewModel;
-    private FakeLogger fakeLogger;
 
     public void setViewModel(final ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -19,15 +18,11 @@ public class ViewModelLogInputTests {
 
     @Before
     public void setUp() {
-        fakeLogger = new FakeLogger();
-        viewModel = new ViewModel(fakeLogger);
+        viewModel = new ViewModel(new FakeLogger());
     }
 
     @Test
     public void canCreateViewModelWithLogger() {
-        FakeLogger fakeLogger = new FakeLogger();
-        ViewModel viewModel = new ViewModel(fakeLogger);
-
         assertNotNull(viewModel);
     }
 
@@ -37,13 +32,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isLogEmptyAtTheStart() {
-        List<String> log = viewModel.getLog();
-        assertEquals(0, log.size());
-    }
-
-    @Test
-    public void isMessageAddedWhenHouseCostChanged() {
+    public void isMessageCorrectWhenHouseCostChanged() {
         String houseCost = "100";
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Стоимость недвижимости\": "
@@ -66,7 +55,7 @@ public class ViewModelLogInputTests {
    }
 
     @Test
-    public void isMessageAddedWhenDownPaymentChanged() {
+    public void isMessageCorrectWhenDownPaymentChanged() {
         String downPayment = "20";
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Первоначальный взнос\": "
@@ -89,7 +78,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenCountOfPeriodsChanged() {
+    public void isMessageCorrectWhenCountOfPeriodsChanged() {
         String countOfPeriods = "12";
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Срок ипотеки\": "
@@ -112,7 +101,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenInterestRateChanged() {
+    public void isMessageCorrectWhenInterestRateChanged() {
         String interestRate = "rereddd";
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Процентная ставка\": " + interestRate;
@@ -134,7 +123,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenFlatFeeChanged() {
+    public void isMessageCorrectWhenFlatFeeChanged() {
         String flatFee = "qwerty";
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Единовременные комиссии\": "
@@ -157,7 +146,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenMonthlyFeeChanged() {
+    public void isMessageCorrectWhenMonthlyFeeChanged() {
         String monthlyFee = "1200";
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Ежемесячные комиссии\": " + monthlyFee;
@@ -179,7 +168,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenStartMonthChanged() {
+    public void isMessageCorrectWhenStartMonthChanged() {
         String startMonth = "ййй";
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Месяц начала выплат\": " + startMonth;
@@ -201,7 +190,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenStartYearChanged() {
+    public void isMessageCorrectWhenStartYearChanged() {
         String startYear = "12345";
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Год начала выплат\": " + startYear;
@@ -223,7 +212,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenCurrencyTypeChanged() {
+    public void isMessageCorrectWhenCurrencyTypeChanged() {
         Hypothec.CurrencyType currencyType = Hypothec.CurrencyType.EURO;
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Тип валюты\": " + currencyType;
@@ -245,7 +234,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenPeriodTypeChanged() {
+    public void isMessageCorrectWhenPeriodTypeChanged() {
         Hypothec.PeriodType periodType = Hypothec.PeriodType.YEAR;
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Тип периода времени\": " + periodType;
@@ -267,7 +256,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenInterestRateTypeChanged() {
+    public void isMessageCorrectWhenInterestRateTypeChanged() {
         Hypothec.InterestRateType interestRateType = Hypothec.InterestRateType.YEARLY;
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Тип процентной ставки\": "
@@ -290,7 +279,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenFlatFeeTypeChanged() {
+    public void isMessageCorrectWhenFlatFeeTypeChanged() {
         Hypothec.FlatFeeType flatFeeType = Hypothec.FlatFeeType.PERCENT;
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Тип единовременной комиссии\": "
@@ -313,7 +302,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenMonthlyFeeTypeChanged() {
+    public void isMessageCorrectWhenMonthlyFeeTypeChanged() {
         Hypothec.MonthlyFeeType monthlyFeeType = Hypothec.MonthlyFeeType.CONSTANT_SUM;
         String rightMessage = "Установлено новое значение "
                 + "параметра \"Тип ежемесячной комиссии\": "
@@ -336,7 +325,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenCreditTypeChanged() {
+    public void isMessageCorrectWhenCreditTypeChanged() {
         Hypothec.CreditType creditType = Hypothec.CreditType.ANNUITY;
         String rightMessage = "Установлено новое значение"
                 + " параметра \"Тип кредита\": " + creditType;
@@ -358,7 +347,7 @@ public class ViewModelLogInputTests {
     }
 
     @Test
-    public void isMessageAddedWhenCalculate() {
+    public void isMessageCorrectWhenCalculate() {
         viewModel.setHouseCost("1000");
         viewModel.setCountOfPeriods("18");
         viewModel.setInterestRate("1.2");
