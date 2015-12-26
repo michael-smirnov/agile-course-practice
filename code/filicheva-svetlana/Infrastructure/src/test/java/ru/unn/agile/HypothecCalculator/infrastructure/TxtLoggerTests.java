@@ -1,4 +1,4 @@
-package ru.unn.agile.HypothecCalculator.view;
+package ru.unn.agile.HypothecCalculator.infrastructure;
 
 import org.junit.Before;
 import org.junit.Test;

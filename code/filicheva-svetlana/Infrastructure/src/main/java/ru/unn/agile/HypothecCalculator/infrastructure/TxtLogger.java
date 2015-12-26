@@ -1,4 +1,4 @@
-package ru.unn.agile.HypothecCalculator.view;
+package ru.unn.agile.HypothecCalculator.infrastructure;
 
 import ru.unn.agile.HypothecCalculator.viewmodel.ILogger;
 
@@ -12,26 +12,20 @@ import java.util.List;
 import java.util.Locale;
 
 public class TxtLogger implements ILogger {
+    private FileWriter writer;
     private static final String DATE_FORMAT_NOW = "dd-MM-yyyy HH:mm:ss";
-    private final FileWriter writer;
     private final String filename;
 
     public TxtLogger(final String filename) {
         this.filename = filename;
 
-        FileWriter logWriter = null;
+        writer = null;
         try {
-            logWriter = new FileWriter(filename);
+            writer = new FileWriter(filename);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
-        writer = logWriter;
-    }
 
-    private static String currentTime() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.ENGLISH);
-        return simpleDateFormat.format(calendar.getTime());
     }
 
     @Override
@@ -62,6 +56,12 @@ public class TxtLogger implements ILogger {
         }
 
         return log;
+    }
+
+    private static String currentTime() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.ENGLISH);
+        return simpleDateFormat.format(calendar.getTime());
     }
 
 }
