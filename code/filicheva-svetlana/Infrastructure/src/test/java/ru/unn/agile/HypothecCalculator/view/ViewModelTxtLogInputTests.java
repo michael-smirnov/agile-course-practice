@@ -6,7 +6,7 @@ import ru.unn.agile.HypothecCalculator.viewmodel.ViewModelLogInputTests;
 public class ViewModelTxtLogInputTests extends ViewModelLogInputTests {
     @Override
     public void setUp() {
-        TxtLogger realLogger = new TxtLogger("log/ViewModelTxtLogInputTests.log");
+        TxtLogger realLogger = new TxtLogger("ViewModelTxtLogInputTests.log");
         super.setViewModel(new ViewModel(realLogger));
     }
 
