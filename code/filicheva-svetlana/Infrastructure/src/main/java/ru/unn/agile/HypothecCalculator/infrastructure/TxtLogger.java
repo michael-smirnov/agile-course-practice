@@ -12,20 +12,22 @@ import java.util.List;
 import java.util.Locale;
 
 public class TxtLogger implements ILogger {
-    private FileWriter writer;
+    private final FileWriter writer;
     private static final String DATE_FORMAT_NOW = "dd-MM-yyyy HH:mm:ss";
     private final String filename;
 
     public TxtLogger(final String filename) {
         this.filename = filename;
 
-        writer = null;
+        FileWriter fileWriter;
         try {
-            writer = new FileWriter(filename);
+            fileWriter = new FileWriter(filename);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            fileWriter = null;
         }
 
+        writer = fileWriter;
     }
 
     @Override
