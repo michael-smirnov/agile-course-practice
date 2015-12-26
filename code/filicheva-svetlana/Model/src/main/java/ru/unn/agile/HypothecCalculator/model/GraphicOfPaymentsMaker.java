@@ -1,4 +1,4 @@
-package ru.unn.agile.HypothecsCalculator.model;
+package ru.unn.agile.HypothecCalculator.model;
 
 import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;

@@ -1,6 +1,6 @@
 package ru.unn.agile.HypothecCalculator.viewmodel;
 
-import ru.unn.agile.HypothecsCalculator.model.*;
+import ru.unn.agile.HypothecCalculator.model.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.Calendar;
 import java.util.GregorianCalendar;

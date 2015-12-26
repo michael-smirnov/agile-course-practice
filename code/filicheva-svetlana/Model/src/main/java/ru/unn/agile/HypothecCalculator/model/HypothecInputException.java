@@ -1,4 +1,4 @@
-package ru.unn.agile.HypothecsCalculator.model;
+package ru.unn.agile.HypothecCalculator.model;
 
 public class HypothecInputException extends Exception {
     private final String message;

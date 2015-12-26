@@ -3,7 +3,7 @@ package ru.unn.agile.HypothecCalculator.viewmodel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import ru.unn.agile.HypothecsCalculator.model.Hypothec;
+import ru.unn.agile.HypothecCalculator.model.Hypothec;
 
 import static org.junit.Assert.assertEquals;
 

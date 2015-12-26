@@ -1,7 +1,8 @@
 package ru.unn.agile.HypothecCalculator.view;
 
 import ru.unn.agile.HypothecCalculator.viewmodel.ViewModel;
-import ru.unn.agile.HypothecsCalculator.model.Hypothec;
+import ru.unn.agile.HypothecCalculator.model.Hypothec;
+import ru.unn.agile.HypothecCalculator.infrastructure.TxtLogger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public final class HypothecCalculator {
 
@@ -167,7 +169,7 @@ public final class HypothecCalculator {
         graphicOfPayments.setPreferredSize(new Dimension(graphicOfPayments.getWidth(),
                 graphicOfPayments.getRowHeight() * model.getRowCount()));
 
-        java.util.List<String> log = viewModel.getLog();
+        List<String> log = viewModel.getLog();
         String[] items = log.toArray(new String[log.size()]);
         logList.setListData(items);
     }

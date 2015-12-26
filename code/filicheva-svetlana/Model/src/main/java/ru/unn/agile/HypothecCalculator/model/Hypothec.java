@@ -1,4 +1,4 @@
-package ru.unn.agile.HypothecsCalculator.model;
+package ru.unn.agile.HypothecCalculator.model;
 
 import java.util.GregorianCalendar;
 import java.util.Calendar;

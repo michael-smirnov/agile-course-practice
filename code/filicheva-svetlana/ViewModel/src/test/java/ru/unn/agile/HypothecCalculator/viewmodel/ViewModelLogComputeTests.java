@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import ru.unn.agile.HypothecsCalculator.model.Hypothec;
+import ru.unn.agile.HypothecCalculator.model.Hypothec;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.containsString;

@@ -1,4 +1,4 @@
-package ru.unn.agile.HypothecsCalculator.model;
+package ru.unn.agile.HypothecCalculator.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
