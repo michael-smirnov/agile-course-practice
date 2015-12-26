@@ -27,12 +27,30 @@ public class ViewModel {
     private final ObjectProperty<Operation> operation = new SimpleObjectProperty<>();
     private final BooleanProperty calcDisabled = new SimpleBooleanProperty();
 
+    private final StringProperty logs = new SimpleStringProperty();
     private final StringProperty calcResult = new SimpleStringProperty();
     private final StringProperty calcStatus = new SimpleStringProperty();
 
-    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
+    private ILogger logger;
+    private List<ValueCachingChangeListener> valueChangedListeners;
+
+    public void setLogger(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger is null");
+        }
+        this.logger = logger;
+    }
 
     public ViewModel() {
+        init();
+    }
+
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+        init();
+    }
+
+    private void init() {
         value1.set("");
         system1.set(NumeralSystem.BIN);
         value2.set("");
@@ -58,8 +76,9 @@ public class ViewModel {
             add(value2);
         } };
 
+        valueChangedListeners = new ArrayList<>();
         for (StringProperty field : fields) {
-            final ValueChangeListener listener = new ValueChangeListener();
+            final ValueCachingChangeListener listener = new ValueCachingChangeListener();
             field.addListener(listener);
             valueChangedListeners.add(listener);
         }
@@ -76,6 +95,66 @@ public class ViewModel {
         calcResult.set(operation.get().apply(first, second,
                 finalSystem.get()).getValue().toString());
         calcStatus.set(Status.SUCCESS.toString());
+
+        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_BUTTON_WAS_PRESSED);
+        message.append("Entered numbers")
+                .append(": Value1 = ").append(value1.get())
+                .append("; System1 = ").append(system1.get())
+                .append("; Value2 = ").append(value2.get())
+                .append("; System2 = ").append(system2.get())
+                .append(" Operation: ").append(operation.get().toString()).append(".");
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public void operationChanged(final Operation previousValue, final Operation replacedValue) {
+        if (previousValue.equals(replacedValue)) {
+            return;
+        }
+        StringBuilder message = new StringBuilder(LogMessages.OPERATION_WAS_CHANGED);
+        message.append(replacedValue.toString());
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public void resultSystemChanged(final NumeralSystem previousValue,
+                                    final NumeralSystem replacedValue) {
+        if (previousValue.equals(replacedValue)) {
+            return;
+        }
+        StringBuilder message = new StringBuilder(LogMessages.RESULT_NUMERAL_SYSTEM_WAS_CHANGED);
+        message.append(replacedValue.toString());
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public void fieldChanged(final Boolean previousValue, final Boolean replacedValue) {
+        if (!previousValue && replacedValue) {
+            return;
+        }
+        for (ValueCachingChangeListener listener : valueChangedListeners) {
+            if (listener.isChanged()) {
+                logToString();
+                updateLogs();
+
+                listener.cache();
+                break;
+            }
+        }
+    }
+
+    public void systemChanged(final NumeralSystem previousValue,
+                              final NumeralSystem replacedValue) {
+        if (previousValue.equals(replacedValue)) {
+            return;
+        }
+
+        logToString();
+        updateLogs();
+    }
+
+    public final List<String> getLog() {
+        return logger.getLog();
     }
 
     public StringProperty value1Property() {
@@ -115,6 +194,12 @@ public class ViewModel {
         return calcDisabled.get();
     }
 
+    public StringProperty logsProperty() {
+        return logs;
+    }
+    public final String getLogs() {
+        return logs.get();
+    }
     public StringProperty calcResultProperty() {
         return calcResult;
     }
@@ -147,11 +232,42 @@ public class ViewModel {
         return inputStatus;
     }
 
-    private class ValueChangeListener implements ChangeListener<String> {
+    private void updateLogs() {
+        List<String> totalLog = logger.getLog();
+        String record = new String();
+        for (String log : totalLog) {
+            record += log + "\n";
+        }
+        logs.set(record);
+    }
+
+    private void logToString() {
+        StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
+        message.append("Entered numbers are: [")
+                .append(value1.get()).append("; ")
+                .append(system1.get()).append("; ")
+                .append(value2.get()).append("; ")
+                .append(system2.get()).append("]");
+        logger.log(message.toString());
+    }
+
+    private class ValueCachingChangeListener implements ChangeListener<String> {
+        private String previusValue = new String();
+        private String currentValue = new String();
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String previousValue, final String replacedValue) {
+            if (previousValue.equals(replacedValue)) {
+                return;
+            }
             calcStatus.set(getInputStatus().toString());
+            currentValue = replacedValue;
+        }
+        public boolean isChanged() {
+            return !previusValue.equals(currentValue);
+        }
+        public void cache() {
+            previusValue = currentValue;
         }
     }
 }
@@ -168,5 +284,17 @@ enum Status {
     }
     public String toString() {
         return name;
+    }
+}
+
+final class LogMessages {
+    public static final String CALCULATE_BUTTON_WAS_PRESSED = "Calculate. ";
+    public static final String OPERATION_WAS_CHANGED = "Operation was changed to ";
+    public static final String RESULT_NUMERAL_SYSTEM_WAS_CHANGED =
+            "Result numeral system was changed to ";
+    public static final String EDITING_FINISHED = "Input data were updated. ";
+
+    private LogMessages() {
+
     }
 }

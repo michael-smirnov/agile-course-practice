@@ -1,6 +1,5 @@
 package ru.unn.agile.IntersectionOfSegments.viewmodel;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +12,7 @@ public class CanSetDefaultValues {
 
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        viewModel = new ViewModel(new FakeLogger());
     }
 
     @After

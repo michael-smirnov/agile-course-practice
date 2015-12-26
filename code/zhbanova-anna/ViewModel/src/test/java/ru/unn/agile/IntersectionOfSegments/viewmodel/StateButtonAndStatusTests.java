@@ -10,7 +10,7 @@ public class StateButtonAndStatusTests {
 
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        viewModel = new ViewModel(new FakeLogger());
         setInputData();
     }
 

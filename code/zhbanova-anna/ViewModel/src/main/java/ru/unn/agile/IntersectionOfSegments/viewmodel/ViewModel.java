@@ -29,6 +29,9 @@ public class ViewModel {
 
     private final StringProperty result = new SimpleStringProperty();
     private final StringProperty status = new SimpleStringProperty();
+    private final StringProperty logs = new SimpleStringProperty();
+    private ILogger logger;
+    private List<ValueCachingChangeListener> valueChangedListeners;
     private final List<StringProperty> fields = new ArrayList<StringProperty>() { {
         add(seg1Point1X);
         add(seg1Point1Y);
@@ -41,9 +44,23 @@ public class ViewModel {
         add(seg2Point2Y);
     } };
 
-    private final List<ValueChangeListener> valueChangedListeners = new ArrayList<>();
+    public void setLogger(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Error: Logger is null");
+        }
+        this.logger = logger;
+    }
 
     public ViewModel() {
+        init();
+    }
+
+    public ViewModel(final ILogger logger) {
+        setLogger(logger);
+        init();
+    }
+
+    private void init() {
         for (StringProperty field : fields) {
             field.set("");
         }
@@ -62,9 +79,9 @@ public class ViewModel {
             }
         };
         calculationDisabled.bind(couldFind.not());
-
+        valueChangedListeners = new ArrayList<>();
         for (StringProperty field : fields) {
-            final ValueChangeListener listener = new ValueChangeListener();
+            final ValueCachingChangeListener listener = new ValueCachingChangeListener();
             field.addListener(listener);
             valueChangedListeners.add(listener);
         }
@@ -79,6 +96,45 @@ public class ViewModel {
         setStringResult(segment1.isIntersectedWith(segment2));
 
         status.set(Status.SUCCESS.toString());
+        StringBuilder message = new StringBuilder(LogMessages.CALCULATE_WAS_PRESSED);
+        message.append("Arguments: ")
+                .append(segment1.toString())
+                .append("; ").append(segment2.toString()).append(".");
+
+        logger.log(message.toString());
+        updateLogs();
+    }
+
+    public void focusWasChanged(final Boolean newFocusValue) {
+       if (!newFocusValue) {
+           for (ValueCachingChangeListener listener : valueChangedListeners) {
+               if (listener.isChanged()) {
+                   StringBuilder message = new StringBuilder(LogMessages.EDITING_FINISHED);
+                   message.append(createOutputString());
+                   logger.log(message.toString());
+                   updateLogs();
+
+                   listener.cache();
+                   break;
+               }
+           }
+       }
+    }
+
+    private String createOutputString() {
+        return "Input arguments are: [("
+                + seg1Point1X.get() + "; "
+                + seg1Point1Y.get() + "); ("
+                + seg1Point2X.get() + "; "
+                + seg1Point2Y.get() + ")]; [("
+                + seg2Point1X.get() + "; "
+                + seg2Point1Y.get() + "); ("
+                + seg2Point2X.get() + "; "
+                + seg2Point2Y.get() + ")]. ";
+    }
+
+    public final List<String> getLog() {
+        return logger.getLog();
     }
 
     private Point getPoint(final StringProperty x, final StringProperty y) {
@@ -164,6 +220,14 @@ public class ViewModel {
         return status.get();
     }
 
+    public StringProperty logsProperty() {
+        return logs;
+    }
+
+    public final String getLogs() {
+        return logs.get();
+    }
+
     private Status getInputStatus() {
         Status inputStatus = Status.READY;
         try {
@@ -179,11 +243,31 @@ public class ViewModel {
         return inputStatus;
     }
 
-    private class ValueChangeListener implements ChangeListener<String> {
+    private void updateLogs() {
+        List<String> fullLog = logger.getLog();
+        String record = new String();
+        for (String log : fullLog) {
+            record += log + "\n";
+        }
+        logs.set(record);
+    }
+
+    private class ValueCachingChangeListener implements ChangeListener<String> {
+        private String previousValue = new String();
+        private String currentValue = new String();
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
-            status.set(getInputStatus().toString());
+            if (!oldValue.equals(newValue)) {
+                status.set(getInputStatus().toString());
+                currentValue = newValue;
+            }
+        }
+        public boolean isChanged() {
+            return !previousValue.equals(currentValue);
+        }
+        public void cache() {
+            previousValue = currentValue;
         }
     }
 }
@@ -203,4 +287,11 @@ enum Status {
     public String toString() {
         return name;
     }
+}
+
+final class LogMessages {
+    public static final String CALCULATE_WAS_PRESSED = "Button Calculate was pressed. ";
+    public static final String EDITING_FINISHED = "Updated input. ";
+
+    private LogMessages() { }
 }

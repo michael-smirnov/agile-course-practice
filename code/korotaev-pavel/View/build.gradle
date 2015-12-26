@@ -2,6 +2,7 @@ apply from:   rootDir.getAbsolutePath() + '/code/config/scripts/javafx.plugin'
 
 dependencies {
     compile project(':korotaev-pavel-ViewModel')
+    compile project(':korotaev-pavel-Infrastructure')
 }
 
 sourceSets {

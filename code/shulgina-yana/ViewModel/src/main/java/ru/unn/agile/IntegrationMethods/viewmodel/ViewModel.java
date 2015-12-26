@@ -2,6 +2,8 @@ package ru.unn.agile.IntegrationMethods.viewmodel;
 
 import ru.unn.agile.IntegrationMethods.Model.*;
 
+import java.util.List;
+
 public class ViewModel {
     private Function function;
     private String lowerLimit;
@@ -10,8 +12,15 @@ public class ViewModel {
     private String result;
     private String status;
     private boolean isIntegrateButtonEnabled;
+    private NumericalIntegrationLogger logger;
+    private boolean isLowerLimitChanged;
+    private boolean isUpperLimitChanged;
 
-    public ViewModel() {
+    public ViewModel(final NumericalIntegrationLogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Error: logger is null");
+        }
+        this.logger = logger;
         function = Function.X;
         lowerLimit = "";
         upperLimit = "";
@@ -19,6 +28,8 @@ public class ViewModel {
         result = "";
         status = Status.WAITING.toString();
         isIntegrateButtonEnabled = false;
+        isLowerLimitChanged = false;
+        isUpperLimitChanged = false;
     }
 
     private boolean isThereEmptyTextField() {
@@ -29,10 +40,10 @@ public class ViewModel {
         try {
             if (!lowerLimit.isEmpty()) {
                 Double.parseDouble(lowerLimit);
-                }
+            }
             if (!upperLimit.isEmpty()) {
                 Double.parseDouble(upperLimit);
-                }
+            }
         } catch (Exception e) {
             status = Status.BAD_FORMAT.toString();
             isIntegrateButtonEnabled = false;
@@ -48,31 +59,26 @@ public class ViewModel {
         return isIntegrateButtonEnabled;
     }
 
-    private  IFunction createIFunctionObject() {
-        IFunction iFunction;
-        switch (function) {
-            case X:
-                iFunction = new XFunction();
-                break;
-            case COS:
-                iFunction = new CosFunction();
-                break;
-            case EXP:
-                iFunction = new ExpFunction();
-                break;
-            default:
-                throw new IllegalArgumentException("Only x, cos(x) and exp(x) are supported");
-        }
-        return iFunction;
+    private String formRecordForLoggerAfterIntegration() {
+        String record = RecordsTemplatesForLogger.INTEGRATE_WAS_PRESSED
+                + "Lower limit = " + lowerLimit
+                + ", upper limit = " + upperLimit
+                + ", function = " + function.toString()
+                + ", integration method: " + integrationMethod.toString()
+                + ", status: " + status
+                + ", result = " + result
+                + ".";
+
+        return record;
     }
 
     public void integrate() {
         if (!parseLimitsInput()) {
             return;
         }
-        IFunction iFunction = createIFunctionObject();
+
         Integrator integrator = new Integrator(Double.parseDouble(lowerLimit),
-                Double.parseDouble(upperLimit), iFunction);
+                Double.parseDouble(upperLimit), function.getIFunctionObject());
 
         switch (integrationMethod) {
             case LEFT_RECTANGLES:
@@ -96,6 +102,7 @@ public class ViewModel {
 
         result = Double.toString(integrator.getIntegralValue());
         status = Status.SUCCESS.toString();
+        logger.addRecord(formRecordForLoggerAfterIntegration());
     }
 
     public void processKeyPressing(final int keyCode) {
@@ -106,12 +113,33 @@ public class ViewModel {
         }
     }
 
+    public void lowerLimitHasLostFocus() {
+        if (isLowerLimitChanged) {
+            logger.addRecord(RecordsTemplatesForLogger.LOWER_LIMIT_WAS_CHANGED.toString()
+                    + lowerLimit + ", status: " + status + ", result = " + result);
+            isLowerLimitChanged = false;
+        }
+    }
+
+    public void upperLimitHasLostFocus() {
+        if (isUpperLimitChanged) {
+            logger.addRecord(RecordsTemplatesForLogger.UPPER_LIMIT_WAS_CHANGED.toString()
+                    + upperLimit + ", status: " + status + ", result = " + result);
+            isUpperLimitChanged = false;
+        }
+    }
+
     public Function getFunction() {
         return function;
     }
 
     public void setFunction(final Function function) {
-        this.function = function;
+        if (this.function != function) {
+            this.function = function;
+            logger.addRecord(RecordsTemplatesForLogger.FUNCTION_WAS_CHANGED.toString()
+                    + this.function.toString() + ", status: " + status + ", result = "
+                    + result);
+        }
     }
 
     public String getLowerLimit() {
@@ -119,7 +147,10 @@ public class ViewModel {
     }
 
     public void setLowerLimit(final String lowerLimit) {
-        this.lowerLimit = lowerLimit;
+        if (!this.lowerLimit.equals(lowerLimit)) {
+            this.lowerLimit = lowerLimit;
+            isLowerLimitChanged = true;
+        }
     }
 
     public String getUpperLimit() {
@@ -127,7 +158,10 @@ public class ViewModel {
     }
 
     public void setUpperLimit(final String upperLimit) {
-        this.upperLimit = upperLimit;
+        if (!this.upperLimit.equals(upperLimit)) {
+            this.upperLimit = upperLimit;
+            isUpperLimitChanged = true;
+        }
     }
 
     public IntegrationMethod getIntegrationMethod() {
@@ -135,7 +169,12 @@ public class ViewModel {
     }
 
     public void setIntegrationMethod(final IntegrationMethod integrationMethod) {
-        this.integrationMethod = integrationMethod;
+        if (this.integrationMethod != integrationMethod) {
+            this.integrationMethod = integrationMethod;
+            logger.addRecord(RecordsTemplatesForLogger.METHOD_WAS_CHANGED.toString()
+                    + this.integrationMethod.toString() + ", status: " + status
+                    + ", result = " + result);
+        }
     }
 
     public String getResult() {
@@ -150,10 +189,29 @@ public class ViewModel {
         return isIntegrateButtonEnabled;
     }
 
+    public List<String> getLoggersRecords() {
+        return logger.getAllRecords();
+    }
+
     public enum Function {
-        X("x"),
-        COS("cos(x)"),
-        EXP("exp(x)");
+        X("x") {
+            @Override
+            public IFunction getIFunctionObject() {
+                return new XFunction();
+            }
+        },
+        COS("cos(x)") {
+            @Override
+            public IFunction getIFunctionObject() {
+                return new CosFunction();
+            }
+        },
+        EXP("exp(x)") {
+            @Override
+            public IFunction getIFunctionObject() {
+                return new ExpFunction();
+            }
+        };
         private final String name;
 
         private Function(final String name) {
@@ -164,6 +222,8 @@ public class ViewModel {
         public String toString() {
             return name;
         }
+
+        public abstract IFunction getIFunctionObject();
     }
 
     public enum IntegrationMethod {
@@ -200,4 +260,23 @@ public class ViewModel {
             return name;
         }
     }
+
+    public enum RecordsTemplatesForLogger {
+        INTEGRATE_WAS_PRESSED("Integrate. "),
+        LOWER_LIMIT_WAS_CHANGED("Lower limit was changed to "),
+        UPPER_LIMIT_WAS_CHANGED("Upper limit was changed to "),
+        FUNCTION_WAS_CHANGED("Function was changed to "),
+        METHOD_WAS_CHANGED("Integration method was changed to ");
+        private final String name;
+
+        private RecordsTemplatesForLogger(final String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
 }
