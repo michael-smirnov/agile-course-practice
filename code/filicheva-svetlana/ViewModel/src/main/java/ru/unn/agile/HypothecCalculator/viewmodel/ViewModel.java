@@ -104,7 +104,7 @@ public class ViewModel {
     public void compute() {
 
         if (checkInput()) {
-            logCompute();
+            logComputationResult();
             Hypothec hypothec = createHypothec();
 
             creditCalculator = new CreditCalculator(hypothec);
@@ -331,7 +331,7 @@ public class ViewModel {
         logger.addMessage(LogMessage.PARAMETER_WAS_CHANGED + parameter);
     }
 
-    private void logCompute() {
+    private void logComputationResult() {
         String message = LogMessage.COMPUTE
                 + "Стоимость недвижимости: " + houseCost
                 + " " + currencyType + "\n"

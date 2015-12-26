@@ -10,12 +10,10 @@ import static org.junit.Assert.assertEquals;
 
 public class ViewModelTextFieldsTest {
     private ViewModel viewModel;
-    private FakeLogger fakeLogger;
 
     @Before
     public void setUp() {
-        fakeLogger = new FakeLogger();
-        viewModel = new ViewModel(fakeLogger);
+        viewModel = new ViewModel(new FakeLogger());
     }
 
     @After
