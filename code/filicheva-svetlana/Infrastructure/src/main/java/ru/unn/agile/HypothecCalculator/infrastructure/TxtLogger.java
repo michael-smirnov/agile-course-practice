@@ -13,21 +13,38 @@ import java.util.Locale;
 
 public class TxtLogger implements ILogger {
     private final FileWriter writer;
+    private final BufferedReader reader;
     private static final String DATE_FORMAT_NOW = "dd-MM-yyyy HH:mm:ss";
-    private final String filename;
 
     public TxtLogger(final String filename) {
-        this.filename = filename;
-
-        FileWriter fileWriter;
+        FileWriter fileWriter = null;
+        BufferedReader fileReader = null;
         try {
             fileWriter = new FileWriter(filename);
+            fileReader = new BufferedReader(new FileReader(filename));
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            fileWriter = null;
         }
 
         writer = fileWriter;
+        reader = fileReader;
+    }
+
+    @Override
+    public List<String> getLog() {
+        ArrayList<String> log = new ArrayList<String>();
+        try {
+            String logLine = reader.readLine();
+
+            while (logLine != null) {
+                log.add(logLine);
+                logLine = reader.readLine();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return log;
     }
 
     @Override
@@ -39,25 +56,6 @@ public class TxtLogger implements ILogger {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    @Override
-    public List<String> getLog() {
-        BufferedReader reader;
-        ArrayList<String> log = new ArrayList<String>();
-        try {
-            reader = new BufferedReader(new FileReader(filename));
-            String line = reader.readLine();
-
-            while (line != null) {
-                log.add(line);
-                line = reader.readLine();
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        return log;
     }
 
     private static String currentTime() {
