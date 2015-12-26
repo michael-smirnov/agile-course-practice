@@ -65,12 +65,8 @@ public class TxtLoggerTests {
     @Test
     public void canWriteSeveralLogMessages() {
         final int numberOfMessages = 5;
-        String[] rightMessages = new String[numberOfMessages];
 
-        for (int i = 0; i < numberOfMessages; i++) {
-            rightMessages[i] = "Message №" + i;
-            txtLogger.addMessage(rightMessages[i]);
-        }
+        addSeveralMessages(numberOfMessages);
 
         List<String> actualMessages = txtLogger.getLog();
         assertEquals(numberOfMessages, actualMessages.size());
@@ -79,12 +75,8 @@ public class TxtLoggerTests {
     @Test
     public void areSeveralMessagesCorrect() {
         final int numberOfMessages = 5;
-        String[] rightMessages = new String[numberOfMessages];
 
-        for (int i = 0; i < numberOfMessages; i++) {
-            rightMessages[i] = "Message №" + i;
-            txtLogger.addMessage(rightMessages[i]);
-        }
+        String[] rightMessages = addSeveralMessages(numberOfMessages);
 
         List<String> actualMessages = txtLogger.getLog();
         for (int i = 0; i < numberOfMessages; i++) {
@@ -102,6 +94,17 @@ public class TxtLoggerTests {
         assertTrue(Pattern.matches(
                 "^\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} > .*", actualMessage
         ));
+    }
+
+    private String[] addSeveralMessages(final int numberOfMessages) {
+        String[] rightMessages = new String[numberOfMessages];
+
+        for (int i = 0; i < numberOfMessages; i++) {
+            rightMessages[i] = "Message №" + i;
+            txtLogger.addMessage(rightMessages[i]);
+        }
+
+        return rightMessages;
     }
 
 }
