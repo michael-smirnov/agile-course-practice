@@ -2,6 +2,8 @@ package ru.unn.agile.Deque.viewmodel;
 
 import ru.unn.agile.Deque.model.Deque;
 
+import java.util.List;
+
 public class DequeViewModel {
     private final Deque<Integer> deque;
 
@@ -14,9 +16,10 @@ public class DequeViewModel {
     private boolean isDoActionButtonEnabled;
 
     private Action action;
+    private IDequeLogger logger;
 
     public enum Action {
-        PushFront {
+        PushFront("PushFront") {
             @Override
             public void doAction() {
                 viewModel.deque.pushFront(Integer.valueOf(viewModel.inputNumber));
@@ -28,7 +31,7 @@ public class DequeViewModel {
                 return viewModel.isPushActionEnabled();
             }
         },
-        PushBack {
+        PushBack("PushBack") {
             @Override
             public void doAction() {
                 viewModel.deque.pushBack(Integer.valueOf(viewModel.inputNumber));
@@ -40,7 +43,7 @@ public class DequeViewModel {
                 return viewModel.isPushActionEnabled();
             }
         },
-        PopFront {
+        PopFront("PopFront") {
             @Override
             public void doAction() {
                 Integer value = viewModel.deque.popFront();
@@ -55,7 +58,7 @@ public class DequeViewModel {
                 return viewModel.isPopActionEnabled();
             }
         },
-        PopBack {
+        PopBack("PopBack") {
             @Override
             public void doAction() {
                 Integer value = viewModel.deque.popBack();
@@ -70,7 +73,7 @@ public class DequeViewModel {
                 return viewModel.isPopActionEnabled();
             }
         },
-        Clear {
+        Clear("Clear") {
             @Override
             public void doAction() {
                 viewModel.deque.clear();
@@ -82,7 +85,7 @@ public class DequeViewModel {
                 return viewModel.isClearActionEnabled();
             }
         },
-        Contains {
+        Contains("Contains") {
             @Override
             public void doAction() {
                 viewModel.output = String.valueOf(
@@ -97,6 +100,16 @@ public class DequeViewModel {
         };
 
         private static DequeViewModel viewModel;
+        private String description;
+
+        Action(final String description) {
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return description;
+        }
 
         public void setViewModel(final DequeViewModel viewModel) {
             Action.viewModel = viewModel;
@@ -118,10 +131,40 @@ public class DequeViewModel {
         }
     }
 
+    public enum LogMessages {
+        ACTION_PERFORMED("Following action has occurred: "),
+        ACTION_CHANGED("Action has been changed to: "),
+        NUMBER_ENTERED("Following number has been entered: "),
+        NAN_ENTERED("Following NaN has been entered: ");
+
+        private String description;
+
+        LogMessages(final String description) {
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return description;
+        }
+    }
+
     public DequeViewModel() {
         deque = new Deque<>();
         action = Action.PushFront;
         action.setViewModel(this);
+    }
+
+    public DequeViewModel(final IDequeLogger logger) {
+        this();
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger can't be null");
+        }
+        this.logger = logger;
+    }
+
+    public List<String> getLog() {
+        return logger.getLog();
     }
 
     private void setPopClearCheckActionsEnabled(final boolean isEnabled) {
@@ -151,13 +194,26 @@ public class DequeViewModel {
         updateDoActionButtonEnabled();
     }
 
+    public void logUpdatedInput() {
+        try {
+            Integer.parseInt(inputNumber);
+            logger.log(LogMessages.NUMBER_ENTERED + inputNumber);
+        } catch (NumberFormatException e) {
+            logger.log(LogMessages.NAN_ENTERED + inputNumber);
+        }
+    }
+
     public void setAction(final int actionIndex) {
-        action = Action.values()[actionIndex];
+        Action action = Action.values()[actionIndex];
 
         setAction(action);
     }
 
     public void setAction(final Action action) {
+        if (this.action != action) {
+            logger.log(LogMessages.ACTION_CHANGED + action.toString());
+        }
+
         this.action = action;
 
         updateDoActionButtonEnabled();
@@ -193,5 +249,7 @@ public class DequeViewModel {
 
     public void doAction() {
         action.doAction();
+
+        logger.log(LogMessages.ACTION_PERFORMED + action.toString());
     }
 }

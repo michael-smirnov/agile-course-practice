@@ -5,14 +5,31 @@ import org.junit.Test;
 import ru.unn.agile.Deque.model.Deque;
 import ru.unn.agile.Deque.viewmodel.DequeViewModel.Action;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class DequeViewModelTest {
     private DequeViewModel viewModel;
 
+    public void setViewModel(final DequeViewModel viewModel) {
+        this.viewModel = viewModel;
+    }
+
     @Before
     public void initializeDequeViewModel() {
-        viewModel = new DequeViewModel();
+        IDequeLogger logger = new FakeDequeLogger();
+        setViewModel(new DequeViewModel(logger));
+    }
+
+    @Test
+    public void canCreateViewModelWithLogger() {
+        assertNotNull(viewModel);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void canNotCreateViewModelWithNull() {
+        DequeViewModel viewModel = new DequeViewModel(null);
     }
 
     @Test
@@ -33,6 +50,13 @@ public class DequeViewModelTest {
     @Test
     public void byDefaultCheckActionIsDisabled() {
         assertFalse(viewModel.isContainsActionEnabled());
+    }
+
+    @Test
+    public void byDefaultLogIsEmpty() {
+        List<String> log = viewModel.getLog();
+
+        assertTrue(log.isEmpty());
     }
 
     @Test
@@ -298,5 +322,68 @@ public class DequeViewModelTest {
         viewModel.setAction(3);
 
         assertEquals(Action.PopBack, viewModel.getAction());
+    }
+
+    @Test
+    public void doesPushFrontActionAddSomethingInLog() {
+        viewModel.setAction(Action.PushFront);
+        viewModel.setInputNumber("8");
+
+        viewModel.doAction();
+
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void pushFrontActionAddsCorrectMessageInLog() {
+        viewModel.setAction(Action.PushFront);
+        viewModel.setInputNumber("8");
+
+        viewModel.doAction();
+        String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.ACTION_PERFORMED
+                + viewModel.getAction().toString() + ".*"));
+    }
+
+    @Test
+    public void settingActionAddsSomethingInLog() {
+        viewModel.setAction(Action.PopBack);
+
+        assertFalse(viewModel.getLog().isEmpty());
+    }
+
+    @Test
+    public void settingActionAddsCorrectMessageInLog() {
+        viewModel.setAction(Action.Clear);
+
+        String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.ACTION_CHANGED
+                + viewModel.getAction().toString() + ".*"));
+    }
+
+    @Test
+    public void settingNumberAddsCorrectMessageInLog() {
+        String testNumber = "8";
+        viewModel.setInputNumber(testNumber);
+        viewModel.logUpdatedInput();
+
+        String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.NUMBER_ENTERED
+                + testNumber + ".*"));
+    }
+
+    @Test
+    public void settingNaNAddsCorrectMessageInLog() {
+        String testNaN = "asd";
+        viewModel.setInputNumber(testNaN);
+        viewModel.logUpdatedInput();
+
+        String actualMessage = viewModel.getLog().get(viewModel.getLog().size() - 1);
+
+        assertTrue(actualMessage.matches(".*" + DequeViewModel.LogMessages.NAN_ENTERED
+                + testNaN + ".*"));
     }
 }

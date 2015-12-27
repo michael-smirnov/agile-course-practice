@@ -1,6 +1,6 @@
 dependencies {
     compile project(':kazanbaev-dmitry-ViewModel')
-    compile project(':kazanbaev-dmitry-Infrastructure')
+    testCompile project(':kazanbaev-dmitry-ViewModel').sourceSets.test.output
 }
 
 sourceSets {

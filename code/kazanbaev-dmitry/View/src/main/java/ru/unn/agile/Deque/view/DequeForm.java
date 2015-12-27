@@ -1,5 +1,6 @@
 package ru.unn.agile.Deque.view;
 
+import ru.unn.agile.Deque.infrastructure.DequeLogger;
 import ru.unn.agile.Deque.viewmodel.DequeViewModel;
 
 import javax.swing.*;
@@ -7,6 +8,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.util.List;
 
 public final class DequeForm {
     private final DequeViewModel viewModel;
@@ -18,9 +22,10 @@ public final class DequeForm {
     private JTextField outputText;
     private JComboBox<String> selectActionBox;
     private JButton doActionButton;
+    private JList<String> logList;
 
     private DequeForm() {
-        viewModel = new DequeViewModel();
+        viewModel = new DequeViewModel(new DequeLogger("./Deque.log"));
 
         inputNumber.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -38,6 +43,15 @@ public final class DequeForm {
             @Override
             public void changedUpdate(final DocumentEvent event) {
                 backBind();
+                bind();
+            }
+        });
+
+        inputNumber.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                backBind();
+                viewModel.logUpdatedInput();
                 bind();
             }
         });
@@ -80,6 +94,10 @@ public final class DequeForm {
         dequeTable = new JTable(values, new Object[]{"DEQUE"});
         dequeTable.setEnabled(false);
         mainScrollPane.setViewportView(dequeTable);
+
+        List<String> log = viewModel.getLog();
+        String[] arrayOfMessages = log.toArray(new String[log.size()]);
+        logList.setListData(arrayOfMessages);
     }
 
     public static void main(final String[] args) {
