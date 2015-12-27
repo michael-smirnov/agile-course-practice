@@ -16,7 +16,6 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class ViewModelLogComputeTests {
     private String message;
-    private FakeLogger fakeLogger;
     private ViewModel viewModel;
 
     @Parameterized.Parameters
@@ -26,8 +25,7 @@ public class ViewModelLogComputeTests {
 
     @Before
     public void setUp() {
-        fakeLogger = new FakeLogger();
-        viewModel = new ViewModel(fakeLogger);
+        viewModel = new ViewModel(new FakeLogger());
         loadExample();
     }
 
