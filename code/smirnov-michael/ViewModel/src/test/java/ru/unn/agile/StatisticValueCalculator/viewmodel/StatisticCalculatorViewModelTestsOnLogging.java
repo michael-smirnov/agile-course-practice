@@ -19,7 +19,7 @@ public class StatisticCalculatorViewModelTestsOnLogging {
     }
 
     @Test
-    public void isLogContainsAddRowValueAfterItHadBeenTyped() {
+    public void isLogContainsAddRowValueAfterItTyped() {
         String rowValue = "abc";
         viewModel.inputRowProperty().set(rowValue);
 
