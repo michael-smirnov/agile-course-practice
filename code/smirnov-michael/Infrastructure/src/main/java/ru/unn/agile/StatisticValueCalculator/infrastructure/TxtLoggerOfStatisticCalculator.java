@@ -3,6 +3,8 @@ package ru.unn.agile.StatisticValueCalculator.infrastructure;
 import ru.unn.agile.StatisticValueCalculator.viewmodel.ILoggerOfStatisticCalculator;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,20 +44,13 @@ public class TxtLoggerOfStatisticCalculator implements ILoggerOfStatisticCalcula
 
     @Override
     public List<String> getLog() {
-        ArrayList<String> log = new ArrayList<>();
+        List<String> log = new ArrayList<>();
 
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(logPath));
-
-            String currentLine = reader.readLine();
-            while (currentLine != null) {
-                log.add(currentLine);
-                currentLine = reader.readLine();
-            }
+            log = Files.readAllLines(Paths.get(logPath));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return log;
     }
 }
