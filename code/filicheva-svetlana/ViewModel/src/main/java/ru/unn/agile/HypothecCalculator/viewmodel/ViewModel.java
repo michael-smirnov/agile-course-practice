@@ -1,9 +1,10 @@
 package ru.unn.agile.HypothecCalculator.viewmodel;
 
-import ru.unn.agile.HypothecsCalculator.model.*;
+import ru.unn.agile.HypothecCalculator.model.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class ViewModel {
 
@@ -16,6 +17,8 @@ public class ViewModel {
     private String interestRate;
     private String flatFee;
     private String monthlyFee;
+    private String startMonth;
+    private String startYear;
 
     private Hypothec.CurrencyType currencyType;
     private Hypothec.PeriodType periodType;
@@ -23,9 +26,6 @@ public class ViewModel {
     private Hypothec.FlatFeeType flatFeeType;
     private Hypothec.MonthlyFeeType monthlyFeeType;
     private Hypothec.CreditType creditType;
-
-    private String startMonth;
-    private String startYear;
 
     private String monthlyPayment;
     private String overpaymentWithFees;
@@ -35,10 +35,16 @@ public class ViewModel {
     private Hypothec.Builder hypothecForParsing;
     private CreditCalculator creditCalculator;
     private GraphicOfPaymentsMaker graphicOfPaymentsMaker;
+    private final ILogger logger;
 
     private static final double DOUBLE_DELTA = 0.001;
 
-    public ViewModel() {
+    public ViewModel(final ILogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger is null");
+        }
+        this.logger = logger;
+
         status = Status.WAITING;
         isButtonEnabled = false;
 
@@ -98,6 +104,7 @@ public class ViewModel {
     public void compute() {
 
         if (checkInput()) {
+            logComputationResult();
             Hypothec hypothec = createHypothec();
 
             creditCalculator = new CreditCalculator(hypothec);
@@ -112,6 +119,9 @@ public class ViewModel {
         }
     }
 
+    public List<String> getLog() {
+        return logger.getLog();
+    }
 
     private boolean houseCostAndCountOfPeriodsIsOK() {
         double houseCostDouble;
@@ -317,13 +327,32 @@ public class ViewModel {
         graphicOfPayments = graphicOfPaymentsMaker.getTableModel();
     }
 
+    private void logParameterChange(final String parameter) {
+        logger.addMessage(LogMessage.PARAMETER_WAS_CHANGED + parameter);
+    }
+
+    private void logComputationResult() {
+        String message = LogMessage.COMPUTE
+                + "Стоимость недвижимости: " + houseCost
+                + " " + currencyType + "\n"
+                + "Первоначальный взнос: " + downPayment
+                + " " + currencyType + "\n"
+                + "Срок ипотеки: " + countOfPeriods
+                + " " + periodType + "\n"
+                + "Процентная ставка: " + interestRate
+                + " " + interestRateType + "\n"
+                + "Единовременные комиссии: " + flatFee
+                + " " + flatFeeType + "\n"
+                + "Ежемесячные комиссии: " + monthlyFee
+                + " " + monthlyFeeType + "\n"
+                + "Начало выплат: " + startMonth
+                + "." + startYear + "\n"
+                + "Тип кредита: " + creditType;
+        logger.addMessage(message);
+    }
 
     public String getStatus() {
         return status;
-    }
-
-    public void setStatus(final String status) {
-        this.status = status;
     }
 
     public boolean isButtonEnabled() {
@@ -335,6 +364,9 @@ public class ViewModel {
     }
 
     public void setHouseCost(final String houseCost) {
+        if (!houseCost.equals(this.houseCost)) {
+            logParameterChange("\"Стоимость недвижимости\": " + houseCost);
+        }
         this.houseCost = houseCost;
     }
 
@@ -343,6 +375,9 @@ public class ViewModel {
     }
 
     public void setDownPayment(final String downPayment) {
+        if (!downPayment.equals(this.downPayment)) {
+            logParameterChange("\"Первоначальный взнос\": " + downPayment);
+        }
         this.downPayment = downPayment;
     }
 
@@ -351,6 +386,9 @@ public class ViewModel {
     }
 
     public void setCountOfPeriods(final String countOfPeriods) {
+        if (!countOfPeriods.equals(this.countOfPeriods)) {
+            logParameterChange("\"Срок ипотеки\": " + countOfPeriods);
+        }
         this.countOfPeriods = countOfPeriods;
     }
 
@@ -359,6 +397,9 @@ public class ViewModel {
     }
 
     public void setInterestRate(final String interestRate) {
+        if (!interestRate.equals(this.interestRate)) {
+            logParameterChange("\"Процентная ставка\": " + interestRate);
+        }
         this.interestRate = interestRate;
     }
 
@@ -367,6 +408,9 @@ public class ViewModel {
     }
 
     public void setFlatFee(final String flatFee) {
+        if (!flatFee.equals(this.flatFee)) {
+            logParameterChange("\"Единовременные комиссии\": " + flatFee);
+        }
         this.flatFee = flatFee;
     }
 
@@ -375,6 +419,9 @@ public class ViewModel {
     }
 
     public void setMonthlyFee(final String monthlyFee) {
+        if (!monthlyFee.equals(this.monthlyFee)) {
+            logParameterChange("\"Ежемесячные комиссии\": " + monthlyFee);
+        }
         this.monthlyFee = monthlyFee;
     }
 
@@ -383,6 +430,9 @@ public class ViewModel {
     }
 
     public void setCurrencyType(final Hypothec.CurrencyType currencyType) {
+        if (currencyType != this.currencyType) {
+            logParameterChange("\"Тип валюты\": " + currencyType);
+        }
         this.currencyType = currencyType;
     }
 
@@ -391,6 +441,9 @@ public class ViewModel {
     }
 
     public void setPeriodType(final Hypothec.PeriodType periodType) {
+        if (periodType != this.periodType) {
+            logParameterChange("\"Тип периода времени\": " + periodType);
+        }
         this.periodType = periodType;
     }
 
@@ -399,6 +452,9 @@ public class ViewModel {
     }
 
     public void setInterestRateType(final Hypothec.InterestRateType interestRateType) {
+        if (interestRateType != this.interestRateType) {
+            logParameterChange("\"Тип процентной ставки\": " + interestRateType);
+        }
         this.interestRateType = interestRateType;
     }
 
@@ -407,6 +463,10 @@ public class ViewModel {
     }
 
     public void setFlatFeeType(final Hypothec.FlatFeeType flatFeeType) {
+        if (flatFeeType != this.flatFeeType) {
+            logParameterChange("\"Тип единовременной комиссии\": "
+                    + flatFeeType);
+        }
         this.flatFeeType = flatFeeType;
     }
 
@@ -415,6 +475,10 @@ public class ViewModel {
     }
 
     public void setMonthlyFeeType(final Hypothec.MonthlyFeeType monthlyFeeType) {
+        if (monthlyFeeType != this.monthlyFeeType) {
+            logParameterChange("\"Тип ежемесячной комиссии\": "
+                    + monthlyFeeType);
+        }
         this.monthlyFeeType = monthlyFeeType;
     }
 
@@ -423,6 +487,9 @@ public class ViewModel {
     }
 
     public void setCreditType(final Hypothec.CreditType creditType) {
+        if (creditType != this.creditType) {
+            logParameterChange("\"Тип кредита\": " + creditType);
+        }
         this.creditType = creditType;
     }
 
@@ -431,6 +498,9 @@ public class ViewModel {
     }
 
     public void setStartMonth(final String startMonth) {
+        if (!startMonth.equals(this.startMonth)) {
+            logParameterChange("\"Месяц начала выплат\": " + startMonth);
+        }
         this.startMonth = startMonth;
     }
 
@@ -439,6 +509,9 @@ public class ViewModel {
     }
 
     public void setStartYear(final String startYear) {
+        if (!startYear.equals(this.startYear)) {
+            logParameterChange("\"Год начала выплат\": " + startYear);
+        }
         this.startYear = startYear;
     }
 
@@ -458,14 +531,26 @@ public class ViewModel {
         return graphicOfPayments;
     }
 
-
     public final class Status {
-        public static final String WAITING = "Введите параметры кредита";
-        public static final String READY = "Нажмите кнопку \"Рассчитать\"";
-        public static final String BAD_FORMAT = "Введены даннные "
-                + "неверного формата ";
-        public static final String SUCCESS = "Успех полностью достигнут";
+        public static final String WAITING
+                = "Введите параметры кредита";
+        public static final String READY
+                = "Нажмите кнопку \"Рассчитать\"";
+        public static final String BAD_FORMAT
+                = "Введены даннные неверного формата ";
+        public static final String SUCCESS
+                = "Успех полностью достигнут";
 
         private Status() { }
+    }
+
+    public final class LogMessage {
+        public static final String PARAMETER_WAS_CHANGED
+                = "Установлено новое значение параметра ";
+        public static final String COMPUTE
+                = "Произведены расчеты для кредита со "
+                + "следующими параметрами: \n";
+
+        private LogMessage() { }
     }
 }

@@ -3,7 +3,7 @@ package ru.unn.agile.HypothecCalculator.viewmodel;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import ru.unn.agile.HypothecsCalculator.model.Hypothec;
+import ru.unn.agile.HypothecCalculator.model.Hypothec;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.Arrays;
@@ -46,7 +46,7 @@ public class ViewModelTableTest {
     }
 
     private ViewModel getViewModel() {
-        ViewModel viewModel = new ViewModel();
+        ViewModel viewModel = new ViewModel(new FakeLogger());
         viewModel.setHouseCost("3300");
         viewModel.setCountOfPeriods("3");
         viewModel.setDownPayment("300");
@@ -90,5 +90,4 @@ public class ViewModelTableTest {
                     Hypothec.CreditType.DIFFERENTIATED
             }
     };
-
 }

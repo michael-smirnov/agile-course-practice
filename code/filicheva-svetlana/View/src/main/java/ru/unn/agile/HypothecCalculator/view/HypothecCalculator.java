@@ -1,7 +1,8 @@
 package ru.unn.agile.HypothecCalculator.view;
 
 import ru.unn.agile.HypothecCalculator.viewmodel.ViewModel;
-import ru.unn.agile.HypothecsCalculator.model.Hypothec;
+import ru.unn.agile.HypothecCalculator.model.Hypothec;
+import ru.unn.agile.HypothecCalculator.infrastructure.TxtLogger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,6 +14,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public final class HypothecCalculator {
 
@@ -38,14 +40,15 @@ public final class HypothecCalculator {
     private JLabel monthlyPayment;
     private JLabel overpaymentWithFees;
     private JLabel overpayment;
+    private JList<String> logList;
 
-    private final ViewModel viewModel = new ViewModel();
+    private final ViewModel viewModel = new ViewModel(new TxtLogger(FILE_NAME));
 
     private static final int HEADERS_HEIGHT = 50;
+    private static final String FILE_NAME = "./HypothecCalculator.log";
 
     private HypothecCalculator() {
-        loadAllLists();
-        backBind();
+        initialize();
 
 
         KeyAdapter keyListener = new KeyAdapter() {
@@ -134,7 +137,6 @@ public final class HypothecCalculator {
     }
 
     private void bind() {
-        viewModel.setStatus(status.getText());
         viewModel.setHouseCost(houseCost.getText());
         viewModel.setDownPayment(downPayment.getText());
         viewModel.setCountOfPeriods(countOfPeriods.getText());
@@ -157,6 +159,25 @@ public final class HypothecCalculator {
     private void backBind() {
         status.setText(viewModel.getStatus());
         compute.setEnabled(viewModel.isButtonEnabled());
+
+        monthlyPayment.setText(viewModel.getMonthlyPayment());
+        overpaymentWithFees.setText(viewModel.getOverpaymentWithFees());
+        overpayment.setText(viewModel.getOverpayment());
+
+        DefaultTableModel model = viewModel.getGraphicOfPayments();
+        graphicOfPayments.setModel(model);
+        graphicOfPayments.setPreferredSize(new Dimension(graphicOfPayments.getWidth(),
+                graphicOfPayments.getRowHeight() * model.getRowCount()));
+
+        List<String> log = viewModel.getLog();
+        String[] items = log.toArray(new String[log.size()]);
+        logList.setListData(items);
+    }
+
+    private void initialize() {
+        loadAllLists();
+        backBind();
+
         houseCost.setText(viewModel.getHouseCost());
         downPayment.setText(viewModel.getDownPayment());
         countOfPeriods.setText(viewModel.getCountOfPeriods());
@@ -173,15 +194,6 @@ public final class HypothecCalculator {
 
         month.setText(viewModel.getStartMonth());
         year.setText(viewModel.getStartYear());
-
-        monthlyPayment.setText(viewModel.getMonthlyPayment());
-        overpaymentWithFees.setText(viewModel.getOverpaymentWithFees());
-        overpayment.setText(viewModel.getOverpayment());
-
-        DefaultTableModel model = viewModel.getGraphicOfPayments();
-        graphicOfPayments.setModel(model);
-        graphicOfPayments.setPreferredSize(new Dimension(graphicOfPayments.getWidth(),
-                graphicOfPayments.getRowHeight() * model.getRowCount()));
     }
 
     private void loadAllLists() {
