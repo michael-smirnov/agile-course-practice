@@ -1,7 +1,8 @@
 package ru.unn.agile.BitArray.viewmodel;
 
-
 import ru.unn.agile.BitArray.model.BitArray;
+
+import java.util.List;
 
 public class ViewModel {
     private BitArray firstBitArray;
@@ -13,6 +14,7 @@ public class ViewModel {
     private boolean isInitializeArrayButtonEnabled;
     private Operation operation;
     private String notification;
+    private IBitArrayLogger logger;
 
     public ViewModel() {
         isDoOperationButtonEnabled = false;
@@ -22,6 +24,12 @@ public class ViewModel {
         operation = Operation.OR;
         operation.setViewModel(this);
         notification = Notification.EMPTY_STRING;
+    }
+
+    public ViewModel(final IBitArrayLogger logger) {
+        this();
+
+        setLogger(logger);
     }
 
 
@@ -50,6 +58,10 @@ public class ViewModel {
         return firstBitArray;
     }
 
+    public void logUpdatedSize() {
+        logger.log(LogMessages.UPDATE_ARRAY_SIZE + inputSizeArray);
+    }
+
     public void initializeArray() {
         int size = Integer.parseInt(inputSizeArray);
         firstBitArray = new BitArray(size);
@@ -57,9 +69,14 @@ public class ViewModel {
         resultBitArray = new BitArray(size);
 
         isDoOperationButtonEnabled = true;
+        logger.log(LogMessages.INIT_ARRAY_WITH_SIZE + size);
     }
 
     public void setOperation(final Operation operation) {
+        if (!this.operation.toString().equals(operation.toString())) {
+            logger.log(LogMessages.OPERATION_CHANGED + operation.toString());
+        }
+
         this.operation = operation;
         operation.setViewModel(this);
     }
@@ -86,6 +103,8 @@ public class ViewModel {
 
     public void doOperation() {
         operation.doOperation();
+
+        logger.log(LogMessages.OPERATION_DID + operation.toString());
     }
 
     public void setSecondBitArray(final BitArray secondBitArray) {
@@ -94,6 +113,25 @@ public class ViewModel {
 
     public String getNotification() {
         return notification;
+    }
+
+    public void setLogger(final IBitArrayLogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger parameter can't be null");
+        }
+        this.logger = logger;
+    }
+
+    public List<String> getLog() {
+        return logger.getLog();
+    }
+
+    public void logUpdatedFirstBitArray() {
+        logger.log(LogMessages.UPDATE_FIRST_BIT_ARRAY + firstBitArray.toString());
+    }
+
+    public void logUpdatedSecondBitArray() {
+        logger.log(LogMessages.UPDATE_SECOND_BIT_ARRAY + secondBitArray.toString());
     }
 
     public enum Operation {
@@ -148,5 +186,16 @@ public class ViewModel {
         public static final String EMPTY_STRING = "";
 
         private Notification() { }
+    }
+
+    final class LogMessages {
+        public static final String OPERATION_DID = "Operation did ";
+        public static final String OPERATION_CHANGED = "Operation changed to ";
+        public static final String INIT_ARRAY_WITH_SIZE = "Init arrays with size ";
+        public static final String UPDATE_ARRAY_SIZE = "Size of arrays updated to ";
+        public static final String UPDATE_FIRST_BIT_ARRAY = "First bit array updated to ";
+        public static final String UPDATE_SECOND_BIT_ARRAY = "Second bit array updated to ";
+
+        private LogMessages() { }
     }
 }

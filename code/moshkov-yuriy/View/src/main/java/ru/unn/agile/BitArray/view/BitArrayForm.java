@@ -1,13 +1,12 @@
 package ru.unn.agile.BitArray.view;
 
+import ru.unn.agile.BitArray.infrastructure.BitArrayLogger;
 import ru.unn.agile.BitArray.viewmodel.ViewModel;
 import ru.unn.agile.BitArray.model.BitArray;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.util.List;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -28,6 +27,7 @@ public final class BitArrayForm {
     private JScrollPane resultBitArrayScrollPane;
     private JTextPane infoTextPane;
     private JLabel notificationLabel;
+    private JList<String> logList;
 
     private BitArrayForm(final ViewModel viewModel) {
         this.viewModel = viewModel;
@@ -79,11 +79,21 @@ public final class BitArrayForm {
                 backBind();
             }
         });
+
+        sizeArrayTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                bind();
+                viewModel.logUpdatedSize();
+                backBind();
+            }
+        });
     }
 
     public static void main(final String[] args) {
         JFrame frame = new JFrame("BitArrayForm");
-        frame.setContentPane(new BitArrayForm(new ViewModel()).mainPanel);
+        BitArrayLogger logger = new BitArrayLogger("./BitArray.log");
+        frame.setContentPane(new BitArrayForm(new ViewModel(logger)).mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -117,14 +127,34 @@ public final class BitArrayForm {
         firstBitArrayTable = createTableFromBitArray(viewModel.getFirstBitArray());
         firstBitArrayTable.addMouseListener(new BitArrayMouseAdapter());
         firstBitArrayScrollPane.setViewportView(firstBitArrayTable);
+        firstBitArrayTable.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                bind();
+                viewModel.logUpdatedFirstBitArray();
+                backBind();
+            }
+        });
 
         secondBitArrayTable = createTableFromBitArray(viewModel.getSecondBitArray());
         secondBitArrayTable.addMouseListener(new BitArrayMouseAdapter());
         secondBitArrayScrollPane.setViewportView(secondBitArrayTable);
+        secondBitArrayTable.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                bind();
+                viewModel.logUpdatedSecondBitArray();
+                backBind();
+            }
+        });
 
         resultBitArrayTable = createTableFromBitArray(viewModel.getResultBitArray());
         resultBitArrayTable.setEnabled(false);
         resultBitArrayScrollPane.setViewportView(resultBitArrayTable);
+
+        List<String> log = viewModel.getLog();
+        String[] arrayOfMessages = log.toArray(new String[log.size()]);
+        logList.setListData(arrayOfMessages);
     }
 
     private JTable createTableFromBitArray(final BitArray bitArray) {

@@ -58,6 +58,15 @@ public class BitArray {
         return size;
     }
 
+    @Override
+    public String toString() {
+        String resultString = "";
+        for (int i = 0; i < size; i++) {
+            resultString += getBit(i).toString() + " ";
+        }
+        return resultString;
+    }
+
     private BitArray apply(final BitArray bitArray, final IOperation operation) {
         BitArray res;
         if (bitArray.getSize() == size) {
