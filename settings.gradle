@@ -164,6 +164,8 @@ include "code/kumaev-vasily/View"
 project(":code/kumaev-vasily/View").name = "kumaev-vasily-View"
 include "code/kumaev-vasily/ViewModel"
 project(":code/kumaev-vasily/ViewModel").name = "kumaev-vasily-ViewModel"
+include "code/kumaev-vasily/Infrastructure"
+project(":code/kumaev-vasily/Infrastructure").name = "kumaev-vasily-Infrastructure"
 
 // Kuznecov Aleksandr
 // Larin Sergej
