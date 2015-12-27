@@ -266,6 +266,8 @@ include "code/smirnov-michael/ViewModel"
 project(":code/smirnov-michael/ViewModel").name = "smirnov-michael-ViewModel"
 include "code/smirnov-michael/View"
 project(":code/smirnov-michael/View").name = "smirnov-michael-View"
+include "code/smirnov-michael/Infrastructure"
+project(":code/smirnov-michael/Infrastructure").name = "smirnov-michael-Infrastructure"
 
 // Smirnov Vyacheslav
 include "code/smirnov-vyacheslav/Model"

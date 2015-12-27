@@ -11,6 +11,8 @@ import ru.unn.agile.StatisticValueCalculator.model.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class StatisticCalculatorViewModel {
     private final StringProperty nameOfCalculatedStatistic = new SimpleStringProperty("");
@@ -40,19 +42,23 @@ public class StatisticCalculatorViewModel {
 
     private final AddStatisticParameterChangeListener parameterChangeListener
             = new AddStatisticParameterChangeListener();
+    private final AddValueChangeListener valueChangeListener = new AddValueChangeListener();
 
     private final BooleanProperty addInputRowIsDisabled = new SimpleBooleanProperty(false);
     private final BooleanProperty calculationIsDisabled = new SimpleBooleanProperty(false);
     private final BooleanProperty deleteDataRowIsDisabled = new SimpleBooleanProperty(true);
+    private final StringProperty logText = new SimpleStringProperty();
 
     private int selectedRowInStatisticData = -1;
+    private ILoggerOfStatisticCalculator logger;
+    private Boolean isDataTableReforming = false;
 
     public StatisticCalculatorViewModel() {
         selectedStatistic =
-                new SimpleObjectProperty<>(StatisticValue.ENUMERATION);
+                new SimpleObjectProperty<>(StatisticValue.MEAN);
         setSelectedStatistic(selectedStatistic.get());
 
-        inputRow.addListener(new AddValueChangeListener());
+        inputRow.addListener(valueChangeListener);
         inputStatisticParameter.addListener(parameterChangeListener);
         selectedStatistic.addListener(new SelectedStatisticListener());
 
@@ -62,6 +68,18 @@ public class StatisticCalculatorViewModel {
         for (Integer i = 1; i <= data.size(); i++) {
             statisticData.add(new Pair<>(i.toString(), data.get(i - 1)));
         }
+
+        setLogger(new DefaultLogger());
+    }
+
+    public StatisticCalculatorViewModel(final ILoggerOfStatisticCalculator logger) {
+        this();
+
+        if (logger == null) {
+            throw new NullPointerException("Logger must not be null");
+        }
+
+        setLogger(logger);
     }
 
     public String getNameOfCalculatedStatistic() {
@@ -120,6 +138,14 @@ public class StatisticCalculatorViewModel {
         return deleteDataRowIsDisabled.get();
     }
 
+    public List<String> getLog() {
+        return logger.getLog();
+    }
+
+    public String getLogText() {
+        return logText.get();
+    }
+
     public StringProperty nameOfCalculatedStatisticProperty() {
         return nameOfCalculatedStatistic;
     }
@@ -135,7 +161,6 @@ public class StatisticCalculatorViewModel {
     public ObjectProperty<InputNote> inputStatisticParameterErrorProperty() {
         return inputStatisticParameterError;
     }
-
     public ObjectProperty<StatisticValue> selectedStatisticProperty() {
         return selectedStatistic;
     }
@@ -168,9 +193,13 @@ public class StatisticCalculatorViewModel {
         return deleteDataRowIsDisabled;
     }
 
+    public StringProperty logTextProperty() {
+        return logText;
+    }
+
     public void setSelectedStatistic(final StatisticValue selectedStatisticInfo) {
         selectedStatistic.set(selectedStatisticInfo);
-        StatisticParameter parameterName = selectedStatisticInfo.getParameterName();
+        StatisticParameter parameterName = selectedStatisticInfo.getParameter();
         parameterNameOfSelectedStatistic.set(parameterName);
 
         if (parameterName == null) {
@@ -193,10 +222,17 @@ public class StatisticCalculatorViewModel {
         }
     }
 
+    public void setLogger(final ILoggerOfStatisticCalculator logger) {
+        this.logger = logger;
+    }
+
     public void addRowToStatisticData() {
         Integer numberOfAddValue = statisticData.size() + 1;
         statisticData.add(new Pair<>(numberOfAddValue.toString(), inputRow.getValue()));
         calculationIsDisabled.set(false);
+        clearCalculatedStatistic();
+
+        tryToLogging(LogMessages.newValueToDataTableIsAdded(inputRow.get()));
     }
 
     public void makeRowInDataNotSelected() {
@@ -205,9 +241,12 @@ public class StatisticCalculatorViewModel {
     }
 
     public void selectRowInStatisticData(final Integer rowNumber) {
-        if (rowNumber >= 0 && rowNumber < statisticData.size()) {
+        if (rowNumber > 0 && rowNumber <= statisticData.size()) {
             selectedRowInStatisticData = rowNumber;
             deleteDataRowIsDisabled.set(false);
+
+            tryToLogging(LogMessages.rowInDataTableSelected(rowNumber,
+                    statisticData.get(rowNumber - 1).getValue()));
         } else {
             makeRowInDataNotSelected();
         }
@@ -215,15 +254,23 @@ public class StatisticCalculatorViewModel {
 
     public void deleteSelectedRowInStatisticData() {
         if (!deleteDataRowIsDisabled.get()) {
-            statisticData.remove(selectedRowInStatisticData);
+            tryToLogging(LogMessages.rowInDataTableDeleted(
+                    selectedRowInStatisticData,
+                    statisticData.get(selectedRowInStatisticData - 1).getValue()));
+
+            statisticData.remove(selectedRowInStatisticData - 1);
             calculationIsDisabled.set(statisticData.isEmpty());
             reformIndexesInStatisticData();
+            clearCalculatedStatistic();
         }
     }
 
     public void clearStatisticData() {
         statisticData.clear();
         calculationIsDisabled.set(true);
+        clearCalculatedStatistic();
+
+        tryToLogging(LogMessages.dataTableIsCleared());
     }
 
     public void calculateSelectedStatistic() {
@@ -235,7 +282,7 @@ public class StatisticCalculatorViewModel {
 
         IStatisticValueCalculator calculator;
         switch (selectedStatistic.get()) {
-            case ENUMERATION:
+            case MEAN:
                 calculator = new MeanCalculator();
                 break;
 
@@ -248,7 +295,7 @@ public class StatisticCalculatorViewModel {
                 calculator = new ProbabilityOfEventCalculator(event);
                 break;
 
-            case ROW_MOMENT:
+            case RAW_MOMENT:
                 int order = Integer.parseInt(inputStatisticParameter.get());
                 calculator = new RawMomentCalculator(order);
                 break;
@@ -265,20 +312,112 @@ public class StatisticCalculatorViewModel {
         Double statisticValue = calculator.calculate(data);
         nameOfCalculatedStatistic.set(selectedStatistic.get().toString());
         valueOfCalculatedStatistic.set(statisticValue.toString());
+
+        tryToLogging(LogMessages.statisticValueCalculated(
+                selectedStatistic.get(),
+                valueOfCalculatedStatistic.get(),
+                inputStatisticParameter.get()));
+    }
+
+    public void onInputFieldFocusChanged(final Boolean wasFocusedEarlier,
+                                         final Boolean isFocusedNow) {
+        if (!wasFocusedEarlier && isFocusedNow) {
+            return;
+        }
+        if (valueChangeListener.isChanged()) {
+            tryToLogging(LogMessages.inputRowValueIsSet(inputRow.get()));
+            valueChangeListener.resetChangedState();
+        }
+        if (parameterChangeListener.isChanged()) {
+            tryToLogging(LogMessages.inputParameterValueIsSet(
+                    parameterNameOfSelectedStatistic.get(), inputStatisticParameter.get()));
+            parameterChangeListener.resetChangedState();
+        }
+    }
+
+    private void tryToLogging(final String message) {
+        if (!isDataTableReforming) {
+            logger.set(message);
+            updateLogProperty();
+        }
+    }
+
+    private void clearCalculatedStatistic() {
+        nameOfCalculatedStatistic.set("");
+        valueOfCalculatedStatistic.set("");
+    }
+
+    private void updateLogProperty() {
+        List<String> logMessages = logger.getLog();
+        String logText = "";
+
+        for (String message : logMessages) {
+            logText += message + "\n";
+        }
+
+        this.logText.set(logText);
     }
 
     private void reformIndexesInStatisticData() {
+        isDataTableReforming = true;
+
         for (Integer i = 1; i <= statisticData.size(); i++) {
             Pair<String, String> oldRow = statisticData.get(i - 1);
             Pair<String, String> newRow = new Pair<>(i.toString(), oldRow.getValue());
             statisticData.set(i - 1, newRow);
         }
+
+        isDataTableReforming = false;
     }
 
-    private class AddValueChangeListener implements ChangeListener<String> {
+    private void checkValidationOfStatisticParameterValue() {
+        StatisticParameter parameterName = getSelectedStatistic().getParameter();
+        String parameterValue = inputStatisticParameter.get();
+
+        inputStatisticParameterError.set(InputNote.VALID_INPUT);
+        if (parameterName == StatisticParameter.ORDER) {
+            try {
+                Integer order = Integer.parseInt(parameterValue);
+                if (order <= 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException exception) {
+                inputStatisticParameterError.set(InputNote.NOT_A_POSITIVE_INTEGER);
+                calculationIsDisabled.set(true);
+            }
+        }
+
+        try {
+            Double.parseDouble(parameterValue);
+        } catch (NumberFormatException exception) {
+            inputStatisticParameterError.set(InputNote.NOT_A_NUMBER);
+            calculationIsDisabled.set(true);
+        }
+    }
+
+    private class ValueChangedListener {
+        private String currentValue = "";
+        private String previousValue = "";
+
+        public void changeValue(final String newValue) {
+            previousValue = currentValue;
+            currentValue = newValue;
+        }
+        public Boolean isChanged() {
+            return !currentValue.equals(previousValue);
+        }
+        public void resetChangedState() {
+            previousValue = currentValue;
+        }
+    }
+
+    private class AddValueChangeListener extends ValueChangedListener
+            implements ChangeListener<String> {
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
+            super.changeValue(newValue);
+
             inputRowError.set(InputNote.VALID_INPUT);
             addInputRowIsDisabled.set(false);
 
@@ -296,23 +435,37 @@ public class StatisticCalculatorViewModel {
         }
     }
 
-    private class SelectedStatisticListener implements ChangeListener<StatisticValue> {
+    private class SelectedStatisticListener extends ValueChangedListener
+            implements ChangeListener<StatisticValue> {
         @Override
         public void changed(final ObservableValue<? extends StatisticValue> observable,
                             final StatisticValue oldValue, final StatisticValue newValue) {
-            parameterChangeListener.changed(inputStatisticParameter, "",
-                    inputStatisticParameter.get());
+            super.changeValue(newValue.name());
+            if (super.isChanged()) {
+                tryToLogging(LogMessages.statisticValueSelected(newValue));
+
+                StatisticParameter parameter = newValue.getParameter();
+                if (parameter == StatisticParameter.EVENT) {
+                    inputStatisticParameter.set("0.0");
+                } else if (parameter == StatisticParameter.ORDER) {
+                    inputStatisticParameter.set("1");
+                }
+
+                super.resetChangedState();
+            }
         }
     }
 
-    private class AddStatisticParameterChangeListener implements ChangeListener<String> {
+    private class AddStatisticParameterChangeListener extends ValueChangedListener
+            implements ChangeListener<String> {
+
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
-            inputStatisticParameterError.set(InputNote.VALID_INPUT);
+            super.changeValue(newValue);
             calculationIsDisabled.set(statisticData.isEmpty());
 
-            if (selectedStatistic.getValue().getParameterName() == null) {
+            if (selectedStatistic.getValue().getParameter() == null) {
                 return;
             }
 
@@ -321,28 +474,21 @@ public class StatisticCalculatorViewModel {
                 return;
             }
 
-            StatisticParameter currentParameterName =
-                    getSelectedStatistic()
-                            .getParameterName();
-            if (currentParameterName == StatisticParameter.ORDER) {
-                try {
-                    Integer order = Integer.parseInt(newValue);
-                    if (order <= 0) {
-                        throw new NumberFormatException();
-                    }
-                } catch (NumberFormatException exception) {
-                    inputStatisticParameterError.set(InputNote.NOT_A_POSITIVE_INTEGER);
-                    calculationIsDisabled.set(true);
-                }
-            }
-
-            try {
-                Double.parseDouble(newValue);
-            } catch (NumberFormatException exception) {
-                inputStatisticParameterError.set(InputNote.NOT_A_NUMBER);
-                calculationIsDisabled.set(true);
-            }
+            checkValidationOfStatisticParameterValue();
         }
+    }
+}
+
+class DefaultLogger implements ILoggerOfStatisticCalculator {
+
+    @Override
+    public void set(final String description) {
+        final String message = "This method doesn't do anything";
+    }
+
+    @Override
+    public List<String> getLog() {
+        return Collections.singletonList("Real logger is not set");
     }
 }
 
