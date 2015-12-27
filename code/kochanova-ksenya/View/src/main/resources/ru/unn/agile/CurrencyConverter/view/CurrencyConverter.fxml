@@ -5,26 +5,23 @@
 <?import javafx.scene.layout.*?>
 <?import ru.unn.agile.CurrencyConverter.viewmodel.*?>
 
-   <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.CurrencyConverter.view.CurrencyConverter">
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.CurrencyConverter.view.CurrencyConverter">
     <fx:define>
         <ViewModel fx:id="viewModel" />
     </fx:define>
     <children>
-         <Pane prefHeight="221.0" prefWidth="440.0">
+         <Pane prefHeight="444.0" prefWidth="440.0">
             <children>
-               <Button fx:id="btnConvert" defaultButton="true" disable="${viewModel.convertationDisable}"
-                       layoutX="16.0" layoutY="148.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="397.0" text="Convert" />
+               <Button fx:id="btnConvert" defaultButton="true" disable="${viewModel.convertingDisable}" layoutX="16.0" layoutY="148.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="397.0" text="Convert" />
                <Label layoutX="14.0" layoutY="21.0" text="Input currency" />
                <Label layoutX="262.0" layoutY="21.0" text="Ouput currency" />
                <TextField fx:id="inputValue" layoutX="16.0" layoutY="54.0" />
-               <ComboBox  fx:id="inputCurrency" items="${viewModel.units}"
-                          layoutX="16.0" layoutY="94.0" prefHeight="29.0" prefWidth="162.0" promptText="Currency" />
-               <ComboBox  fx:id="outputCurrency" items="${viewModel.units}"
-                          layoutX="250.0" layoutY="94.0" prefHeight="29.0" prefWidth="162.0" promptText="Currency" />
-               <Label fx:id="outputValue" text="${viewModel.outputValue}"
-                      layoutX="250.0" layoutY="54.0" prefHeight="29.0" prefWidth="162.0" />
-                <Label fx:id="lbStatus" text="${viewModel.status}"
-                       layoutX="33.0" layoutY="188.0" prefHeight="19.0" prefWidth="349.0" />
+               <ComboBox fx:id="inputCurrency" items="${viewModel.units}" layoutX="16.0" layoutY="94.0" prefHeight="29.0" prefWidth="162.0" promptText="Currency" />
+               <ComboBox fx:id="outputCurrency" items="${viewModel.units}" layoutX="250.0" layoutY="94.0" prefHeight="29.0" prefWidth="162.0" promptText="Currency" />
+               <Label fx:id="outputValue" layoutX="250.0" layoutY="54.0" prefHeight="29.0" prefWidth="162.0" text="${viewModel.outputValue}" />
+                <Label fx:id="lbStatus" layoutX="33.0" layoutY="188.0" prefHeight="19.0" prefWidth="349.0" text="${viewModel.status}" />
+            <TextArea fx:id="areaLog" text="${viewModel.logs}" layoutX="16.0" layoutY="251.0" prefHeight="181.0" prefWidth="397.0" />
+            <Label layoutX="16.0" layoutY="222.0" text="Log" />
             </children>
          </Pane>
       </children>
