@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import ru.unn.agile.LengthConvertor.viewmodel.*?>
 
-<AnchorPane prefHeight="123.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.LengthConvertor.view.Convertor">
+<AnchorPane prefHeight="209.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.unn.agile.LengthConvertor.view.Convertor">
    <fx:define>
       <ViewModel fx:id="viewModel" />
    </fx:define>
    <children>
       <TextField fx:id="inputValueTextBox" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="214.0" />
-      <Label fx:id="outputValueLabel" layoutX="21.0" layoutY="51.0" prefHeight="17.0" prefWidth="198.0" text="${viewModel.outputValue}"/>
+      <Label fx:id="outputValueLabel" layoutX="21.0" layoutY="51.0" prefHeight="17.0" prefWidth="198.0" text="${viewModel.outputValue}" />
       <ComboBox fx:id="inputUnitComboBox" items="${viewModel.units}" layoutX="240.0" layoutY="14.0" prefWidth="150.0" />
       <ComboBox fx:id="outputUnitComboBox" items="${viewModel.units}" layoutX="240.0" layoutY="47.0" prefWidth="150.0" />
-      <Button fx:id="calculateButton" defaultButton="true" disable="${viewModel.calculationDisabled}" layoutX="240.0" layoutY="82.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Calculate" />
-      <Label fx:id="hintMessageLabel" layoutX="14.0" layoutY="86.0" prefHeight="17.0" prefWidth="214.0" text="${viewModel.hintMessage}" textFill="#6d6d6d"/>
+      <Button fx:id="convertButton" defaultButton="true" disable="${viewModel.convertingDisabled}" layoutX="240.0" layoutY="82.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Convert" />
+      <Label fx:id="hintMessageLabel" layoutX="14.0" layoutY="86.0" prefHeight="17.0" prefWidth="214.0" text="${viewModel.hintMessage}" textFill="#6d6d6d" />
+      <TextArea fx:id="areaLog" text="${viewModel.logs}" editable="false" layoutX="13.0" layoutY="117.0" prefHeight="76.0" prefWidth="377.0" VBox.vgrow="ALWAYS" />
    </children>
 </AnchorPane>

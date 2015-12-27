@@ -303,6 +303,8 @@ include "code/vodopyanov-dmitry/ViewModel"
 project(":code/vodopyanov-dmitry/ViewModel").name = "vodopyanov-dmitry-ViewModel"
 include "code/vodopyanov-dmitry/View"
 project(":code/vodopyanov-dmitry/View").name = "vodopyanov-dmitry-View"
+include "code/vodopyanov-dmitry/Infrastructure"
+project(":code/vodopyanov-dmitry/Infrastructure").name = "vodopyanov-dmitry-Infrastructure"
 
 // Volosenkov Evgenij
 

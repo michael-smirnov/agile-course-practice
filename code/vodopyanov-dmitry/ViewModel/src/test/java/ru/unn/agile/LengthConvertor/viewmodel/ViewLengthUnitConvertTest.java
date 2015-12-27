@@ -29,7 +29,9 @@ public class ViewLengthUnitConvertTest {
 
     @Before
     public void setUp() {
-        viewModel = new ViewModel();
+        if (viewModel == null) {
+            viewModel = new ViewModel(new FakeLogger());
+        }
     }
 
     @After
@@ -56,7 +58,7 @@ public class ViewLengthUnitConvertTest {
         viewModel.inputUnitProperty().set(LengthUnit.METER);
         viewModel.outputUnitProperty().set(unitOutput);
 
-        viewModel.calculate();
+        viewModel.convert();
 
         assertEquals(convertedValue, viewModel.outputValueProperty().get());
     }

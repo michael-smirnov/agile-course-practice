@@ -18,14 +18,34 @@ public class ViewModel {
             new SimpleObjectProperty<>(FXCollections.observableArrayList(LengthUnit.values()));
     private final ObjectProperty<LengthUnit> inputUnit = new SimpleObjectProperty<>();
     private final ObjectProperty<LengthUnit> outputUnit = new SimpleObjectProperty<>();
-    private final BooleanProperty calculationDisabled = new SimpleBooleanProperty();
+    private final BooleanProperty convertingDisabled = new SimpleBooleanProperty();
 
     private final StringProperty outputValue = new SimpleStringProperty();
     private final StringProperty hintMessage = new SimpleStringProperty();
 
-    private final List<InputValueListener> valueChangedListeners = new ArrayList<>();
+    private List<InputValueChangeListener> valueChangedListeners;
+
+    private ISimpleLogger logger;
+
+    private final StringProperty logs = new SimpleStringProperty();
+
+    public void setLogger(final ISimpleLogger logger) {
+        if (logger == null) {
+            throw new IllegalArgumentException("Logger can't be null");
+        }
+        this.logger = logger;
+    }
 
     public ViewModel() {
+        initialize();
+    }
+
+    public ViewModel(final ISimpleLogger logger) {
+        setLogger(logger);
+        initialize();
+    }
+
+    private void initialize() {
         inputValue.set("");
         inputUnit.set(LengthUnit.INCH);
         outputValue.set("");
@@ -41,22 +61,66 @@ public class ViewModel {
                 return getHint() == Status.READY;
             }
         };
-        calculationDisabled.bind(couldCalculate.not());
+        convertingDisabled.bind(couldCalculate.not());
 
-        final List<StringProperty> fields = new ArrayList<StringProperty>() { {
+        final List<StringProperty> values = new ArrayList<StringProperty>() { {
             add(inputValue);
         } };
 
-        for (StringProperty field : fields) {
-            final InputValueListener listener = new InputValueListener();
-            field.addListener(listener);
+        valueChangedListeners = new ArrayList<>();
+        for (StringProperty value : values) {
+            final InputValueChangeListener listener = new InputValueChangeListener();
+            value.addListener(listener);
             valueChangedListeners.add(listener);
         }
     }
 
-    public void calculate() {
+    public void convert() {
         outputValue.set(outputUnit.get().convert(inputValue.get(), inputUnit.get()));
         hintMessage.set(Status.SUCCESS.toString());
+
+        StringBuilder message = new StringBuilder(LogMessages.CONVERT_WAS_PRESSED.toString());
+        message.append(inputValue.get())
+               .append(" ").append(inputUnit.get())
+               .append("  =  ").append(outputValue.get())
+               .append(" ").append(outputUnit.get());
+        logger.addLogLine(message.toString());
+        updateLogs();
+    }
+
+    public void lengthUnitsChanged(final LengthUnit oldValue, final LengthUnit newValue) {
+        if (oldValue.equals(newValue)) {
+            return;
+        }
+        StringBuilder message = new StringBuilder(LogMessages.LENGTH_UNITS_WERE_CHANGED.toString());
+        message.append("[").append(inputUnit.get())
+               .append(", ").append(outputUnit.get()).append("]");
+        logger.addLogLine(message.toString());
+        updateLogs();
+    }
+
+    public void valueChanged(final Boolean oldValue, final Boolean newValue) {
+        if (!oldValue && newValue) {
+            return;
+        }
+
+        for (InputValueChangeListener listener : valueChangedListeners) {
+            if (listener.isChanged()) {
+                StringBuilder message = new StringBuilder(
+                    LogMessages.INPUT_VALUE_WAS_CHANGED.toString()
+                );
+                message.append(inputValue.get());
+                logger.addLogLine(message.toString());
+                updateLogs();
+
+                listener.cache();
+                break;
+            }
+        }
+    }
+
+    public final List<String> getLog() {
+        return logger.getLog();
     }
 
     public StringProperty inputValueProperty() {
@@ -79,8 +143,12 @@ public class ViewModel {
         return outputUnit;
     }
 
-    public BooleanProperty calculationDisabledProperty() {
-        return calculationDisabled;
+    public BooleanProperty convertingDisabledProperty() {
+        return convertingDisabled;
+    }
+
+    public final boolean getConvertingDisabled() {
+        return convertingDisabled.get();
     }
 
     public StringProperty outputValueProperty() {
@@ -97,6 +165,14 @@ public class ViewModel {
 
     public final String getHintMessage() {
         return hintMessage.get();
+    }
+
+    public StringProperty logsProperty() {
+        return logs;
+    }
+
+    public final String getLogs() {
+        return logs.get();
     }
 
     private Status getHint() {
@@ -118,23 +194,60 @@ public class ViewModel {
         return hintStatus;
     }
 
-    private class InputValueListener implements ChangeListener<String> {
+    private void updateLogs() {
+        List<String> fullLog = logger.getLog();
+        String record = new String();
+        for (String log : fullLog) {
+            record += log + "\n";
+        }
+        logs.set(record);
+    }
+
+    private class InputValueChangeListener implements ChangeListener<String> {
+        private String previousValue = new String();
+        private String currentValue = new String();
         @Override
         public void changed(final ObservableValue<? extends String> observable,
                             final String oldValue, final String newValue) {
+            if (oldValue.equals(newValue)) {
+                return;
+            }
             hintMessage.set(getHint().toString());
+            currentValue = newValue;
+        }
+        public boolean isChanged() {
+            return !previousValue.equals(currentValue);
+        }
+        public void cache() {
+            previousValue = currentValue;
         }
     }
 }
 
 enum Status {
     WAITING("Enter value and choose units"),
-    READY("Press \"Calculate\""),
-    BAD_FORMAT("Error: Bad format"),
+    READY("Press \"Convert\""),
+    BAD_FORMAT("Error: Wrong format"),
     SUCCESS("Converted successfully");
 
     private final String name;
     private Status(final String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}
+
+enum LogMessages {
+    CONVERT_WAS_PRESSED("Convert. "),
+    INPUT_VALUE_WAS_CHANGED("Input value was changed to "),
+    LENGTH_UNITS_WERE_CHANGED("Length units were changed to ");
+
+    private final String name;
+    private LogMessages(final String name) {
         this.name = name;
     }
 
