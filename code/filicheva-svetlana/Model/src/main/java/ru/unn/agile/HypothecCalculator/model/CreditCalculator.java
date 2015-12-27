@@ -154,5 +154,4 @@ public final class CreditCalculator {
 
         return balance;
     }
-
 }

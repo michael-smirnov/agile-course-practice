@@ -644,5 +644,4 @@ public class ViewModelTextFieldsTest {
 
         assertEquals(false, viewModel.isButtonEnabled());
     }
-
 }

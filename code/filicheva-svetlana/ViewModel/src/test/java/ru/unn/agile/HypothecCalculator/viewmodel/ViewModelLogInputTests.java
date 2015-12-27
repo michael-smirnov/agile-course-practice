@@ -356,5 +356,4 @@ public class ViewModelLogInputTests {
         List<String> log = viewModel.getLog();
         assertTrue(log.size() > 3);
     }
-
 }

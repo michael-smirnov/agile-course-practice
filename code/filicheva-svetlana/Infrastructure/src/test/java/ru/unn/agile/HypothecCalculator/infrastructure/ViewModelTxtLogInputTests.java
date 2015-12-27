@@ -9,5 +9,4 @@ public class ViewModelTxtLogInputTests extends ViewModelLogInputTests {
         TxtLogger realLogger = new TxtLogger("ViewModelTxtLogInputTests.log");
         super.setViewModel(new ViewModel(realLogger));
     }
-
 }

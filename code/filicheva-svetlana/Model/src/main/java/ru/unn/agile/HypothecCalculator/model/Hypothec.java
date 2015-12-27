@@ -327,6 +327,5 @@ public class Hypothec {
             return name;
         }
     }
-
 }
 

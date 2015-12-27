@@ -149,5 +149,4 @@ public class ViewModelComputingTests {
         viewModel.compute();
         assertEquals("426.2", viewModel.getOverpaymentWithFees());
     }
-
 }

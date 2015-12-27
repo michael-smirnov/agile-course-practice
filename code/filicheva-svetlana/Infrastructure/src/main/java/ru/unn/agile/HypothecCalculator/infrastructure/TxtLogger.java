@@ -63,5 +63,4 @@ public class TxtLogger implements ILogger {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.ENGLISH);
         return simpleDateFormat.format(calendar.getTime());
     }
-
 }

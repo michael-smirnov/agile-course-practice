@@ -11,8 +11,7 @@ public class ViewModelTxtLogComputeTests extends ViewModelLogComputeTests {
         super.loadExample();
     }
 
-    public ViewModelTxtLogComputeTests(final String s) {
-        super(s);
+    public ViewModelTxtLogComputeTests(final String message) {
+        super(message);
     }
-
 }

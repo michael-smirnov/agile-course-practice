@@ -93,7 +93,6 @@ public class ViewModelLogComputeTests {
                     "Тип кредита: аннуитетный"
             }
     };
-
 }
 
 

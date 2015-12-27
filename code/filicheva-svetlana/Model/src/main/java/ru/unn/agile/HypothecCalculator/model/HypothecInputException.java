@@ -36,5 +36,4 @@ public class HypothecInputException extends Exception {
     public String getMessage() {
         return message;
     }
-
 }

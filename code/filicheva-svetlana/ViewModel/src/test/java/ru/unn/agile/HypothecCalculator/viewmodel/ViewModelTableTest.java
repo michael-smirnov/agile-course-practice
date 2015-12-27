@@ -90,5 +90,4 @@ public class ViewModelTableTest {
                     Hypothec.CreditType.DIFFERENTIATED
             }
     };
-
 }

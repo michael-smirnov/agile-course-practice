@@ -106,5 +106,4 @@ public class TxtLoggerTests {
 
         return rightMessages;
     }
-
 }
