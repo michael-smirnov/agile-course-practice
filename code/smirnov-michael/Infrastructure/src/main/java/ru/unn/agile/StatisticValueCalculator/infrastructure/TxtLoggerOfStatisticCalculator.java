@@ -53,4 +53,13 @@ public class TxtLoggerOfStatisticCalculator implements ILoggerOfStatisticCalcula
         }
         return log;
     }
+
+    @Override
+    public void dispose() {
+        try {
+            logWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

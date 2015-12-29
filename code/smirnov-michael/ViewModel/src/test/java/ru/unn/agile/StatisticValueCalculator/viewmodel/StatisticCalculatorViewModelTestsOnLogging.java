@@ -1,5 +1,6 @@
 package ru.unn.agile.StatisticValueCalculator.viewmodel;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -130,5 +131,10 @@ public class StatisticCalculatorViewModelTestsOnLogging {
                         + LogMessages.statisticValueCalculated(viewModel.getSelectedStatistic(),
                         viewModel.getValueOfCalculatedStatistic(),
                         viewModel.getInputStatisticParameter())));
+    }
+
+    @After
+    public void disposeLogger() {
+        viewModel.disposeLogger();
     }
 }

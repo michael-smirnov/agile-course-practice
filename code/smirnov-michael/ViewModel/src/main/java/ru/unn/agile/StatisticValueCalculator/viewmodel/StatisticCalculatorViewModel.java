@@ -265,6 +265,10 @@ public class StatisticCalculatorViewModel {
         }
     }
 
+    public void disposeLogger() {
+        logger.dispose();
+    }
+
     public void clearStatisticData() {
         statisticData.clear();
         calculationIsDisabled.set(true);
@@ -489,6 +493,11 @@ class DefaultLogger implements ILoggerOfStatisticCalculator {
     @Override
     public List<String> getLog() {
         return Collections.singletonList("Real logger is not set");
+    }
+
+    @Override
+    public void dispose() {
+        final String message = "Nothing to dispose";
     }
 }
 

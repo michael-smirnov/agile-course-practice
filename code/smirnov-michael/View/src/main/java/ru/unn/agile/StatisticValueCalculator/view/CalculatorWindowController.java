@@ -54,7 +54,8 @@ public class CalculatorWindowController {
 
     @FXML
     private void initialize() {
-        viewModel.setLogger(new TxtLoggerOfStatisticCalculator("StatisticCalculatorLogger.log"));
+        viewModel.setLogger(new TxtLoggerOfStatisticCalculator(
+                "StatisticCalculatorLog_" + this.hashCode() + ".log"));
 
         final ChangeListener<Boolean> inputFieldFocusChangeListener =
                 new ChangeListener<Boolean>() {

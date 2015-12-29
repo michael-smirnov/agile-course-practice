@@ -15,4 +15,9 @@ public class FakeLoggerOfStatisticCalculator implements ILoggerOfStatisticCalcul
     public List<String> getLog() {
         return log;
     }
+
+    @Override
+    public void dispose() {
+        final String message = "nothing to dispose";
+    }
 }
